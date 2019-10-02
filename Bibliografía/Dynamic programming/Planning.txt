@@ -1,0 +1,16 @@
+Hola Daniel
+
+Vamos a cambiar un poco el orden de lectura que teníamos previsto. Vamos
+a aprovechar que tienes el Boyd fresco y vamos a posponer los capítulos
+de Sayed.
+
+Por favor, haz lo siguiente. Lee bien el capítulo 1 de Bertsekas. Es muy
+importante entender bien la formulación de DP como un linear program (LP).
+
+Después, comienza con el paper que adjunto (es el que presentarás dentro
+de 2 semanas). Es un paper largo. La clave es comprender que si la
+formulación de DP como un LP da la función valor óptima, su problema
+dual da la política óptima. Me gustaría que entendieras todos los
+detalles de cada lemma y su utilidad.
+
+Lo vamos comentando la próxima semana.

@@ -1,0 +1,2341 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass book
+\begin_preamble
+\usepackage{optidef}
+\usepackage{algorithm,algpseudocode}
+\usepackage{mathtools}
+
+\AtBeginDocument{
+  \def\labelitemii{\ding{71}}
+  \def\labelitemiii{\ding{111}}
+  \def\labelitemiv{\(\vartriangleright\)}
+}
+
+
+\usepackage{babel}
+\addto\shorthandsspanish{\spanishdeactivate{~<>}}
+\end_preamble
+\use_default_options false
+\begin_modules
+theorems-ams-bytype
+theorems-chap-bytype
+theorems-ams-extended-bytype
+\end_modules
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding iso8859-15
+\fontencoding T1
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing double
+\use_hyperref true
+\pdf_bookmarks false
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref section
+\pdf_pdfusetitle false
+\papersize a4paper
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 2
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.5in
+\topmargin 1.6in
+\rightmargin 1.2in
+\bottommargin 1.6in
+\headheight 1.5in
+\headsep 0.3in
+\footskip 0.8in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle plain
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset FormulaMacro
+\renewcommand{\T}{\mathcal{\top}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\S}{\mathcal{S}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\A}{\mathcal{A}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\R}{\mathcal{R}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\P}{\mathcal{P}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Pr}{\mathbb{P}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Ecuaciones de Bellman y teoría dual
+\begin_inset CommandInset label
+LatexCommand label
+name "chap:Cap8PrimyDual"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Tal y como se describió en el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:cap3Contexto-del-problema"
+
+\end_inset
+
+, el problema que se tratará de resolver será el de encontrar una política
+ de comportamiento óptima que maximice la recompensa acumulada a lo largo
+ de un horizonte de tiempo finito o infinito, empezando desde un estado
+ inicial 
+\begin_inset Formula $s_{o}$
+\end_inset
+
+ cualquiera de nuestro problema.
+ La búsqueda de dicha política se llevará a cabo a través de las funciones
+ valor, funciones de los estados que estiman cómo de bueno es para el agente
+ estar en un estado concreto.
+\end_layout
+
+\begin_layout Standard
+En el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:solucionEcuBellmanTabu"
+
+\end_inset
+
+ se abordó la resolución del problema en cuestión por medio de las ecuaciones
+ de Bellman, para problemas de pequeña escala.
+ Se derivó tanto la solución en forma cerrada como la solución basada en
+ métodos recursivos tales como programación dinámica (para el caso en que
+ se conoce el modelo del entorno) o TD (para el caso en que no se conoce
+ el modelo del entorno).
+\end_layout
+
+\begin_layout Standard
+En este capítulo se va a presentar un enfoque alternativo basado en la teoría
+ dual, expuesta en el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Dualidad"
+
+\end_inset
+
+, con el que se logrará resolver el problema de control óptimo planteado
+ de una forma poco estudiada hasta el momento: a través de la exploración
+ del espacio de políticas.
+ Para ello, se formulará inicialmente el problema primal de optimización
+ que resuelve las ecuaciones óptimas de Bellman, a continuación su problema
+ dual asociado y se derivarán importantes propiedades de la variable dual.
+ Finalmente, se resolverá el problema dual haciendo uso del método de ascenso
+ dual descrito en la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Dual-ascent"
+
+\end_inset
+
+, con ligeras modificaciones.
+\end_layout
+
+\begin_layout Section
+Formulación del problema primal
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:8_1_FormulPrim"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+De cara a establecer una representación dual que permita resolver problemas
+ de programación dinámica y de aprendizaje por refuerzo, será necesario
+ reformular el problema de programación dinámica enunciado en el capítulo
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:solucionEcuBellmanTabu"
+
+\end_inset
+
+ como un problema de optimización.
+ Este problema de optimización será el que denominemos problema primal,
+ y permitirá resolver las ecuaciones óptimas de Bellman.
+ Para comenzar con el desarrollo que nos permita llegar a la formulación
+ del problema primal, resultará de utilidad recordar algunas propiedades
+ y conceptos básicos en lo referido a programación dinámica y procesos de
+ decisión de Markov.
+ 
+\end_layout
+
+\begin_layout Subsection
+De programación dinámica al problema de optimización multiobjetivo
+\end_layout
+
+\begin_layout Standard
+Según el teorema 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:Optimal-Bellman-operator-is-contraction"
+
+\end_inset
+
+ y de acuerdo a la definición del operador de Bellman óptimo 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:bellman-operator-averaging-1"
+
+\end_inset
+
+, 
+\begin_inset Formula $T$
+\end_inset
+
+, se sabe que para cualquier función valor 
+\begin_inset Formula $v$
+\end_inset
+
+ deberá cumplirse:
+\begin_inset Formula 
+\begin{equation}
+v\leq Tv\leq T^{2}v\leq\cdots\leq T^{k}v\leq\lim_{N\to\infty}T^{N}v=v^{*}=Tv^{*}\label{eq:vDPconvergence}
+\end{equation}
+
+\end_inset
+
+es decir, existe una única solución 
+\begin_inset Formula $v^{*}$
+\end_inset
+
+ a la ecuación de punto fijo 
+\begin_inset Formula $Tv=v$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Supongamos ahora la existencia de un vector 
+\begin_inset Formula $v$
+\end_inset
+
+ tal que:
+\begin_inset Formula 
+\begin{equation}
+v\geq Tv\label{eq:condicionOptimoLP}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Haciendo un desarrollo similar al mostrado en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:vDPconvergence"
+
+\end_inset
+
+ se llega al siguiente resultado:
+\begin_inset Formula 
+\begin{equation}
+v\geq\lim_{N\to\infty}T^{N}v\geq v^{*}=Tv^{*}\label{eq:optimoFalso}
+\end{equation}
+
+\end_inset
+
+de donde se deduce que el vector 
+\begin_inset Formula $v$
+\end_inset
+
+ más pequeño posible que satisfaría la condición 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:condicionOptimoLP"
+
+\end_inset
+
+ sería 
+\begin_inset Formula $v^{*}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+De acuerdo a esta conclusión, parece claro que podríamos expresar nuestro
+ problema de búsqueda de la función valor óptima como un problema de optimizació
+n cuyo objetivo sería encontrar el mínimo vector 
+\begin_inset Formula $v$
+\end_inset
+
+ que satisficiera la condición 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:condicionOptimoLP"
+
+\end_inset
+
+.
+ Expresado de manera formal, el problema que se querrá resolver será:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\underset{v}{\text{minimize}} & \quad v\\
+\text{subject to} & \quad v\geq Tv
+\end{aligned}
+\label{eq:prePrimal-2}
+\end{equation}
+
+\end_inset
+
+donde 
+\begin_inset Formula $Tv$
+\end_inset
+
+ define la siguiente familia de funciones:
+\begin_inset Formula 
+\begin{equation}
+(Tv)(s)\triangleq\max_{a\in\A}\left[\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}v\left(s'\right)\right],\qquad\text{\ensuremath{\forall}s\ensuremath{\in\S}}\label{eq:preEpi}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Se puede observar que la maximización se realiza sobre un conjunto de funciones
+ convexas, más concretamente afines, y es bien sabido que el máximo sobre
+ un conjunto de funciones afines es también una función afín 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Boyd2004"
+
+\end_inset
+
+.
+ Por tanto, se puede afirmar que 
+\begin_inset Formula $Tv$
+\end_inset
+
+ define una familia de funciones afines a trozos.
+\end_layout
+
+\begin_layout Standard
+Si se expresa el problema 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:prePrimal-2"
+
+\end_inset
+
+ en forma escalar, se llega a que para cada componente del vector 
+\begin_inset Formula $v$
+\end_inset
+
+ –o lo que es lo mismo, para cada estado del MDP que define nuestro entorno–,
+ el problema a resolver es el siguiente:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\underset{v(s)}{\text{minimize}} & \quad v(s)\\
+\text{subject to} & \quad v(s)\geq\max_{a\in\A}\left[\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}v\left(s'\right)\right]
+\end{aligned}
+\label{eq:prePrimal_unit}
+\end{equation}
+
+\end_inset
+
+para todo 
+\begin_inset Formula $s\in\S$
+\end_inset
+
+, que como puede inferirse, está expresado como un problema en forma de
+ epigrafo (ver 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "sec:Anexo-A"
+
+\end_inset
+
+).
+ Teniendo el problema de optimización en este formato, transformarlo al
+ programa lineal equivalente consistirá simplemente en expresar la restricción
+ de desigualdad como un conjunto de 
+\begin_inset Formula $|\S||\A|$
+\end_inset
+
+ desigualdades diferentes, es decir:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\underset{v(s)}{\text{minimize}} & \quad v(s)\\
+\text{subject to} & \quad v(s)\geq\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}v\left(s'\right),\qquad\ensuremath{\forall}a\ensuremath{\in\A}
+\end{aligned}
+\label{eq:prePrimal_unit-1}
+\end{equation}
+
+\end_inset
+
+para todo 
+\begin_inset Formula $s\in\S$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Este tipo de problemas de optimización en los que tanto la función objetivo
+ como las restricciones son lineales y únicamente existen restricciones
+ de desigualdad, se conocen como programas lineales en forma de desigualdad.
+\end_layout
+
+\begin_layout Standard
+Con este desarrollo se consigue hacer desaparecer el operador 
+\begin_inset Quotes fld
+\end_inset
+
+
+\begin_inset Formula $\max$
+\end_inset
+
+
+\begin_inset Quotes frd
+\end_inset
+
+ de las condiciones de desigualdad, el cual es no lineal, para transformar
+ nuestro problema de optimización en un problema de optimización lineal.
+ Si se deshacen estos cambios hasta volver de nuevo al problema original
+ expresado en forma vectorial, se tiene que el problema 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:prePrimal-2"
+
+\end_inset
+
+ se puede reformular de la siguiente manera:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\underset{v}{\text{minimize}} & \quad v\\
+\text{subject to} & \quad\Xi^{T}v\geq\R+\gamma\P v
+\end{aligned}
+\label{eq:prePrimal_vect}
+\end{equation}
+
+\end_inset
+
+donde 
+\begin_inset Formula $\Xi$
+\end_inset
+
+ es una matriz de dimensión 
+\begin_inset Formula $\left|\S\right|\times\left|\S\right|\left|\A\right|$
+\end_inset
+
+ formada por 
+\begin_inset Formula $\S$
+\end_inset
+
+ bloques fila de 1s, cada una de dimensión 
+\begin_inset Formula $|\A|$
+\end_inset
+
+, dispuestos en diagonal:
+\begin_inset Formula 
+\[
+\Xi=\left(\begin{array}{cccc}
+1\cdots1\\
+ & 1\cdots1\\
+ &  & \ddots\\
+ &  &  & 1\cdots1
+\end{array}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Como se puede observar, el problema 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:prePrimal_vect"
+
+\end_inset
+
+ es un problema de optimización multiobjetivo convexo, pues se quiere optimizar
+ el vector 
+\begin_inset Formula $v$
+\end_inset
+
+, compuesto de 
+\begin_inset Formula $\left|\S\right|$
+\end_inset
+
+ objetivos escalares afines diferentes, sujeto a 
+\begin_inset Formula $\left|\S\right|\left|\A\right|$
+\end_inset
+
+ restricciones de desigualdad también afines.
+ Además, de acuerdo a 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:optimoFalso"
+
+\end_inset
+
+ y al teorema 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:Optimal-Bellman-operator-is-contraction"
+
+\end_inset
+
+ del punto fijo de Banach, se puede garantizar que la superficie de puntos
+ óptimos de Pareto de este problema multiobjetivo estará formada por un
+ único punto: 
+\begin_inset Formula $v^{*}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Con ánimo de facilitar la comprensión del desarrollo anterior, se presenta
+ a continuación una interpretación gráfica del nuevo problema obtenido.
+\end_layout
+
+\begin_layout Subsubsection
+Interpretación gráfica
+\end_layout
+
+\begin_layout Standard
+Las restricciones impuestas en nuestro problema de optimización constituyen
+ un sistema de desigualdades lineales y finito, y por tanto definen un poliedro
+ en 
+\begin_inset Formula $\mathbb{R}^{\left|\S\right|}$
+\end_inset
+
+.
+\begin_inset Formula 
+\begin{equation}
+v(s)\geq\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}v\left(s'\right),\qquad\ensuremath{\forall}a\ensuremath{\in\A},\,\forall s\ensuremath{\in\S}\label{eq:restricIndiv}
+\end{equation}
+
+\end_inset
+
+Para ejemplificar esta idea, supóngase un MDP con 2 posibles estados, y
+ en cada estado 2 posibles acciones; es decir, 
+\begin_inset Formula $\left|\S\right|=2$
+\end_inset
+
+ y 
+\begin_inset Formula $\left|\A\right|=2$
+\end_inset
+
+.
+ Una interpretación del poliedro definido por las restricciones 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:restricIndiv"
+
+\end_inset
+
+ para este problema podría ser la mostrada en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Interpretación-gráfica_LP"
+
+\end_inset
+
+.
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap8/Poliedro.png
+	lyxscale 50
+	width 100text%
+	clip
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Interpretación-gráfica_LP"
+
+\end_inset
+
+Interpretación gráfica del problema de optimización multiobjetivo que permite
+ resolver las ecuaciones óptimas de Bellman para el MDP de 2 estados y 2
+ acciones planteado.
+ Sombreado en azul se encuentra el conjunto de puntos que cumplen las restriccio
+nes de desigualdad impuestas por el problema.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Tal y como se puede observar, la función valor óptima 
+\begin_inset Formula $v^{*}$
+\end_inset
+
+ será la esquina 
+\begin_inset Quotes fld
+\end_inset
+
+sudoeste
+\begin_inset Quotes frd
+\end_inset
+
+ de este poliedro; es decir, el mínimo vector 
+\begin_inset Formula $v$
+\end_inset
+
+ para el que se cumplirán las restricciones de desigualdad en cada problema
+ individual 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:prePrimal_unit-1"
+
+\end_inset
+
+, y por tanto el punto óptimo de Pareto de nuestro problema multiobjetivo.
+\end_layout
+
+\begin_layout Subsection
+Problema primal expresado como un programa lineal
+\end_layout
+
+\begin_layout Standard
+Conocido ya el problema multiobjetivo a resolver, se sabe que aplicando
+ la técnica de escalarización presentada en 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Escalarización"
+
+\end_inset
+
+ se podrá encontrar el punto óptimo de Pareto 
+\begin_inset Formula $v^{*}$
+\end_inset
+
+, solución de las ecuaciones óptimas de Bellman.
+ De este modo, y partiendo del problema 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:prePrimal_unit-1"
+
+\end_inset
+
+, la nueva función objetivo a minimizar será la suma ponderada de las funciones
+ objetivo de cada problema individual:
+\begin_inset Formula 
+\[
+\sum_{s\in\S}\lambda(s)v(s)=\lambda^{T}v
+\]
+
+\end_inset
+
+para cualquier 
+\begin_inset Formula $\lambda>0$
+\end_inset
+
+, con lo cual, el problema de optimización multiobjetivo convexo 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:prePrimal_unit-1"
+
+\end_inset
+
+ se podrá reformular como el siguiente programa lineal en forma de desigualdad:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\underset{v(s)}{\text{minimize}} & \quad\sum_{s\in\S}\lambda(s)v(s)\\
+\text{subject to} & \quad v(s)\geq\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}v\left(s'\right)
+\end{aligned}
+\label{eq:primalEsc}
+\end{equation}
+
+\end_inset
+
+para cualquier 
+\begin_inset Formula $\lambda(s)>0$
+\end_inset
+
+, para todo 
+\begin_inset Formula $s\in\S$
+\end_inset
+
+ y todo 
+\begin_inset Formula $a\in\A$
+\end_inset
+
+.
+ Expresado en forma vectorial:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\underset{v}{\text{minimize}} & \quad\lambda^{T}v\\
+\text{subject to} & \quad\Xi^{T}v\geq\R+\gamma\P v
+\end{aligned}
+\label{eq:primal}
+\end{equation}
+
+\end_inset
+
+para cualquier 
+\begin_inset Formula $\lambda>0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+El programa lineal 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:primal"
+
+\end_inset
+
+ será por tanto el problema primal que resuelva las ecuaciones óptimas de
+ Bellman.
+\end_layout
+
+\begin_layout Section
+Derivación del problema dual
+\end_layout
+
+\begin_layout Standard
+Siguiendo el enfoque dual propuesto al comienzo del capítulo, a continuación
+ se presenta la derivación del problema dual asociado al problema primal
+ 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:primal"
+
+\end_inset
+
+.
+ Como veremos al final de esta sección, será esta representación dual de
+ la que se deduzcan importantes propiedades que darán pie al desarrollo
+ de nuevos algoritmos de aprendizaje por refuerzo.
+\end_layout
+
+\begin_layout Subsubsection
+Lagrangiano
+\end_layout
+
+\begin_layout Standard
+Para llegar al problema dual, primero será necesario formular el Lagrangiano
+ asociado al problema 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:primal"
+
+\end_inset
+
+:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\mathcal{L}(v,d) & =\sum_{s\in\S}\lambda(s)v(s)+\sum_{s\in\S}\sum_{a\in\A}d(s,a)\left(\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}v\left(s'\right)-v(s)\right)\\
+ & =\lambda^{T}v+d^{T}\left(\R+\gamma\P v-\Xi^{T}v\right)
+\end{aligned}
+\label{eq:lagrangianBellman}
+\end{equation}
+
+\end_inset
+
+donde 
+\begin_inset Formula $d$
+\end_inset
+
+ es el vector de dimensión 
+\begin_inset Formula $\left|\S\right|\left|\A\right|\times1$
+\end_inset
+
+ cuyas componentes son los multiplicadores de Lagrange asociados a cada
+ una de las restricciones de desigualdad 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:restricIndiv"
+
+\end_inset
+
+ del problema primal.
+ De la formulación general para la función dual de Lagrange expuesta en
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Función-dual-de"
+
+\end_inset
+
+, se sabe que además deberá cumplirse 
+\begin_inset Formula $d\geq0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Función dual
+\end_layout
+
+\begin_layout Standard
+A partir del Lagrangiano 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:lagrangianBellman"
+
+\end_inset
+
+ se puede obtener la función dual asociada como:
+\begin_inset Formula 
+\[
+\begin{aligned}g(d)= & \inf_{v\in\mathbb{R}^{\left|\S\right|}}\mathcal{L}(v,d)\\
+= & \inf_{v\in\mathbb{R}^{\left|\S\right|}}\left(\sum_{s\in\S}\lambda(s)v(s)+\sum_{s\in\S}\sum_{a\in\A}d(s,a)\left(\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}v\left(s'\right)-v(s)\right)\right)\\
+= & \;\sum_{s\in\S}\sum_{a\in\A}d(s,a)\R_{s}^{a}+\inf_{v\in\mathbb{R}^{\left|\S\right|}}\sum_{s'\in\S}v(s')\left(\lambda(s')+\gamma\sum_{s\in\S}\sum_{a\in\A}d(s,a)\P_{ss'}^{a}-\sum_{a\in\A}d(s',a)\right)
+\end{aligned}
+\]
+
+\end_inset
+
+sujeto a 
+\begin_inset Formula $\lambda(s)>0$
+\end_inset
+
+ y 
+\begin_inset Formula $d(s,a)\geq0,\,\forall s\in\S$
+\end_inset
+
+ y 
+\begin_inset Formula $\forall a\in\A$
+\end_inset
+
+.
+ Expresado en forma vectorial resulta en:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}g(d)= & \inf_{v\in\mathbb{R}^{\left|\S\right|}}\mathcal{L}(v,d)\\
+= & \inf_{v\in\mathbb{R}^{\left|\S\right|}}\left(\lambda^{T}v+d^{T}\left(\R+\gamma\P v-\Xi^{T}v\right)\right)\\
+= & \;d^{T}\R+\inf_{v\in\mathbb{R}^{\left|\S\right|}}\left(\lambda^{T}+\gamma d^{T}\P-d^{T}\Xi^{T}\right)v,\qquad\forall\lambda>0,d\geq0
+\end{aligned}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Dicha función puede ser fácilmente obtenida analíticamente ya que el término
+ del cual se busca el ínfimo, 
+\begin_inset Formula $\left(\lambda^{T}+\gamma d^{T}\P-d^{T}\Xi^{T}\right)v$
+\end_inset
+
+, es lineal, y las funciones lineales únicamente están acotadas por abajo
+ cuando son iguales a cero.
+ Por tanto, 
+\begin_inset Formula $g(d)=-\infty$
+\end_inset
+
+ excepto cuando 
+\begin_inset Formula $\lambda+\gamma\P^{T}d-\Xi d=0$
+\end_inset
+
+, en cuyo caso 
+\begin_inset Formula $g(d)=d^{T}\R$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+g(d)=\begin{cases}
+d^{T}\R & \lambda+\gamma\P^{T}d-\Xi d=0\\
+-\infty & \textrm{en cualquier otro caso}
+\end{cases},\qquad\forall\lambda>0,d\geq0\label{eq:funcionDual}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para facilitar la formulación final del problema dual, será apropiado asignarle
+ un valor al vector 
+\begin_inset Formula $\lambda$
+\end_inset
+
+.
+ En 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Puterman2005"
+
+\end_inset
+
+ se sugiere escoger un vector 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ compuesto por escalares positivos cuya suma total sea uno, es decir, el
+ vector de escalarización deberá cumplir las siguientes condiciones:
+\begin_inset Formula 
+\[
+\lambda(s)>0,\,\forall s\in\S\qquad\qquad\qquad\qquad\sum_{s\in\S}\lambda(s)=1
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Recalcar que cualquier vector 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ cuyas componentes fueran positivas serviría, pero la condición añadida
+ de que sumen 1 nos permite interpretar el vector de escalarización como
+ una distribución de probabilidad de los estados.
+ Atendiendo a esta interpretación y de acuerdo a 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Wang2008"
+
+\end_inset
+
+, se escogerá como vector de escalarización 
+\begin_inset Formula $\mu=\left[\mu(s_{1})\,\cdots\,\mu(s_{\left|\S\right|})\right]$
+\end_inset
+
+, de dimensión 
+\begin_inset Formula $\left|\S\right|\times1$
+\end_inset
+
+, el cual define la distribución inicial sobre los estados de la cadena
+ de Markov que representa nuestro problema.
+ Bajo estas condiciones, la función dual 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:funcionDual"
+
+\end_inset
+
+ resulta en:
+\begin_inset Formula 
+\begin{equation}
+g(d)=\begin{cases}
+\sum_{s\in\S}\sum_{a\in\A}d(s,a)\R_{s}^{a} & \mu(s')+\gamma\sum_{s\in\S}\sum_{a\in\A}d(s,a)\P_{ss'}^{a}-\sum_{a\in\A}d(s',a)=0\\
+-\infty & \textrm{en cualquier otro caso}
+\end{cases}\label{eq:funcionDualEscalar}
+\end{equation}
+
+\end_inset
+
+para todo 
+\begin_inset Formula $s'\ensuremath{\in\S}$
+\end_inset
+
+, sujeto a 
+\begin_inset Formula $d(s,a)\geq0$
+\end_inset
+
+, para todo 
+\begin_inset Formula $s\in\S$
+\end_inset
+
+ y todo 
+\begin_inset Formula $a\in\A$
+\end_inset
+
+.
+ Expresado en forma vectorial se llega a:
+\begin_inset Formula 
+\begin{equation}
+g(d)=\begin{cases}
+d^{T}\R & \mu+\gamma\P^{T}d-\Xi d=0\\
+-\infty & \textrm{en cualquier otro caso}
+\end{cases},\qquad d\geq0\label{eq:funcionDualVect}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Problema dual
+\end_layout
+
+\begin_layout Standard
+De manera estricta, el problema dual de Lagrange asociado al programa lineal
+ 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:primal"
+
+\end_inset
+
+ será maximizar la función dual 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:funcionDualVect"
+
+\end_inset
+
+ sujeta a 
+\begin_inset Formula $d\geq0,$
+\end_inset
+
+es decir:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\underset{d}{\text{maximize}} & \quad g(d)=\begin{cases}
+d^{T}\R & \mu+\gamma\P^{T}d-\Xi d=0\\
+-\infty & \textrm{en cualquier otro caso}
+\end{cases}\\
+\text{subject to} & \quad d\geq0
+\end{aligned}
+\label{eq:problemaDualOriginal}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Teniendo en cuenta el hecho de que 
+\begin_inset Formula $g(d)$
+\end_inset
+
+ es finita solamente cuando 
+\begin_inset Formula $\mu+\gamma\P^{T}d-\Xi d=0$
+\end_inset
+
+, podemos formular un problema equivalente haciendo estas restricciones
+ de igualdad explicitas:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\underset{d}{\text{maximize}} & \quad d^{T}\R\\
+\text{subject to} & \quad\mu+\gamma\P^{T}d-\Xi d=0\\
+ & \quad d\geq0
+\end{aligned}
+\label{eq:preProbDualVect}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Expresado en forma escalar se tiene:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\underset{d(s,a)}{\text{maximize}} & \quad\sum_{s\in\S}\sum_{a\in\A}d(s,a)\R_{s}^{a}\\
+\text{subject to} & \quad\mu(s')+\gamma\sum_{s\in\S}\sum_{a\in\A}d(s,a)\P_{ss'}^{a}-\sum_{a\in\A}d(s',a)=0\\
+ & \quad d(s,a)\geq0
+\end{aligned}
+\label{eq:preProbDualEsc}
+\end{equation}
+
+\end_inset
+
+para todo 
+\begin_inset Formula $s'\in\S$
+\end_inset
+
+, todo 
+\begin_inset Formula $s\in\S$
+\end_inset
+
+ y toda 
+\begin_inset Formula $a\in\A$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Se dirá por tanto que 
+\begin_inset Formula $d(s,a)$
+\end_inset
+
+ es una solución factible del problema dual equivalente siempre que sea
+ no negativo y además satisfaga la restricción de igualdad mostrada en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:preProbDualEsc"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+De este modo se ha conseguido derivar el problema dual como un programa
+ lineal en forma estándar.
+\end_layout
+
+\begin_layout Subsection
+Interpretación de la variable dual
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:8_2_1InterpretaciónDual"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La importancia de llegar a esta formulación dual radica en que, de acuerdo
+ a 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Puterman2005"
+
+\end_inset
+
+, a partir de la variable dual 
+\begin_inset Formula $d$
+\end_inset
+
+ se va a ser capaz de extraer una política de comportamiento estacionaria
+ 
+\begin_inset Formula $\pi_{d}$
+\end_inset
+
+ para el MDP que modela nuestro problema de control.
+ Además, si el MDP en cuestión sigue esa política 
+\begin_inset Formula $\pi_{d}$
+\end_inset
+
+, la solución al problema dual será un vector 
+\begin_inset Formula $d^{\pi_{d}}$
+\end_inset
+
+ perteneciente al conjunto de puntos factibles del problema.
+\end_layout
+
+\begin_layout Theorem
+\begin_inset CommandInset label
+LatexCommand label
+name "thm:8_1"
+
+\end_inset
+
+Para cada 
+\begin_inset Formula $\pi\in\Pi^{MR}$
+\end_inset
+
+, 
+\begin_inset Formula $s\in\S$
+\end_inset
+
+ y 
+\begin_inset Formula $a\in\A$
+\end_inset
+
+, se define 
+\begin_inset Formula $d^{\pi}(s,a)$
+\end_inset
+
+ como:
+\begin_inset Formula 
+\begin{equation}
+d^{\pi}(s,a)=\sum_{j\in S}\mu(j)\sum_{t=0}^{\infty}\gamma^{t}\Pr\left(S_{t}=s,A_{t}=a\mid S_{o}=j,\pi\right)\label{eq:teor8.1}
+\end{equation}
+
+\end_inset
+
+Entonces 
+\begin_inset Formula $d^{\pi}(s,a)$
+\end_inset
+
+ es una solución factible del problema dual.
+\end_layout
+
+\begin_layout Standard
+La demostración del teorema 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_1"
+
+\end_inset
+
+ aparece detallada en el 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "sec:Anexo-B"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Theorem
+\begin_inset CommandInset label
+LatexCommand label
+name "thm:8_2"
+
+\end_inset
+
+Supóngase que 
+\begin_inset Formula $d(s,a)$
+\end_inset
+
+ es una solución factible del problema dual.
+ En consecuencia 
+\begin_inset Formula $\sum_{a\in\A}d(s,a)>0$
+\end_inset
+
+ para todo 
+\begin_inset Formula $s\in\S$
+\end_inset
+
+.
+ Definamos la política estacionaria estocástica 
+\begin_inset Formula $\pi_{d}$
+\end_inset
+
+ como:
+\begin_inset Formula 
+\begin{equation}
+\pi_{d}(a\mid s)=\Pr\left(\pi_{d}(s)=a\right)=\frac{d(s,a)}{\sum_{a'\in\A}d(s,a')}\label{eq:prob}
+\end{equation}
+
+\end_inset
+
+Entonces 
+\begin_inset Formula $d^{\pi_{d}}(s,a)$
+\end_inset
+
+, tal y como se definió en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:teor8.1"
+
+\end_inset
+
+ es una solución factible del problema dual, y además 
+\begin_inset Formula $d^{\pi_{d}}(s,a)=d(s,a)$
+\end_inset
+
+ para todo 
+\begin_inset Formula $a\text{\in\A}$
+\end_inset
+
+, y 
+\begin_inset Formula $s\in\S$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+La demostración del teorema 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_2"
+
+\end_inset
+
+ aparece detallada en el 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "sec:Anexo-C"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+La variable dual 
+\begin_inset Formula $d(s,a)$
+\end_inset
+
+, definida en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:teor8.1"
+
+\end_inset
+
+, representa por tanto la probabilidad conjunta total descontada bajo la
+ distribución inicial de estados 
+\begin_inset Formula $\mu$
+\end_inset
+
+ de que el sistema se encuentre en el estado 
+\begin_inset Formula $s$
+\end_inset
+
+ y se tome la acción 
+\begin_inset Formula $a$
+\end_inset
+
+.
+ De este modo, cuando se multiplica por 
+\begin_inset Formula $\R_{s}^{a}$
+\end_inset
+
+ y se suma sobre todos los pares estado-acción (función objetivo del problema
+ dual 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:preProbDualEsc"
+
+\end_inset
+
+), se obtiene la recompensa total descontada esperada, resultado de seguir
+ la política 
+\begin_inset Formula $\pi_{d}$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+\sum_{s\in\S}\sum_{a\in\A}d(s,a)\R_{s}^{a}=\sum_{s\in\S}\sum_{a\in\A}\sum_{j\in S}\mu(j)\sum_{t=0}^{\infty}\gamma^{t}\Pr\left(S_{t}=s,A_{t}=a\mid S_{o}=j,\pi_{d}\right)\R_{s}^{a}\label{eq:desarrolloDual}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A partir de esta interpretación se desprende la siguiente relación entre
+ el problema primal y el dual:
+\end_layout
+
+\begin_layout Corollary
+\begin_inset CommandInset label
+LatexCommand label
+name "cor:corolPrimDu"
+
+\end_inset
+
+ De acuerdo a la definición de función valor y según lo establecido en los
+ teoremas 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_1"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_2"
+
+\end_inset
+
+ se deduce que el problema primal y el dual se relacionan a través de su
+ función objetivo de la siguiente manera:
+\begin_inset Formula 
+\begin{equation}
+\sum_{j\in\S}\mu(j)v^{\pi_{d}}(j)=\sum_{s\in\S}\sum_{a\in\A}d(s,a)\R_{s}^{a}\label{eq:igualPrimDualPolicy}
+\end{equation}
+
+\end_inset
+
+y generalizando para una política 
+\begin_inset Formula $\pi\in\Pi$
+\end_inset
+
+ cualquiera:
+\begin_inset Formula 
+\begin{equation}
+\sum_{j\in\S}\mu(j)v^{\pi}(j)=\sum_{s\in\S}\sum_{a\in\A}d^{\pi}(s,a)\R_{s}^{a}\label{eq:igualPrimDualPolicyGener}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La demostración del corolario 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "cor:corolPrimDu"
+
+\end_inset
+
+ aparece detallada en el 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "sec:Anexo-D"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Hasta el momento, gracias al teorema 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_1"
+
+\end_inset
+
+ se han podido vincular soluciones factibles con políticas estacionarias
+ estocásticas.
+ Del mismo modo, en el teorema 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_2"
+
+\end_inset
+
+ se ha mostrado la manera de generar políticas estocásticas a partir de
+ una solución factible.
+\end_layout
+
+\begin_layout Standard
+A continuación se van a hacer unas deducciones análogas, pero para el caso
+ en que se tiene una solución básica factible.
+ Las siguientes proposiciones serán de gran utilidad cuando se trate la
+ búsqueda de la política óptima.
+\end_layout
+
+\begin_layout Proposition
+\begin_inset CommandInset label
+LatexCommand label
+name "def:basicFeasDet1"
+
+\end_inset
+
+Supóngase que 
+\begin_inset Formula $d$
+\end_inset
+
+ es una solución básica factible del programa lineal dual.
+ Entonces 
+\begin_inset Formula $\pi_{d}\in\Pi^{MD}$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+La demostración de la proposición 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "def:basicFeasDet1"
+
+\end_inset
+
+ aparece detallada en el 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "sec:Anexo-E"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Proposition
+\begin_inset CommandInset label
+LatexCommand label
+name "def:basicFeasDet1Inv"
+
+\end_inset
+
+Supóngase que 
+\begin_inset Formula $\pi\in\Pi^{MD}$
+\end_inset
+
+.
+ Entonces 
+\begin_inset Formula $d^{\pi}$
+\end_inset
+
+ es una solución básica factible del programa lineal dual.
+\end_layout
+
+\begin_layout Standard
+La demostración de la proposición 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "def:basicFeasDet1Inv"
+
+\end_inset
+
+ aparece detallada en el 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "sec:Anexo-F"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Solución óptima y política óptima
+\end_layout
+
+\begin_layout Standard
+Sabiendo ya que vamos a poder extraer una política a partir de la variable
+ dual 
+\begin_inset Formula $d$
+\end_inset
+
+, parece lógico pensar que si obtenemos la solución óptima del problema
+ dual, habremos conseguido también la política de comportamiento óptima
+ de nuestro problema de control.
+ Además, en base a las proposiciones anteriores, si dicha solución óptima
+ es una solución básica factible, se podrá asegurar que la política óptima
+ es determinista.
+ Para formalizar todas estas ideas, se enuncian a continuación los siguientes
+ teoremas:
+\end_layout
+
+\begin_layout Theorem
+\begin_inset CommandInset label
+LatexCommand label
+name "thm:8_3-1"
+
+\end_inset
+
+Asumiendo que la suposición 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "assu:bounded-rewards"
+
+\end_inset
+
+ se cumple, existe una solución básica factible óptima acotada 
+\begin_inset Formula $d^{*}$
+\end_inset
+
+ para el programa lineal dual.
+\end_layout
+
+\begin_layout Standard
+La demostración del teorema 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_3-1"
+
+\end_inset
+
+ aparece detallada en el 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "sec:Anexo-G"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Theorem
+\begin_inset CommandInset label
+LatexCommand label
+name "thm:8_3-2"
+
+\end_inset
+
+Asumiendo que la suposición 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "assu:bounded-rewards"
+
+\end_inset
+
+ se cumple, si 
+\begin_inset Formula $d^{*}$
+\end_inset
+
+ es una solución óptima del programa lineal dual, entonces 
+\begin_inset Formula $\pi_{d^{*}}$
+\end_inset
+
+ es una política óptima.
+\end_layout
+
+\begin_layout Standard
+La demostración del teorema 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_3-2"
+
+\end_inset
+
+ aparece detallada en el 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "sec:Anexo-H"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Theorem
+\begin_inset CommandInset label
+LatexCommand label
+name "thm:8_3-3"
+
+\end_inset
+
+Asumiendo que la suposición 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "assu:bounded-rewards"
+
+\end_inset
+
+ se cumple, si 
+\begin_inset Formula $d^{*}$
+\end_inset
+
+ es una solución básica óptima del programa lineal dual, entonces 
+\begin_inset Formula $\pi_{d^{*}}$
+\end_inset
+
+ es una política óptima determinista.
+\end_layout
+
+\begin_layout Proof
+La demostración de este teorema se deduce del teorema 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_3-2"
+
+\end_inset
+
+ y de la proposición 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "def:basicFeasDet1"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+En resumen, encontrar la variable dual óptima 
+\begin_inset Formula $d^{*}$
+\end_inset
+
+ implicará por el argumento de dualidad fuerte encontrar también la variable
+ primal óptima 
+\begin_inset Formula $v^{*}$
+\end_inset
+
+.
+ Según el teorema 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_2"
+
+\end_inset
+
+ se sabe además que siguiendo la política 
+\begin_inset Formula $\pi_{d^{*}}$
+\end_inset
+
+ extraída de la variable dual óptima se obtiene de nuevo la variable dual
+ óptima, es decir, 
+\begin_inset Formula $d^{*}(s,a)=d^{\pi_{d^{*}}}(s,a)$
+\end_inset
+
+.
+ Uniendo todos estos conceptos se deduce que, una vez encontrado 
+\begin_inset Formula $d^{*}$
+\end_inset
+
+, si se sigue la política 
+\begin_inset Formula $\pi_{d^{*}}$
+\end_inset
+
+ la variable dual seguirá siendo óptima, lo cual implica también encontrar
+ la variable primal óptima, solución óptima de las ecuaciones de Bellman.
+ Por pura definición, una política con la que se obtiene la solución óptima
+ de las ecuaciones de Bellman es una política óptima.
+ De este modo, se garantiza que 
+\begin_inset Formula $\pi_{d^{*}}$
+\end_inset
+
+ es la política óptima de nuestro problema.
+ Si además se satisface la suposición 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "assu:bounded-rewards"
+
+\end_inset
+
+, de acuerdo a los teoremas 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_3-1"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_3-3"
+
+\end_inset
+
+ se podrá afirmar también que la política óptima 
+\begin_inset Formula $\pi_{d^{*}}$
+\end_inset
+
+ es determinista.
+\end_layout
+
+\begin_layout Standard
+A la vista de esta interpretación de la variable dual, lo que se querrá
+ ahora será encontrar la variable dual óptima.
+ Para ello habrá que resolver el problema dual.
+\end_layout
+
+\begin_layout Section
+Solución del problema dual
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Solución-prob-dual"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Como se ha podido ver, todo el desarrollo anterior tiene su origen en el
+ método de programación dinámica.
+ La programación dinámica permite resolver las ecuaciones de Bellman cuando
+ se tiene conocimiento del modelo del entorno.
+ Por ello, en las secciones anteriores de este capítulo se ha dado por supuesto
+ que se conocía dicho modelo.
+ Sin embargo, hay muchos casos en los que el modelo es desconocido y el
+ agente tiene que aprender de la interacción con el entorno, tendiendo a
+ reforzar aquellas acciones que den lugar a las respuestas más favorables.
+ En resumen, lo que se conoce como aprendizaje por refuerzo.
+\end_layout
+
+\begin_layout Standard
+Para solucionar el problema dual existen diversos métodos de muy distinta
+ naturaleza.
+ No obstante, en este trabajo vamos a centrarnos únicamente en los métodos
+ basados en gradiente para la resolución de problemas con restricciones,
+ como los presentados en la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:MetodosSolSaddlePoint"
+
+\end_inset
+
+.
+ La idea subyacente al uso de este tipo de métodos será desarrollada en
+ el siguiente capítulo, pero a grandes rasgos vendrá motivada porque nos
+ van a permitir emplear una aproximación estocástica del gradiente obtenida
+ a partir de las muestras de experiencia generadas al interactuar con el
+ entorno siguiendo la política extraída de la variable dual.
+ En definitiva, los métodos de gradiente van a ser la opción más favorable
+ para el desarrollo de algoritmos de aprendizaje por refuerzo basados en
+ la teoría dual.
+\end_layout
+
+\begin_layout Standard
+De entre las distintas técnicas expuestas en 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:MetodosSolSaddlePoint"
+
+\end_inset
+
+, la propuesta por K.J.
+ Arrow y L.
+ Hurwicz deberá ser descartada ya que cuando el Lagrangiano es lineal tanto
+ en la variable primal como en la dual, tal y como sucede en nuestro caso
+ de acuerdo a 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:lagrangianBellman"
+
+\end_inset
+
+, este método no converge y se mantiene en un estado oscilante 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Arrow1958"
+
+\end_inset
+
+.
+ En lo que respecta a la elección entre los dos métodos restantes, ascenso
+ dual y Lagrangiano aumentado, se elegirá el primero de ellos.
+ No obstante, en un futuro se estudiará la resolución de este mismo problema
+ pero mediante el método del Lagrangiano aumentado, y las ventajas e inconvenien
+tes que ello pueda suponer.
+\end_layout
+
+\begin_layout Subsection
+Método de ascenso dual
+\end_layout
+
+\begin_layout Standard
+En el capítulo anterior se estudió la interpretación de la dualidad de Lagrange
+ como un punto de silla y cómo el método de ascenso dual nos permite encontrarlo.
+ Dado que nuestro problema primal satisface la condición de dualidad fuerte
+ por tratarse de un programa lineal, se puede garantizar tal y como se detalló
+ en la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Interpretación-del-punto"
+
+\end_inset
+
+ que encontrar el punto de silla del Lagrangiano equivale a encontrar las
+ variables primal y dual óptimas, es decir, 
+\begin_inset Formula $v^{*}$
+\end_inset
+
+ y 
+\begin_inset Formula $d^{*}$
+\end_inset
+
+.
+ De este modo, mediante la técnica de ascenso dual se va a poder derivar
+ la política de comportamiento óptima de nuestro problema de control.
+\end_layout
+
+\begin_layout Standard
+Recordando de la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Dual-ascent"
+
+\end_inset
+
+, la formulación del método de ascenso dual para un problema con restricciones
+ de desigualdad es la siguiente:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}v_{k+1}\coloneqq\; & \underset{v}{\text{\arg\min}}\;\mathcal{L}(v,d_{k})\\
+d_{k+1}\coloneqq\; & \left[d_{k}+\alpha\nabla_{d}\mathcal{L}(v_{k+1},d)\right]_{+}
+\end{aligned}
+\label{eq:duaAscForma1}
+\end{equation}
+
+\end_inset
+
+definiéndose 
+\begin_inset Formula $\left[\quad\right]_{+}$
+\end_inset
+
+ como la proyección 
+\begin_inset Formula $u_{+}=\max\left\{ u,0\right\} $
+\end_inset
+
+ para cada componente del vector 
+\begin_inset Formula $u$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Es decir, primero se minimiza el Lagrangiano sobre la variable primal, y
+ a continuación se maximiza sobre la variable dual mediante ascenso por
+ gradiente, y proyectamos la actualización de 
+\begin_inset Formula $d$
+\end_inset
+
+ sobre el conjunto de números reales no negativos 
+\begin_inset Formula $\mathbb{R}_{+}$
+\end_inset
+
+ con el objetivo de garantizar el cumplimiento de la restricción 
+\begin_inset Formula $d\geq0$
+\end_inset
+
+ del problema dual 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:problemaDualOriginal"
+
+\end_inset
+
+.
+ Para nuestro problema concreto, definido por el problema primal 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:primal"
+
+\end_inset
+
+ y con Lagrangiano dado por 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:lagrangianBellman"
+
+\end_inset
+
+, el método de ascenso dual mostrado en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:duaAscForma1"
+
+\end_inset
+
+ resulta en:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}v_{k+1}\coloneqq\; & \underset{v}{\text{\arg\min}\;}\mu^{T}v+d_{k}^{T}\left(\R+\gamma\P v-\Xi^{T}v\right)\\
+d_{k+1}\coloneqq\; & \left[d_{k}+\alpha\left(\R+\gamma\P v_{k+1}-\Xi^{T}v_{k+1}\right)\right]_{+}
+\end{aligned}
+\label{eq:duaAscForma2}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Como ya se mencionó al comienzo de esta sección, el Lagrangiano del problema
+ que se está buscando resolver es lineal tanto en la variable primal como
+ en la dual.
+ De este modo, la actualización de la variable primal según 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:duaAscForma2"
+
+\end_inset
+
+ dado un vector 
+\begin_inset Formula $d$
+\end_inset
+
+, va a suponer la minimización de una función afín.
+ Parece claro notar que esto va a ser un problema, pues las funciones afines
+ no están acotadas por abajo y únicamente se minimizan en el infinito, de
+ manera que la variable primal acabaría divergiendo.
+\end_layout
+
+\begin_layout Remark
+\begin_inset CommandInset label
+LatexCommand label
+name "rem:convergenciaPolitica"
+
+\end_inset
+
+Dado que el Lagrangiano es también lineal en la variable dual, va a ocurrir
+ lo mismo con la maximización del Lagrangiano en 
+\begin_inset Formula $d$
+\end_inset
+
+ dado un vector 
+\begin_inset Formula $v$
+\end_inset
+
+.
+ No obstante, esto no va a suponer un problema ya que lo que a nosotros
+ nos interesa no es 
+\begin_inset Formula $d$
+\end_inset
+
+, sino 
+\begin_inset Formula $\pi_{d}$
+\end_inset
+
+, y tal y como se enuncia en el teorema 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_2"
+
+\end_inset
+
+, 
+\begin_inset Formula $\pi_{d}\left(a\mid s\right)$
+\end_inset
+
+ se obtiene tras un proceso de normalización de 
+\begin_inset Formula $d(s,a)$
+\end_inset
+
+ sobre las acciones, para cada 
+\begin_inset Formula $s\in\S$
+\end_inset
+
+.
+ Asumiendo que se cumple la suposición 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "assu:bounded-rewards"
+
+\end_inset
+
+, de acuerdo a los teoremas 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_3-1"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_3-3"
+
+\end_inset
+
+ a partir de 
+\begin_inset Formula $d^{*}$
+\end_inset
+
+ se podrá extraer una política 
+\begin_inset Formula $\pi_{d^{*}}$
+\end_inset
+
+ determinista, de manera que cuando se alcance dicha política determinista,
+ podremos asumir que se ha encontrado el máximo del Lagrangiano sobre la
+ variable dual.
+\end_layout
+
+\begin_layout Standard
+Para solventar el problema de la linealidad en 
+\begin_inset Formula $v$
+\end_inset
+
+ y seguir manteniendo la simplicidad del método de ascenso dual, se va a
+ dejar de lado la idea de minimizar el Lagrangiano en la variable primal
+ y se va a formular una versión modificada, adaptada para el caso en que
+ el Lagrangiano es lineal en las dos variables de optimización.
+ La alternativa que se propone es actualizar 
+\begin_inset Formula $v$
+\end_inset
+
+ con la función valor obtenida de seguir la política 
+\begin_inset Formula $\pi_{d_{k}}$
+\end_inset
+
+ extraída de la variable dual, es decir:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}v_{k+1}\coloneqq\; & v^{\pi_{d_{k}}}\in\mathcal{F}^{PR}\\
+d_{k+1}\coloneqq\; & \left[d_{k}+\alpha\left(\R+\gamma\P v_{k+1}-\Xi^{T}v_{k+1}\right)\right]_{+}
+\end{aligned}
+\label{eq:duaAscForma2-1}
+\end{equation}
+
+\end_inset
+
+donde 
+\begin_inset Formula $\mathcal{F}^{PR}$
+\end_inset
+
+ es la región factible del problema primal.
+ El hecho de que 
+\begin_inset Formula $v^{\pi_{d_{k}}}$
+\end_inset
+
+ tenga que pertenecer a 
+\begin_inset Formula $\mathcal{F}^{PR}$
+\end_inset
+
+ es una condición necesaria para poder alcanzar la solución óptima.
+ Para obtener un vector 
+\begin_inset Formula $v$
+\end_inset
+
+ que cumpla estas condiciones, se resolverán las ecuaciones de Bellman siguiendo
+ la política 
+\begin_inset Formula $\pi_{d_{k}}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Theorem
+\begin_inset CommandInset label
+LatexCommand label
+name "thm:8_4"
+
+\end_inset
+
+Cualquier punto 
+\begin_inset Formula $v$
+\end_inset
+
+ que satisfaga las ecuaciones de Bellman para una política dada, será un
+ punto factible del problema primal que permite resolver las ecuaciones
+ óptimas de Bellman.
+\end_layout
+
+\begin_layout Standard
+La demostración del teorema 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_4"
+
+\end_inset
+
+ aparece detallada en el 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "sec:Anexo-I"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Con esta nueva manera de actualizar 
+\begin_inset Formula $v$
+\end_inset
+
+, se conseguirá asegurar que las variables primal y dual siguen estando
+ acopladas y que pertenecen al conjunto de puntos factibles.
+ Además, permite hacer un interpretación muy conveniente del método de ascenso
+ dual alternativo propuesto:
+\end_layout
+
+\begin_layout Enumerate
+La actualización de la variable primal 
+\begin_inset Formula $v$
+\end_inset
+
+ se puede entender como una etapa de 
+\emph on
+predicción
+\emph default
+ en la cual se obtiene la función valor para una política dada por 
+\begin_inset Formula $d_{k}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+La actualización de la variable dual 
+\begin_inset Formula $d$
+\end_inset
+
+ se puede entender como una etapa de 
+\emph on
+control
+\emph default
+ en la cual se aprende una política que mejora la función valor 
+\begin_inset Formula $v^{\pi_{d_{k}}}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Recordando el corolario 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "cor:corolPrimDu"
+
+\end_inset
+
+, las variables primal y dual se relacionan de la siguiente manera:
+\begin_inset Formula 
+\[
+\sum_{j\in\S}\mu(j)v^{\pi_{d}}(j)=\sum_{s\in\S}\sum_{a\in\A}d(s,a)\R_{s}^{a}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+De ello se desprende que maximizar la variable dual 
+\begin_inset Formula $d$
+\end_inset
+
+ equivale a maximizar la recompensa total descontada esperada, o lo que
+ es lo mismo, maximizar la función valor de cada estado.
+ En consecuencia, en cada actualización de la variable dual que se realice
+ se obtendrá una política nueva igual o mejor que la anterior.
+ Dado que la actualización del vector 
+\begin_inset Formula $d$
+\end_inset
+
+ contempla además el cumplimiento de las restricciones del problema primal,
+ cuando se haya alcanzado la solución óptima 
+\begin_inset Formula $v^{*}$
+\end_inset
+
+ del problema primal, la política 
+\begin_inset Formula $\pi_{d}$
+\end_inset
+
+ extraída de la variable dual no podrá mejorarse más y la política nueva
+ obtenida será igual que la anterior.
+ Se podrá afirmar entonces, según el corolario 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "cor:corolPrimDu"
+
+\end_inset
+
+ y el teorema 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_3-2"
+
+\end_inset
+
+, que se ha alcanzado la solución óptima del problema dual, y por consiguiente,
+ que se ha encontrado la política de control óptima.
+\end_layout
+
+\begin_layout Standard
+Como vemos, esta formulación alternativa del método de ascenso dual podrá
+ seguir garantizando encontrar los puntos óptimos de los problemas primal
+ y dual.
+\end_layout
+
+\begin_layout Standard
+Para diferenciar la versión alternativa del método de ascenso dual 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:duaAscForma2-1"
+
+\end_inset
+
+ que se acaba de presentar de su versión original 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:duaAscForma1"
+
+\end_inset
+
+, de aquí en adelante nos referiremos a la primera de ellas por el nombre
+ de 
+\emph on
+Bellman-ascenso dual
+\emph default
+, pues la actualización de la variable primal 
+\begin_inset Formula $v$
+\end_inset
+
+ ahora se lleva a cabo mediante la resolución de la ecuación de Bellman
+ de la función valor de estados.
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,19 @@
+\begin{algorithmic}[1] 
+	\Require {$\pi$, la política a ser evaluada. Funciones base $\bar{\phi}$.}
+	\Ensure {$\omega$, el parámetro estimado para la aproximación lineal de $v^\pi$.}
+	\State Inicializar $\overline{\Gamma} = 0_{N\times N}$, $\overline{\Lambda} = 0_{N\times N}$, $\overline{z}=0_N$
+	\Repeat (para cada episodio)
+		\State Inicializar $s$ y observar $\bar{\phi}(s)$
+		\Repeat (para cada paso en el episodio)
+			\State Tomar la acción $a$ y observar $r,s',\bar{\phi}(s')$
+			\State Escoger la acción $a'	\sim	\pi (\cdot|s)$
+			\State $\overline{\Gamma} 	\gets 	\overline{\Gamma} + \bar{\phi}(s) \bar{\phi}(s)^T$
+			\State $\overline{\Lambda} 	\gets 	\overline{\Lambda} + \bar{\phi}(s) \bar{\phi}(s')^T$
+			\State $\overline{z}	\gets 	\overline{z} + \bar{\phi}(s) r$
+			\State $s \gets s'$
+			\State $a \gets a'$
+		\Until{$s$ sea terminal}
+	\Until{no podamos correr más episodios} 
+	\State Calcular: $\omega = \left(\overline{\Gamma}-\gamma\overline{\Lambda}\right)^{-1}\overline{z}$
+	\State \Return{$\hat{v}_\omega = \overline{\Phi}\omega$}
+\end{algorithmic}

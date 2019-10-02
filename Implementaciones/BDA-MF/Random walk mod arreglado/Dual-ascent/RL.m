@@ -1,0 +1,219 @@
+clear all, clc
+
+% % % % % ENTORNO:
+% name = 'RandomWalk';
+% N_states = 13;
+% initType = 'leftCorner'; % {'center', 'leftCorner'}
+% transitionType = 'det'; % {'det', 'rand'}
+% rewardType = 'det'; % {'det', 'rand'} || if rand, extra argument: finalReward=50
+% env = GetRndWalkEnv(name, N_states, initType, transitionType, rewardType);
+load juego_test_arreglado.mat
+
+A = eye(env.numStates);
+B = [1; 0];
+mult1 = kron(A,B);
+B = [0; 1];
+mult2 = kron(A,B);
+
+% % % % AGENTE:
+numExperiments = 20; % Número de experimentos de numRep*numEpisodes episodios
+numRep = 50; % Número de repeticiones de cada set de episodios
+numEpisodes = 30; % Número de episodios de cada repeticion
+maxNumStepsPerEpisode = 500; % Número máximo de pasos en cada episodio
+G = zeros(numExperiments, numRep*numEpisodes); % Return por episodio
+G_eps0_final = zeros(numExperiments, 1); % Return por episodio cuando epsilon = 0
+G_eps0_each_epi = zeros(numExperiments, numRep*numEpisodes); % Return por episodio cuando epsilon = 0
+epsilon = 0.15; % e-greedy value (entre 0.05 y 0.2)
+alphaD = 0.4; % Stepsize para la iteración de la variable dual d
+alphaTD = 0.2; % Stepsize para la iteración de la variable primal v
+% con alphaTD = 0.5 converge más rápido la return
+
+DoAction = env.DoAction;
+S = env.numStates; % Número de estados
+A = env.numActions; % Número de acciones
+env.mu(:) = (1/S)/(S-1); env.mu(2) = 1-(1/S); mu = env.mu; % Distribución inicial de probabilida de los estados
+P = env.P; % Matriz de transiciones
+R = env.R; % Vector de rewards
+terminal = false; % flag used when terminal state reached
+
+% Optimum values
+% Optimum value (value iteration)
+N_steps = 1000;
+[v_opt, q_opt, q_opt_format] = value_iteration(env, N_steps, env.terminal_states);
+[~, pi_lineal] = max(q_opt_format,[],2); % Comprobación policy obtenida
+
+% Valor óptimo de d (política en forma vector)
+d_opt_norm = getPolicyVector(q_opt, env); % policy óptima
+
+% Variable que acumulará la funcion V y el error en la política al final de cada episodio
+Vs_acumulada = nan(S, numRep*numEpisodes, numExperiments);
+errorD = nan(numExperiments, numRep*numEpisodes);
+d_norm_acumulada = nan(S*A, numRep*numEpisodes, numExperiments);
+% d_acumulada = nan(game.N_states*game.N_actions, numRep*numEpisodes, numExperiments);
+
+for exp = 1:numExperiments
+    % Inicializamos D y V
+    d = rand(S*A,1);
+    v = rand(S,1);
+    v(1) = 0; v(end) = 0;
+    
+    exp
+    
+    episodeCountV = 0; % episodeCount counts the number of episodes taken in all numRep (para el bucle de V)
+    episodeCountD = 0; % episodeCount counts the number of episodes taken in all numRep (para el bucle de D)
+ 
+    for k = 1:numRep
+        s_a_sNext = []; % Vector que almacena la secuencia de estados recorridos en un episodio
+        totalStepsPerRep = 1; % totalStepsPerRep counts the number of steps taken in ALL numEpi episodes simulated in ONE numRep
+        
+        for n = 1:numEpisodes % This loop sets the update frequency of v (every numEpi episodes)
+            s_t = env.initState;
+            terminal = false; % true when episode finish, false otherwise
+            stepPerEpisode = 0; % stepPerEpisode counts the number of steps taken in ONE of the numEpi episodes simulated
+            
+            % Normalize d
+            d_norm = getPolicyVectorFromD( d, env );
+            % Get policy matrix
+            policy_by_action = reshape(d_norm', [A,S])';
+            policy_matrix = diag(policy_by_action(:,1))*mult1' + diag(policy_by_action(:,2))*mult2';
+            while ~terminal
+                % Escogemos A (currentAction) de S (currentState) según la e-greedy policy.
+                a_t = e_greedy(d_norm, epsilon, s_t, A);
+                
+                % Tomamos la acción a (currentAction), observamos la recompensa
+                % r (reward) y el siguiente estado s' (nextState).
+                [ s_t1, reward, terminal ] = DoAction(a_t, s_t, env);
+                %[s_t1, ~, reward] = getNextState(env, s_t, a_t);
+                % G(exp, (k-1)*numEpisodes+n) = reward+game.gamma*G(exp,(k-1)*numEpisodes+n); % return following the initial state (si el estado inicial fuese aleatorio, habría que crear una G para cada vez que e pasa por s por primera vez [p. 105 de Sutton])
+                G(exp, (k-1)*numEpisodes+n) = (env.gamma^stepPerEpisode)*reward+G(exp,(k-1)*numEpisodes+n);
+                
+                % Update de v(s)
+                % TEMPORAL DIFFERENCE
+                v(s_t) = v(s_t) + alphaTD*(reward + env.gamma*v(s_t1) - v(s_t)); % policy evaluation
+                % EXACTA (BELLMAN)
+                % v = (inv(eye(S)-game.gamma*policy_matrix*P))*policy_matrix*R;
+                % % GRADIENTE ESTOCÁSTICO (Arrow-Hurwicz)
+                % s_a = ((currentState-1)*A)+currentAction;
+                % v(nextState) = v(nextState) - alphaV*((1-game.gamma)*mu(nextState) +  game.gamma*d(s_a) - sum(d(((nextState-1)*A)+1:nextState*A))); % policy evaluation
+                
+                % Almacenamos las transiciones del episodio
+                s_a_sNext(totalStepsPerRep,:) = [s_t a_t s_t1 reward stepPerEpisode terminal];
+                
+                % Actualizamos valores
+                stepPerEpisode = stepPerEpisode + 1;
+                totalStepsPerRep = totalStepsPerRep + 1;
+                s_t = s_t1;
+                
+                % Evaluación de si el episodio ha terminado o no
+                if terminal || stepPerEpisode == maxNumStepsPerEpisode % Si el estado actual es el terminal
+                    terminal = true;
+                    episodeCountV = episodeCountV + 1;
+                    Vs_acumulada(:, episodeCountV, exp) = v;
+                    % disp(['Fin' num2str(n) ' y ' num2str(stepPerEpisode)])
+                    
+                end
+            end
+        end
+        totalStepsPerRep = totalStepsPerRep-1; % Compensamos el que se incrementó de más
+        
+        % d_norm
+        for i = 1:totalStepsPerRep
+            % Recover saved episodes
+            [s_t, s_t1, reward, stepPerEpisode, s_a_index, terminal] = recoverSavedEpisode(s_a_sNext, A, i);
+            % Policy (or d) update
+            d(s_a_index) = d(s_a_index) + alphaD*(reward + env.gamma*v(s_t1) - v(s_t));
+            d_orig = d;
+            d(d<0)=0; % Projection of d over positives
+            
+            % Normalize d
+            d_norm = getPolicyVectorFromD( d, env );
+            
+            % Evaluación de si el episodio ha terminado o no para guardar el error en la policy (save policy error)
+            if any(isnan(d_norm))
+                % Fix de la d original (que podía tener números negativos)
+                d_orig(isnan(d_norm) & d_orig<0) = abs(d_orig(isnan(d_norm) & d_orig<0));
+                d = d_orig;
+                d(d<0)=0; % Projection of d over positives
+                d_norm = getPolicyVectorFromD( d, env );
+                % disp('nan!')
+                % not_error = false;
+                % break;
+            end
+            if terminal || stepPerEpisode == maxNumStepsPerEpisode-1 % Si el estado siguiente es el terminal
+                episodeCountD = episodeCountD + 1;
+                % Calculate norm-2 of policy error
+                errorD(exp, episodeCountD) = norm(abs(d_norm(A+1:end-A) - d_opt_norm(A+1:end-A)),2);
+                d_norm_acumulada(:,episodeCountD, exp) = d_norm;
+                %d_acumulada(:,episodeCountD, exp) = d_orig;
+                % [d_norm; episodeCountD]
+                % reshape(d_norm', [2 21])'
+                [~, ~, G_eps0] = RL_core(env, d, v, 0, alphaTD, alphaD, maxNumStepsPerEpisode, mult1, mult2);
+                G_eps0_each_epi(exp,episodeCountD) = G_eps0;
+            end
+        end
+    end
+    [~, ~, G_eps0] = RL_core(env, d, v, 0, alphaTD, alphaD, maxNumStepsPerEpisode, mult1, mult2);
+    G_eps0_final(exp,:) = G_eps0;
+end
+
+Vs_mean = mean(squeeze(Vs_acumulada(:,end,:)),2);
+[Qsa_mean, Qsa_acumulada] = getStateActionValueFunction(Vs_acumulada, env);
+
+% % % REPRESENTACIÓN DE RESULTADOS:
+% Resultados obtenidos para numExperiments experimentos de numRep*numEpisodes episodios
+Gmean = mean(G,1); % Media de los experimentos realizados
+Gmean_eps0_each_epi = mean(G_eps0_each_epi,1); % Media, de cada episodio, de los experimentos realizados con epsilon = 0
+Gmean_eps0 = mean(G_eps0_final,1); % Media, tras convergencia, de los experimentos realizados cuando epsilon = 0
+figure, hold on
+plot((1:numRep*numEpisodes), Gmean, 'b', 'LineWidth', 2)
+plot((1:numRep*numEpisodes), Gmean_eps0_each_epi, 'k', 'LineWidth', 2)
+% plot((1:numRep*numEpisodes), Gmean_eps0, 'LineWidth', 2)
+plot((1:numRep*numEpisodes), mean(Gmean_eps0)*ones(numRep*numEpisodes,1),'--r', 'LineWidth', 2)
+hold off, title(['Return per episode (always starting at s=' ,num2str(env.initState), ')'])
+xlabel('Episode'), ylabel('G')
+legend({['E_{exp}[G] || \epsilon=' num2str(epsilon)], ['E_{epi}[E_{exp}[G]]=' num2str(mean(Gmean_eps0)) ' || \epsilon=0']},'Location','southeast','FontSize',12)
+%xlim([0 500])
+
+% aux1 = sum(Qsa_acumulada);
+% aux2 = squeeze(aux1)';
+% sumQ_mean = mean(aux2);
+% figure, plot((1:numRep*numEpisodes), sumQ_mean, 'LineWidth', 2)
+% title('\Sigmaq(s,a) for each episode')
+% xlabel('Episode'), ylabel('\Sigmaq(s,a)')
+%
+% aux1 = sum(Vs_acumulada);
+% aux2 = squeeze(aux1)';
+% sumV_mean = mean(aux2);
+% figure, plot((1:numRep*numEpisodes), sumV_mean, 'LineWidth', 2)
+% title('\Sigmav(s) for each episode')
+% xlabel('Episode'), ylabel('\Sigmav(s)')
+%
+% aux1 = sum((Qsa_acumulada(game.N_actions+1:end-game.N_actions,:,:)-q_opt(game.N_actions+1:end-game.N_actions,:)).^2 , 1);
+% aux2 = squeeze(aux1)';
+% mse_q = sqrt(mean(aux2));
+% figure, plot((1:numRep*numEpisodes), mse_q, 'LineWidth', 2)
+% title('Mean-squared error of q(s,a) for each episode')
+% xlabel('Episode'), ylabel('MSE q(s,a)')
+%
+% aux1 = sum((Vs_acumulada(2:end-1,:,:)-v_opt(2:end-1,:)).^2 , 1);
+% aux2 = squeeze(aux1)';
+% mse_v = sqrt(mean(aux2));
+% figure, plot((1:numRep*numEpisodes), mse_v, 'LineWidth', 2)
+% title('Mean-squared error of v(s) for each episode')
+% xlabel('Episode'), ylabel('MSE v(s)')
+
+errorD_mean = mean(errorD,1); % Media de los experimentos realizados
+figure, plot((1:numRep*numEpisodes), errorD_mean, 'LineWidth', 2)
+title('Policy error')
+xlabel('Episode'), ylabel('d-d_{opt}')
+
+if strcmp(initType, 'center') % Return esperada si empezamos en el centro
+    r = [0 0 0 0 0 1];
+    g = 0.9.^[0:5];
+    g*r';
+elseif strcmp(initType, 'leftCorner') % Return esperada si empezamos en el estado más a la izquierda
+    r = [0 0 0 0 0 0 0 0 0 0 1];
+    g = 0.9.^[0:10];
+    g*r';
+end
+fprintf('Return esperada: %d\n', g*r')

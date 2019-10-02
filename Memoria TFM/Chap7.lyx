@@ -1,0 +1,1151 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass book
+\begin_preamble
+\usepackage{mathtools}
+
+\AtBeginDocument{
+  \def\labelitemii{\ding{71}}
+  \def\labelitemiii{\ding{111}}
+  \def\labelitemiv{\(\vartriangleright\)}
+}
+
+
+
+\usepackage{babel}
+\addto\shorthandsspanish{\spanishdeactivate{~<>}}
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding iso8859-15
+\fontencoding T1
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing double
+\use_hyperref true
+\pdf_bookmarks false
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref section
+\pdf_pdfusetitle false
+\papersize a4paper
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 2
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.5in
+\topmargin 1.6in
+\rightmargin 1.2in
+\bottommargin 1.6in
+\headheight 1.5in
+\headsep 0.3in
+\footskip 0.8in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle plain
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Dualidad
+\begin_inset CommandInset label
+LatexCommand label
+name "chap:Dualidad"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Función dual de Lagrange
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Función-dual-de"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Lagrangiano
+\end_layout
+
+\begin_layout Standard
+Un problema de optimización en forma estándar viene dado por:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\text{minimize} & \quad f_{0}(x)\\
+\text{subject to} & \quad f_{i}(x)\leq0,\quad i=1,\ldots,m\\
+ & \quad h_{i}(x)=0,\quad i=1,\ldots,p
+\end{aligned}
+\label{eq:opt_cap8}
+\end{equation}
+
+\end_inset
+
+con variable 
+\begin_inset Formula $x\in\mathbb{R}^{n}$
+\end_inset
+
+.
+ Denotemos por 
+\begin_inset Formula $p^{\star}$
+\end_inset
+
+ el valor óptimo.
+ Como punto de partida, no se va a asumir que el problema 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt_cap8"
+
+\end_inset
+
+ sea convexo.
+\end_layout
+
+\begin_layout Standard
+La idea básica de la dualidad de Lagrange es tener en cuenta las restricciones
+ de 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt_cap8"
+
+\end_inset
+
+ extendiendo la función objetivo con la suma ponderada de las funciones
+ de restricción.
+ Se definirá el 
+\emph on
+Lagrangiano
+\emph default
+ 
+\begin_inset Formula $\mathcal{L}:\mathbb{R}^{n}\times\mathbb{R}^{m}\times\mathbb{R}^{p}\rightarrow\mathbb{R}$
+\end_inset
+
+ asociado al problema 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt_cap8"
+
+\end_inset
+
+ como:
+\begin_inset Formula 
+\[
+\mathcal{L}(x,\lambda,\text{\nu})=f_{0}(x)+\sum_{i=1}^{m}\lambda_{i}f_{i}(x)+\sum_{i=1}^{p}\nu_{i}h_{i}(x)
+\]
+
+\end_inset
+
+con 
+\begin_inset Formula $\text{\textbf{dom}}\,\mathcal{L}=\mathcal{D}\times\mathbb{R}^{m}\times\mathbb{R}^{p}$
+\end_inset
+
+.
+ Los pesos 
+\begin_inset Formula $\lambda_{i}$
+\end_inset
+
+ recibirán el nombre de 
+\emph on
+multiplicadores de Lagrange
+\emph default
+ asociados con la 
+\begin_inset Formula $i$
+\end_inset
+
+-ésima restricción de desigualdad 
+\begin_inset Formula $f_{i}(x)\leq0$
+\end_inset
+
+; de manera similar, los pesos 
+\begin_inset Formula $\nu_{i}$
+\end_inset
+
+ serán los multiplicadores de Lagrange asociados a la 
+\begin_inset Formula $i$
+\end_inset
+
+-ésima restricción de igualdad 
+\begin_inset Formula $h_{i}(x)=0$
+\end_inset
+
+.
+ Los vectores 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ y 
+\begin_inset Formula $\nu$
+\end_inset
+
+ son llamados en la literatura como 
+\emph on
+variables duales
+\emph default
+ o 
+\emph on
+vectores de multiplicadores de Lagrange 
+\emph default
+asociados con el problema 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt_cap8"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Función dual de Lagrange
+\end_layout
+
+\begin_layout Standard
+Se define la 
+\emph on
+función dual de Lagrange
+\emph default
+ (o simplemente 
+\emph on
+función dua
+\emph default
+l) 
+\begin_inset Formula $g:\mathbb{\mathbb{R}}^{m}\times\mathbb{R}^{p}\rightarrow\mathbb{R}$
+\end_inset
+
+ como el mínimo valor del Lagrangiano sobre 
+\begin_inset Formula $x$
+\end_inset
+
+: para 
+\begin_inset Formula $\lambda\in\mathbb{R}^{m}$
+\end_inset
+
+, 
+\begin_inset Formula $\nu\in\mathbb{R}^{p}$
+\end_inset
+
+,
+\begin_inset Formula 
+\begin{equation}
+g(\lambda,\nu)=\inf_{x\in\mathcal{D}}\mathcal{L}(x,\lambda,\nu)=\inf_{x\in\mathcal{D}}\left(f_{0}(x)+\sum_{i=1}^{m}\lambda_{i}f_{i}(x)+\sum_{i=1}^{p}\nu_{i}h_{i}(x)\right)\label{eq:lagrang_def}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Cuando el Lagrangiano no está acotado por abajo en 
+\begin_inset Formula $x$
+\end_inset
+
+, la función dual toma valor 
+\begin_inset Formula $-\infty$
+\end_inset
+
+.
+ Dado que la función dual consiste en el ínfimo a trozos de una familia
+ de funciones afines en 
+\begin_inset Formula $(\lambda,\nu)$
+\end_inset
+
+, es cóncava, incluso cuando el problema 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt_cap8"
+
+\end_inset
+
+ es no convexo.
+\end_layout
+
+\begin_layout Standard
+Una propiedad muy importante de la función dual 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Boyd2004"
+
+\end_inset
+
+ es que será una cota inferior del valor óptimo 
+\begin_inset Formula $p^{\star}$
+\end_inset
+
+; es decir, para cualquier 
+\begin_inset Formula $\lambda\geq0$
+\end_inset
+
+ y cualquier 
+\begin_inset Formula $\nu$
+\end_inset
+
+ se tiene:
+\begin_inset Formula 
+\[
+g(\lambda,\nu)\leq p^{\star}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Problema dual de Lagrange
+\end_layout
+
+\begin_layout Standard
+Para cada par 
+\begin_inset Formula $(\lambda,\nu)$
+\end_inset
+
+ con 
+\begin_inset Formula $\lambda\geq0$
+\end_inset
+
+ , la función dual de Lagrange proporciona una cota inferior del valor óptimo
+ 
+\begin_inset Formula $p^{\star}$
+\end_inset
+
+ del problema de optimización 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt_cap8"
+
+\end_inset
+
+.
+ Por tanto, el problema ahora será encontrar la mejor cota inferior que
+ se puede obtener a partir del Lagrangiano.
+ Esta idea da pie al siguiente problema de optimización:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\text{maximize} & \quad g(\lambda,\nu)\\
+\text{subject to} & \quad\lambda\geq0
+\end{aligned}
+\label{eq:lag_dual}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El problema 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:lag_dual"
+
+\end_inset
+
+ se conoce como el 
+\emph on
+problema dual de Lagrange
+\emph default
+ asociado al problema 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt_cap8"
+
+\end_inset
+
+.
+ En este contexto, el problema original 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt_cap8"
+
+\end_inset
+
+ a veces es llamado 
+\emph on
+problema primal
+\emph default
+.
+ Los vectores 
+\begin_inset Formula $(\lambda^{\star},\nu^{\star})$
+\end_inset
+
+ se denominarán 
+\emph on
+óptimos duales
+\emph default
+ o 
+\emph on
+multiplicadores de Lagrange óptimos
+\emph default
+ si son óptimos para el problema 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:lag_dual"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Puesto que el objetivo a maximizar ahora es cóncavo y la restricción es
+ convexa, el problema dual de Lagrange 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:lag_dual"
+
+\end_inset
+
+ será un problema de optimización convexa.
+ Este será el caso tanto si el problema primal 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt_cap8"
+
+\end_inset
+
+ es convexo como si no.
+\end_layout
+
+\begin_layout Subsection
+Dualidad débil y fuerte
+\end_layout
+
+\begin_layout Standard
+El valor óptimo del problema dual de Lagrange, al que denotaremos 
+\begin_inset Formula $d^{\star}$
+\end_inset
+
+, es, por definición, la mejor cota inferior de 
+\begin_inset Formula $p^{\star}$
+\end_inset
+
+ que se podrá obtener a partir de la función dual de Lagrange.
+ Más concretamente, tendremos esta simple pero importante desigualdad:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\[
+d^{\star}\leq p^{\star}
+\]
+
+\end_inset
+
+que se cumplirá siempre incluso si el problema original es no convexo.
+ Esta propiedad se conoce como 
+\emph on
+dualidad débil
+\emph default
+.
+ La diferencia 
+\begin_inset Formula $p^{\star}-d^{\star}$
+\end_inset
+
+ es conocida como brecha de dualidad del problema original, pues determina
+ la brecha entre el valor óptimo del problema primal y la mejor cota inferior
+ de ella que se podrá obtener a partir de la función dual de Lagrange.
+\end_layout
+
+\begin_layout Standard
+Si se cumple la igualdad:
+\begin_inset Formula 
+\[
+d^{\star}=p^{\star}
+\]
+
+\end_inset
+
+es decir, si la brecha de dualidad es cero, entonces diremos que se existe
+ dualidad fuerte.
+ Esto significa que la mejor cota que podrá ser obtenida a partir de la
+ función dual de Lagrange es igual al valor óptimo del problema primal.
+\end_layout
+
+\begin_layout Subsection
+Cualificación de las restricciones de Slater
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:StrongDualSlater"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La propiedad de dualidad fuerte no siempre se cumple.
+ No obstante, si el problema primal es convexo, casi siempre existirá dualidad
+ fuerte.
+\end_layout
+
+\begin_layout Standard
+Se pueden encontrar una serie de condiciones sobre el problema, más allá
+ de la convexidad, bajo las cuales existirá dualidad fuerte.
+ Estas condiciones son conocidas como 
+\emph on
+cualificaciones de las restricciones
+\emph default
+.
+ Entre ellas, una de las más conocidas es la 
+\emph on
+restricción de Slater
+\emph default
+, que dice lo siguiente: dado un problema primal convexo como el mostrado
+ en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt_cvx"
+
+\end_inset
+
+, debe existir un punto 
+\begin_inset Formula $x\in\text{\textbf{relint}}\,\mathcal{D}$
+\end_inset
+
+, siendo 
+\begin_inset Formula $\text{\textbf{relint}}$
+\end_inset
+
+ el interior relativo o 
+\emph on
+relative interior
+\emph default
+, tal que:
+\begin_inset Formula 
+\begin{equation}
+f_{i}(x)<0,\qquad i=1,\ldots,m,\qquad Ax=b\label{eq:slater}
+\end{equation}
+
+\end_inset
+
+El teorema de Slater establece, por tanto, que existirá dualidad fuerte
+ si el problema es convexo y se cumple la restricción de Slater 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:slater"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+La restricción de Slater se puede refinar un poco más cuando las funciones
+ de restricción de desigualdad son afines.
+ Si las primeras 
+\begin_inset Formula $k$
+\end_inset
+
+ funciones de restricción son afines, entonces existe dualidad fuerte suponiendo
+ que la siguiente condición débil se cumpla: existe un punto 
+\begin_inset Formula $x\in\text{\textbf{relint}}\,\mathcal{D}$
+\end_inset
+
+ tal que:
+\begin_inset Formula 
+\begin{equation}
+f_{i}(x)\leq0,\qquad i=1,\ldots,k,\qquad f_{i}(x)<0,\qquad i=k+1,\ldots,m,\qquad Ax=b\label{eq:slater-1}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En otras palabras, las desigualdades afines no tienen por qué satisfacerse
+ con estricta desigualdad.
+\end_layout
+
+\begin_layout Standard
+La restricción de Slater (y su versión refinada 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:slater-1"
+
+\end_inset
+
+) no solo implica dualidad fuerte en problemas convexos.
+ Además implica que el valor óptimo dual es obtenido cuando 
+\begin_inset Formula $d^{\star}>-\infty$
+\end_inset
+
+; es decir, existe un dual factible 
+\begin_inset Formula $(\lambda^{\star},\nu^{\star})$
+\end_inset
+
+ con 
+\begin_inset Formula $g(\lambda^{\star},\nu^{\star})=d^{\star}=p^{\star}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Dualidad de Lagrange como un punto de silla
+\end_layout
+
+\begin_layout Subsection
+Caracterización max-min de la dualidad débil y fuerte
+\end_layout
+
+\begin_layout Standard
+Es posible expresar los problemas de optimización primal y dual de una forma
+ más simétrica.
+ Para comenzar con este enfoque, y suponiendo únicamente la existencia de
+ restricciones de desigualdad, se partirá de:
+\begin_inset Formula 
+\[
+\begin{aligned}\sup_{\lambda\geq0}\mathcal{L}(x,\lambda)= & \sup_{\lambda\geq0}\left(f_{0}(x)+\sum_{i=1}^{m}\lambda_{i}f_{i}(x)\right)\\
+\text{=} & \begin{cases}
+f_{0}(x) & f_{i}(x)\leq0\\
+\infty & \text{resto}
+\end{cases}
+\end{aligned}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Esto significa que se puede expresar el valor óptimo del problema primal
+ como:
+\begin_inset Formula 
+\begin{equation}
+p^{\star}=\inf_{x}\sup_{\lambda\geq0}\mathcal{L}(x,\lambda)\label{eq:pOpt}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Por la definición de la función dual, además se tiene:
+\begin_inset Formula 
+\begin{equation}
+d^{\star}=\sup_{\lambda\geq0}\inf_{x}\mathcal{L}(x,\lambda)\label{eq:dOpt}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La condición de dualidad débil podrá ser expresada por tanto como la siguiente
+ desigualdad:
+\begin_inset Formula 
+\begin{equation}
+\sup_{\lambda\geq0}\inf_{x}\mathcal{L}(x,\lambda)\leq\inf_{x}\sup_{\lambda\geq0}\mathcal{L}(x,\lambda)\label{eq:desig1}
+\end{equation}
+
+\end_inset
+
+y la dualidad fuerte como la igualdad:
+\begin_inset Formula 
+\[
+\sup_{\lambda\geq0}\inf_{x}\mathcal{L}(x,\lambda)=\inf_{x}\sup_{\lambda\geq0}\mathcal{L}(x,\lambda)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La desigualdad 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:desig1"
+
+\end_inset
+
+ no depende de ninguna propiedad de 
+\begin_inset Formula $\mathcal{L}$
+\end_inset
+
+.
+ De manera general se tiene:
+\begin_inset Formula 
+\begin{equation}
+\sup_{z\in Z}\inf_{\omega\in W}f(w,z)\leq\inf_{\omega\in W}\sup_{z\in Z}f(w,z)\label{eq:desig2}
+\end{equation}
+
+\end_inset
+
+para cualquier 
+\begin_inset Formula $f:\mathbb{R}^{n}\times\mathbb{R}^{m}\rightarrow\mathbb{R}$
+\end_inset
+
+.
+ Esta desigualdad general recibe el nombre de 
+\emph on
+desigualdad máx-mín
+\emph default
+.
+ Cuando se cumple la igualdad, es decir:
+\begin_inset Formula 
+\begin{equation}
+\sup_{z\in Z}\inf_{\omega\in W}f(w,z)=\inf_{\omega\in W}\sup_{z\in Z}f(w,z)\label{eq:desig3}
+\end{equation}
+
+\end_inset
+
+se dice que 
+\begin_inset Formula $f$
+\end_inset
+
+ (y 
+\begin_inset Formula $W$
+\end_inset
+
+ y 
+\begin_inset Formula $Z$
+\end_inset
+
+) satisface la 
+\emph on
+propiedad máx-mín fuerte
+\emph default
+ o propiedad del 
+\emph on
+punto de silla
+\emph default
+.
+ Como cabía esperar, la propiedad máx-mín fuerte únicamente se satisface
+ en determinados casos.
+ Uno de ellos es cuando 
+\begin_inset Formula $f:\mathbb{R}^{n}\times\mathbb{R}^{m}\rightarrow\mathbb{R}$
+\end_inset
+
+ es el Lagrangiano de un problema para el cual existe dualidad fuerte.
+\end_layout
+
+\begin_layout Subsection
+Interpretación del punto de silla
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Interpretación-del-punto"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Retomando la formulación del problema máx-mín para el Lagrangiano 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:desig1"
+
+\end_inset
+
+, se puede apreciar que si 
+\begin_inset Formula $x^{\star}$
+\end_inset
+
+ y 
+\begin_inset Formula $\lambda^{\star}$
+\end_inset
+
+ son puntos primal y dual óptimos para un problema en el cual existe dualidad
+ fuerte, entonces forman un punto de silla para el Lagrangiano.
+ La relación contraria es también cierta: si 
+\begin_inset Formula $(x,\lambda)$
+\end_inset
+
+ son un punto de silla del Lagrangiano, entonces 
+\begin_inset Formula $x$
+\end_inset
+
+ es el primal óptimo, 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ es el dual óptimo, y la brecha de dualidad es cero.
+\end_layout
+
+\begin_layout Subsection
+Métodos de búsqueda del punto de silla
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:MetodosSolSaddlePoint"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Como puede deducirse de lo anterior, si el problema primal cumple la condición
+ de dualidad fuerte, resolver el problema de punto de silla del Lagrangiano
+ significará encontrar la solución óptima de los problemas primal y dual.
+ Por tanto, cualquier método que permita encontrar el punto de silla del
+ Lagrangiano permitirá resolver un problema de optimización con restricciones,
+ en el cual exista dualidad fuerte.
+ A continuación se presentan tres posibles métodos para encontrar el punto
+ de silla, en los cuales se va a suponer siempre que el problema primal
+ cumple la propiedad de dualidad fuerte.
+\end_layout
+
+\begin_layout Subsubsection
+Arrow-Hurwicz
+\end_layout
+
+\begin_layout Standard
+De acuerdo a 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:pOpt"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:dOpt"
+
+\end_inset
+
+, el problema a resolver se puede descomponer en dos problemas, uno de minimizac
+ión y otro de maximización, que están fuertemente acoplados.
+ Lo que Arrow y Hurwicz proponen en 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Arrow1958"
+
+\end_inset
+
+ es alternan una etapa de descenso por gradiente en la variable primal con
+ otra de ascenso por gradiente en la variable dual.
+ De nuevo, suponiendo únicamente restricciones de desigualdad se tiene:
+\begin_inset Formula 
+\[
+\begin{aligned}x_{t+1}\coloneqq & x_{t}-\alpha_{x}\nabla_{x}\mathcal{L}(x_{t},\lambda_{t})\\
+\lambda_{t+1}\coloneqq & \left[\lambda_{t}+\alpha_{\lambda}\nabla_{\lambda}\mathcal{L}(x_{t+1},\lambda_{t})\right]_{+}
+\end{aligned}
+\]
+
+\end_inset
+
+donde 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ es el tamaño del paso o tasa de aprendizaje y se define 
+\begin_inset Formula $\left[\quad\right]_{+}$
+\end_inset
+
+ como la proyección
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Esta proyección garantiza la no negatividad de los multiplicadores de Lagrange
+ de las restricciones de desigualdad.
+ Cuando se aplique el método Arrow-Hurwicz con restricciones de igualdad,
+ no será necesario proyectar.
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Formula $u_{+}=\max\left\{ \lambda,0\right\} $
+\end_inset
+
+, para cada componente del vector 
+\begin_inset Formula $\lambda$
+\end_inset
+
+, sobre el conjunto de números reales no negativos 
+\begin_inset Formula $\mathbb{R}_{+}$
+\end_inset
+
+.
+ De este modo, repitiendo el proceso de manera iterativa se conseguirá converger
+ al punto de silla.
+\end_layout
+
+\begin_layout Standard
+Tal y como se detalla en 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Arrow1958"
+
+\end_inset
+
+, cuando el Lagrangiano es lineal tanto en la variable primal como en la
+ dual, este método no converge y se mantiene en un estado oscilante, con
+ lo cual habría que buscar una alternativa.
+ A continuación se propone como solución el método del Lagrangiano aumentado.
+\end_layout
+
+\begin_layout Subsubsection
+Lagrangiano aumentado
+\end_layout
+
+\begin_layout Standard
+Suponiendo un problema primal convexo como el mostrado en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt_LP"
+
+\end_inset
+
+ pero únicamente con restricciones de desigualdad, se define en 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Boyd2011"
+
+\end_inset
+
+ el
+\emph on
+ Lagrangiano aumentado
+\emph default
+ como:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\mathcal{L_{\rho}}(x,\lambda)=f_{0}(x)+\lambda^{T}(Gx-h)+\frac{\rho}{2}\left\Vert Gx-h\right\Vert _{2}^{2}
+\]
+
+\end_inset
+
+donde
+\begin_inset Formula $\rho>0$
+\end_inset
+
+ es el parámetro de penalización.
+ De esta manera se soluciona el problema de la linealidad mencionado por
+ Arrow y Hurwicz y se puede emplear dicho método de nuevo.
+\end_layout
+
+\begin_layout Subsubsection
+Ascenso dual
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Dual-ascent"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Por último, se presenta otra alternativa al método Arrow-Hurwicz o a su
+ versión basada en el Lagrangiano aumentado.
+\end_layout
+
+\begin_layout Standard
+Atendiendo a la definición del Lagrangiano 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:lagrang_def"
+
+\end_inset
+
+ y a la formulación del problema dual 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:lag_dual"
+
+\end_inset
+
+, se podrá obtener un punto primal óptimo de la siguiente manera:
+\begin_inset Formula 
+\[
+x^{\star}=\underset{x}{\text{\arg\min}}\mathcal{L}(x,\lambda^{\star})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Aprovechando esta condición, el método de 
+\emph on
+ascenso dual
+\emph default
+ resuelve el problema del punto de silla de la siguiente manera 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Boyd2011"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\[
+\begin{aligned}x_{t+1}\coloneqq & \underset{x}{\text{\arg\min}}\mathcal{L}(x,\lambda_{t})\\
+\lambda_{t+1}\coloneqq & \left[\lambda_{t}+\alpha_{\lambda}\nabla_{\lambda}\mathcal{L}(x_{t+1},\lambda_{t})\right]_{+}
+\end{aligned}
+\]
+
+\end_inset
+
+es decir, para cada actualización de 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ se busca de manera exacta el argumento que minimiza el Lagrangiano.
+ Este proceso se repite iterativamente hasta alcanzar la convergencia, y
+ por ende el punto de silla.
+\end_layout
+
+\begin_layout Section
+Condiciones de optimalidad de Karush-Kuhn-Tucker
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Condiciones-KKT"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A continuación se establecen una serie de condiciones que permitirán garantizar
+ que el punto de silla encontrado corresponde a una solución óptima.
+\end_layout
+
+\begin_layout Standard
+Supóngase 
+\begin_inset Formula $x^{\star}$
+\end_inset
+
+ un punto primal óptimo, 
+\begin_inset Formula $(\lambda^{\star},\nu^{\star})$
+\end_inset
+
+ puntos duales óptimos, y que la brecha de dualidad es cero.
+ Puesto que 
+\begin_inset Formula $x^{\star}$
+\end_inset
+
+ minimiza 
+\begin_inset Formula $\mathcal{L}(x,\lambda^{\star},\nu^{\star})$
+\end_inset
+
+ sobre 
+\begin_inset Formula $x$
+\end_inset
+
+, se deduce que su gradiente debe anularse en 
+\begin_inset Formula $x^{\star}$
+\end_inset
+
+, es decir:
+\begin_inset Formula 
+\[
+\nabla f_{0}(x^{\star})+\sum_{i=1}^{m}\lambda_{i}^{\star}\nabla f_{i}(x^{\star})+\sum_{i=1}^{p}\nu_{i}^{\star}\nabla h_{i}(x^{\star})=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Por tanto, deberán cumplirse las siguiente condiciones:
+\begin_inset Formula 
+\begin{align*}
+f_{i}(x^{\star}) & \leq0,\qquad i=1,\ldots,m\\
+h_{i}(x^{\star}) & =0,\qquad i=1,\ldots,p\\
+\lambda_{i}^{\star} & \geq0,\qquad i=1,\ldots,m\\
+\lambda_{i}^{\star}f_{i}(x^{\star}) & =0,\qquad i=1,\ldots,m\\
+\nabla f_{0}(x^{\star})+\sum_{i=1}^{m}\lambda_{i}^{\star}\nabla f_{i}(x^{\star})+\sum_{i=1}^{p}\nu_{i}^{\star}\nabla h_{i}(x^{\star}) & =0
+\end{align*}
+
+\end_inset
+
+las cuales se conocen como condiciones de Karush-Kuhn-Tucker (KKT).
+ En resumen, para todo problema de optimización que cumpla la condición
+ de dualidad fuerte, cualquier par de puntos primal y dual óptimos deberán
+ satisfacer las condiciones KKT anteriores.
+\end_layout
+
+\begin_layout Standard
+Cuando el problema primal sea convexo, las condiciones KKT serán suficientes
+ para que los puntos sean primal y dual óptimos.
+ Además, si el problema de optimización convexo satisface la condición de
+ Slater, las condiciones KKT serán condiciones necesarias y suficientes
+ para garantizar la optimalidad 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Boyd2004"
+
+\end_inset
+
+.
+\end_layout
+
+\end_body
+\end_document

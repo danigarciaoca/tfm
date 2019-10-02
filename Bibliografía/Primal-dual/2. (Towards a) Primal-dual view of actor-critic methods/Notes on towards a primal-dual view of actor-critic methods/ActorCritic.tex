@@ -1,0 +1,817 @@
+\documentclass[11pt,onecolumn,draftcls]{IEEEtran}
+%\documentclass[journal]{./IEEEtran}
+
+% TTT IEEEtran.cls PACKAGES TTT
+\usepackage{ifpdf}
+\usepackage{cite}
+\ifCLASSINFOpdf
+ \usepackage[pdftex]{graphicx}
+ \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\else
+ \usepackage[dvips]{graphicx}
+ \DeclareGraphicsExtensions{.eps}
+\fi
+\usepackage{amssymb}
+\usepackage[cmex10]{amsmath}
+\interdisplaylinepenalty=2500
+\usepackage{array}
+\usepackage{mdwmath}
+\usepackage{mdwtab}
+\usepackage{eqparbox}
+\usepackage[tight,footnotesize]{subfigure}
+\usepackage{stfloats}
+
+\newcommand{\hilight}[1]{\colorbox{yellow}{#1}}
+
+%---------------------------------------------------------------
+% Packages added by the author
+%---------------------------------------------------------------
+\usepackage{bm}
+\usepackage{overpic}
+\usepackage{color}
+\usepackage{dsfont}
+\usepackage{amsthm}
+\usepackage{setspace}
+\usepackage{mathbbol}
+%\usepackage{algorithmicx}
+%\usepackage{algpseudocode}
+%\usepackage[ruled]{algorithm}
+%\usepackage[named]{algo}
+\usepackage[ruled,norelsize]{algorithm2e}
+\usepackage{bbm}
+\usepackage{boxedminipage}
+
+%\IEEEeqnarraydefcolsep{0}{\leftmargini}
+
+
+%---------------------------------------------------------------
+% Also added by the author
+%---------------------------------------------------------------
+\newcommand{\E}{\mathsf{E}}
+\newcommand{\T}{\top}
+\newcommand{\mc}{\mathcal}
+\newcommand{\defeq}{\triangleq}
+
+\newcommand{\1}{\bm{1}}
+\newcommand{\0}{\boldsymbol{0}}
+\newcommand{\myr}{\mathbf{r}}
+\newcommand{\myv}{\mathbf{v}}
+\newcommand{\mymu}{\boldsymbol{\mu}}
+\newcommand{\myd}{\mathbf{d}}
+\newcommand{\myh}{\mathbf{h}}
+\newcommand{\myg}{\mathbf{g}}
+
+
+
+
+%\renewcommand{\Re}{\mathbb{R}}
+\newcommand{\St}{\mathbb{S}}
+\newcommand{\Ac}{\mathbb{A}}
+\newcommand{\Na}{\mathbb{N}}
+\newcommand{\Xf}{\mathbb{X}}
+
+\newcommand{\diag}{\mathrm{diag}}
+\newcommand{\N}{\mc{N}}
+\newcommand{\col}{\mathrm{col}}
+\newcommand{\rank}{\mathrm{rank}}
+
+\newcommand{\Pb}{\mathsf{P}}
+
+\newcommand{\vm}{\vspace{5px}}
+
+\newtheorem{assumption}{Assumption}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+
+
+
+
+
+%\allowdisplaybreaks 
+
+% Title.
+% ------
+\title{(Towards a)\\ Primal-dual view of actor-critic methods}
+
+\begin{document}
+
+\author{
+%Sergio~Valcarcel~Macua,~\IEEEmembership{Student Member,~IEEE}
+}
+
+
+%\markboth{IEEE TRANSACTIONS ON SIGNAL PROCESSING,~Vol.~XX, No.~XX, Month~2013}%
+%{Macua \MakeLowercase{\textit{et al.}}: Bare Demo of IEEEtran.cls for Journals}
+
+\maketitle
+
+%\begin{abstract}
+%\end{abstract}
+%
+
+%\begin{IEEEkeywords}
+%Actor-critic,
+%gradient temporal difference,
+%mean-square-error,
+%reinforcement learning, 
+%stochastic approximation
+%\end{IEEEkeywords}
+
+
+
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+\ifCLASSOPTIONpeerreview
+\begin{center} 
+	\bfseries EDICS Categories: 
+	MLR-DIST; SEN-DCON; SEN-COLB; MLR-COGP 
+\end{center}
+\fi
+%
+% For peerreview papers, this IEEEtran command inserts a page break and
+% creates the second title. It will be ignored for other modes.
+\IEEEpeerreviewmaketitle
+
+
+% =====================================
+%
+\section{Primal-Dual Linear Programming Formulation of MDP}
+\label{sec:primal-dual}
+%
+% =====================================
+
+%\IEEEPARstart{F}{irst}
+
+Let $S$ and $A$ denote state and action sets, respectively.
+%
+Define the transition matrix $P$, of size $|S||A| \times |S|$, 
+whose entries $P_{(sa,s')}$ specify the conditional probability of going to state $s'$ when starting from state $s$ and taking action $a$: 
+%
+\begin{IEEEeqnarray}{rCl}
+P_{(sa,s)} = p (s'|s,a) \ge 0
+,\quad
+\sum_{s' \in S} p (s'|s,a) = 1 
+\end{IEEEeqnarray}
+%
+Let $r(s,a,s')$ denote the reward obtained when taking action $a$ in state $s$ and transitioning to state $s'$.
+We also define $r(s,a)$ as the reward obtained when taking action $a$ in state $s$, such that
+\begin{IEEEeqnarray}{rCl}
+r(s,a) = \sum_{s'} p (s'|s,a) r(s,a,s')
+\end{IEEEeqnarray}
+%
+Let $\pi$ denote the policy, 
+such that $\pi(a, s) = p(a |s)$ is the probability of taking action $a$ in state $s$.
+
+
+
+We can consider both average and discounted formulations.
+For simplicity, we focus on discounted formulation with bounded rewards.
+%
+%
+% ------------------------------------------
+\begin{assumption}
+%
+There exists some scalar $M$ such that the reward $r$ satisfies
+\begin{IEEEeqnarray}{rCl}
+	| r(s,a) |  \le M
+,\quad
+	\forall	(s,a) \in S \times A
+\end{IEEEeqnarray}
+%
+\end{assumption}
+% ------------------------------------------
+%
+Define the value function as the long-term expected discounted cumulative reward:
+\begin{IEEEeqnarray}{rCl}
+v^{\pi}(s) 
+	&
+	=
+	& 
+		\E 
+		\left \{
+				\sum_{i=0}^{\infty}	\gamma^{i} r (s_i, a_i)		
+			\: | \:
+				a_i \sim \pi(\cdot| s_i)
+			,\;
+				s_0 = s
+		\right \}
+\end{IEEEeqnarray}
+%
+where $0 < \gamma < 1$ is the discount factor.
+%
+Introduce the optimal value function
+\begin{IEEEeqnarray}{rCl}
+v^{\star} (s) 
+\defeq
+	\max_{\pi \in \Pi} 
+		v^{\pi}(s)
+,\qquad
+	\forall s \in S
+.
+\label{eq:optimal-value-function}
+\end{IEEEeqnarray}
+%
+%
+%
+Our goal is to find the policy that maximizes the long-term reward:
+%
+\begin{IEEEeqnarray}{rCl}
+\pi^{\star}(s)
+\defeq
+	\arg \max_{a \in \Ac} 
+		\left( 
+			r(s,a) + \gamma \sum_{s' \in \St} P(s'|s,a) v^{\star}(s')
+		\right)
+,\quad
+	\forall s \in S
+\label{eq:optimal action}
+\end{IEEEeqnarray}
+
+%
+Introduce the dynamic programming operator $T$:
+%$T^{\pi}$ and $T$:
+%
+\begin{IEEEeqnarray}{rCl}
+%T^{\pi} v 
+%&
+%\defeq
+%&
+%	r^{\pi} + \gamma P^{\pi} v
+%
+%\\
+(T v) (s)
+&
+\defeq
+&
+	\max_{a \in A}
+		\left(
+			r(s,a) + \gamma \sum_{s' \in \St} P(s'|s,a) v (s')
+		\right)	
+\label{eq:dp-operator}
+\end{IEEEeqnarray}
+%
+for which the following results are well known.
+%
+% ------------------------------------------
+\begin{lemma}
+\label{lemma:dp-operator}
+%
+The dynamic programming operator $T$ satisfies the following properties:
+\begin{enumerate}
+%
+	\item {\rm (Monotonicity)}	
+		For any functions 
+		$v : S \rightarrow \Re$
+		and
+		$v' : S \rightarrow \Re$, 
+		such that
+		\begin{IEEEeqnarray}{rCl}
+		 v(s) \le v' (s)
+		 ,\; \forall s \in S
+		\end{IEEEeqnarray}
+		we have 
+		\begin{IEEEeqnarray}{rCl}
+		 (T^i v) (s) \le (T^i v') (s)
+		 ,\quad
+		 \forall s\in S
+		 ,\; i=1, 2, \ldots
+		\end{IEEEeqnarray}
+		%
+		where 
+		$
+		(T^i v)(s) 
+		= (T (T^{i-1} v))(s) 
+		= (T (T \cdots T v)) (s)$.
+%
+	\item {\rm (Convergence)} 
+		For any bounded function $v : S \rightarrow \Re$,
+		the optimal value function satisfies
+		\begin{IEEEeqnarray}{rCl}
+		v^{\star}(s) = \lim_{i \rightarrow \infty} (T^i v) (s)
+		,\quad
+		\forall s \in S
+		\end{IEEEeqnarray}
+%
+	\item {\rm (Bellman's equation)} 
+		The optimal value function satisfies 
+		and is the unique solution to
+		\begin{IEEEeqnarray}{rCl}
+		 v^{\star} (s) = (T v^{\star}) (s)
+		,\quad
+		\forall s \in S
+		\end{IEEEeqnarray}
+%		
+\end{enumerate}
+%
+\end{lemma}
+%
+\begin{IEEEproof}
+See, e.g., \cite{bertsekas2012dynamic}.
+\end{IEEEproof}
+% ------------------------------------------
+%
+
+
+Let us write $v' \ge v$ to denote that $v'(s) \ge v(s)$, for all $s$.
+%
+From Lemma \ref{lemma:dp-operator}.3, 
+we have 
+%
+\begin{IEEEeqnarray}{rCl}
+	v \ge T v 		\quad \Rightarrow \quad v \ge v^\star = T v^\star
+\end{IEEEeqnarray}
+%
+Thus, $v^\star$ is the smallest $v$ that satisfies the constraint $v \ge TJ$.
+%
+This constraint can be written as a finite set of linear inequalities
+%
+\begin{IEEEeqnarray}{rCl}
+	v(s) 	\ge 		r(s,a) + \gamma \sum_{s' \in \St} p(s'|s,a) v(s'), 
+	\quad 
+	\forall s \in S
+	,\;
+	\forall a \in A
+\end{IEEEeqnarray}
+%
+which delineates a polyhedron in $\Re^{|S||A|}$.
+%
+The optimal value is the "shoutheast" corner of this polyhedron.
+%
+
+%
+Write the value in compact vector form:
+\begin{IEEEeqnarray}{rCl}
+\myv^{\pi} \defeq 
+	\left( 
+		v^{\pi}(s) 
+	\right)_{s \in S}
+\end{IEEEeqnarray}
+%
+Hence, the optimal value vector is given by
+%
+\begin{IEEEeqnarray}{rCl}
+\myv^{\star}
+\defeq
+	\max_{\pi \in \Pi} 
+		\myv^{\pi}
+\label{eq:optimal-value-vector}
+\end{IEEEeqnarray}
+%
+We can find $\myv^\star$ by solving the following linear programming problem
+\cite{bertsekas2012dynamic,deFarias2003linear,wang2008dual}:
+\begin{IEEEeqnarray}{rCl}
+\mc{P}_{0}:
+\quad
+	\begin{split}
+		\underset{\myv}{\rm minimize} 	
+			&\quad 		
+				\1^{\T} \myv 
+\\
+		{\rm s.t.} 					
+			&\quad 	
+				v(s) \ge 	r(s,a) + \gamma \sum_{s' \in \St} p(s'|s,a) v(s'), 
+				\quad 
+					\forall s \in S
+				,\;
+					\forall a \in A
+	\end{split}
+\label{eq:linear-programming-problem}
+\end{IEEEeqnarray}
+%
+Instead of minimizing $\1^{\T} \myv$, 
+let us minimize the objective $(1-\gamma) \mymu^{\T} \myv$, 
+where 
+$0< \gamma < 1$
+and $\mymu$ can be seen as the probability distribution over the initial state, 
+given that $\mymu \ge 0$ and $\1^{\T} \mymu = 1$.
+Hence, the primal problem becomes
+%
+\begin{IEEEeqnarray}{rCl}
+\mc{P}_1:
+\quad
+	\begin{split}
+		\underset{\myv}{\rm minimize} 	
+			&\quad 		
+				(1-\gamma)\mymu^{\T} \myv 
+\\
+		{\rm s.t.} 					
+			&\quad 	
+				v(s) \ge 	r(s,a) + \gamma \sum_{s' \in \St} p(s'|s,a) v(s'), 
+				\quad 
+					\forall s \in S
+				,\;
+					\forall a \in A
+	\end{split}
+\label{eq:alternative-linear-programming-problem}
+\end{IEEEeqnarray}
+%
+Although this change has no influence on problem \eqref{eq:linear-programming-problem}
+(i.e., it has the same solution as \eqref{eq:alternative-linear-programming-problem}),
+reference \cite{wang2008dual} shows that this proportional factor plays an important non-arbitrary role when we formulate its dual problem.
+In particular, $\mymu$ can be seen as a probability distribution over the initial state.
+%
+Introduce the the reward vector
+%
+\begin{IEEEeqnarray}{rCl}
+\myr \defeq 
+	\left( 
+		r(s, a) 
+	\right)_{s \in S, a\in A}
+\in 
+	\Re^{|S||A|}
+\end{IEEEeqnarray}
+%
+and the marginalization matrix, $\Phi$, of size  $|S| \times |S||A|$,
+such that we can express the inequality constraints in 
+\eqref{eq:alternative-linear-programming-problem} as
+%
+\begin{IEEEeqnarray}{rCl}
+\Phi^\T \myv
+\ge
+	r + \gamma P \myv
+\end{IEEEeqnarray}
+%
+The Lagrangian of \eqref{eq:alternative-linear-programming-problem},
+with dual variable $\myd \ge 0$,
+is given by
+%
+\begin{IEEEeqnarray}{rCl}
+L(\myv, \myd) 
+= 
+	(1-\gamma) \mymu^\T \myv
+	+
+	\myd^\T
+	(\myr + \gamma P \myv - \Phi^\T \myv)
+\label{eq:lagrangian-primal-linear}
+\end{IEEEeqnarray}
+%
+The dual function is defined as
+%
+\begin{IEEEeqnarray}{rCl}
+g(\myd) 
+= 
+	\inf_{\myv} L(\myv, \myd)
+\end{IEEEeqnarray}
+%
+The first order condition for minimizing the Lagrangian over the primal variable  $\myv$ 
+is given by:
+%
+\begin{IEEEeqnarray}{rCl}
+\nabla_{\myv} L(\myv, \myd) 
+= 
+	(1-\gamma) \mymu
+	+
+	\gamma P^\T \myd 
+	-
+	\Phi \myd 
+=
+	\0
+\end{IEEEeqnarray}
+%
+Hence,
+%
+\begin{IEEEeqnarray}{rCl}
+g(\myd) 
+=
+\begin{cases}
+	\myd^\T \myr		& 	{\rm if } \; \Phi \myd = (1-\gamma) \mymu + \gamma P^\T \myd \\
+	-\infty			&		{\rm otherwise}
+\end{cases}
+\end{IEEEeqnarray}
+%
+Therefore, 
+the dual problem is given by
+%
+\begin{IEEEeqnarray}{rCl}
+\mc{P}_2:
+\quad
+	\begin{split}
+		\underset{\myd}{\rm maximize} 	
+			&\quad 		
+				\myd^{\T} \myr
+\\
+		{\rm s.t.} 					
+			&\quad 	
+				\Phi \myd = (1-\gamma) \mymu + \gamma P^\T \myd
+\\
+			&\quad 	
+				\myd \ge 	0
+	\end{split}
+\label{eq:dual-programming-problem}
+\end{IEEEeqnarray}
+%
+%
+Let $\myd^{\star}$ denote the solution to \eqref{eq:dual-programming-problem}.
+%
+By strong duality, 
+we know that the optimal objective value of the dual equals the optimal value function:
+%
+\begin{IEEEeqnarray}{rCl}
+(1-\gamma) \mymu^\T \myv^{\star} = \myd^{\star\T} \myr
+\label{eq:strong-duality}
+\end{IEEEeqnarray}
+%
+Before unrolling the left side of \eqref{eq:strong-duality},
+we introduce the optimal discounted stationary distributions over states conditioned on the initial state:
+%
+\begin{IEEEeqnarray}{rCl}
+\xi^{\star} (s,x) 
+&=&
+\sum_{i=0}^{\infty} \gamma^i p(s_i =s | s_0 = x, \: a_i \sim \pi^{\star})
+\end{IEEEeqnarray}
+%
+Now, by using the following relationship due to \cite{sutton1999policy}:
+%
+\begin{IEEEeqnarray}{rCl}
+v^{\star} (x) 
+&=&
+	\sum_{s \in S} 
+		\xi^{\star} (s,x) 
+		\sum_{a \in A}
+			\pi^{\star}(s,a) 
+			r(s,a)
+\end{IEEEeqnarray}
+%
+we can unroll the left side of \eqref{eq:strong-duality} as follows:
+%
+\begin{IEEEeqnarray}{rCl}
+(1-\gamma) \mymu^\T \myv^{\star} 
+&=& 
+	(1-\gamma) 
+	\sum_{x \in S} 
+		\mu(x)
+		\sum_{s \in S}
+			\xi^{\star} (s,x)
+			\sum_{a \in A}
+				\pi^{\star}(s,a) 
+				r(s,a)
+\notag \\
+&=& 
+	\sum_{s \in S}
+		\mu^{\star} (s)
+			\sum_{a \in A}
+				\pi^{\star}(s,a) 
+				r(s,a)
+\label{eq:unroll-optimal-value}
+\end{IEEEeqnarray}
+%
+where
+%
+\begin{IEEEeqnarray}{rCl}
+\mu^{\star} (s)
+&=& 
+	(1-\gamma) 
+	\sum_{x \in S}
+		\mu (x)
+		\xi^{\star}(s,x)
+,\quad
+	\mu^{\star} (s) \ge 0,
+\;
+	\forall s \in S
+\quad
+{\rm and}
+\quad
+	\sum_{s \in S}
+		\mu^{\star} (s) = 1
+\end{IEEEeqnarray}
+%
+%
+%
+In order to unroll the right side of \eqref{eq:strong-duality},
+we write
+%
+\begin{IEEEeqnarray}{rCl}
+\myd^{\star\T} \myr 
+&=&
+	\sum_{s \in S} 
+		\sum_{a \in A}
+			d^{\star}(s,a) r(s,a)
+\notag \\
+&=&
+	\sum_{s \in S} 
+		h^{\star}(s)
+		\sum_{a \in A}
+			\phi^{\star}(s,a) r(s,a)
+\label{eq:dual-average-reward}
+\end{IEEEeqnarray}
+%
+where 
+%
+\begin{IEEEeqnarray}{rCl}
+h^{\star}(s) 
+&=& 
+	\sum_{a \in A} d^{\star}(s,a)
+,\quad
+\phi^{\star}(s,a) 
+=
+	\frac{d^{\star}(s,a)}{\sum_{a \in A} d^{\star}(s,a)}
+\label{eq:terms-unroll-dual}
+\end{IEEEeqnarray}
+%
+We know that $\myd^{\star} \ge 0$
+and reference \cite[Lemma 1]{wang2008dual} shows that $\1^\T \myd^{\star} = 1$.
+Hence, we can see $\myd^{\star}$ as a joint probability distribution over state-action pairs.
+Moreover, the following properties establish that $h^{\star}$ and $\phi^{\star}$ 
+are also probability distributions:
+%
+\begin{IEEEeqnarray}{rCl}
+	h^{\star}(s) \ge 0
+,\quad 
+	\sum_{s \in S} h^{\star}(s) &=& 1
+,\quad 
+	\phi^{\star}(s,a) \ge 0
+,\quad
+	\sum_{a \in A} \phi^{\star}(s) = 1
+\label{eq:terms-unroll-dual-probability}
+\end{IEEEeqnarray}
+%
+%
+From \eqref{eq:strong-duality},
+\eqref{eq:unroll-optimal-value}
+and \eqref{eq:dual-average-reward},
+we have:
+%
+\begin{IEEEeqnarray}{rCl}
+\sum_{s \in S}
+	\mu^{\star} (s)
+		\sum_{a \in A}
+			\pi^{\star}(s,a) 
+			r(s,a)
+&=&
+	\sum_{s \in S} 
+		h^{\star}(s)
+		\sum_{a \in A}
+			\phi^{\star}(s,a) r(s,a)
+\label{eq:unrolled-strong-duality}
+\end{IEEEeqnarray}
+%
+From 
+\eqref{eq:terms-unroll-dual},
+\eqref{eq:terms-unroll-dual-probability}
+and
+\eqref{eq:unrolled-strong-duality},
+we conclude that we can obtain the optimal policy from the optimal dual variable:
+%
+\begin{IEEEeqnarray}{rCl}
+\pi^{\star}(s,a)
+&=&
+\frac{d^{\star}(s,a)}{\sum_{a \in A} d^{\star}(s,a)}
+\label{eq:policy-from-optimal-dual-variable}
+\end{IEEEeqnarray}
+%
+%
+This conclusion is very interesting:
+while the primal linear problem searches the optimal value, 
+the dual formulation searches in the policy space.
+% 
+This suggests that we can develop a primal-dual method that 
+finds a saddle point of the Lagrangaian 
+by searching both in the value function and the policy spaces.
+
+
+
+
+% =====================================
+%
+\section{Saddle-Point formulation of Actor-Critic Methods}
+\label{sec:saddle-point}
+%
+% =====================================
+
+If we derive the dual of the dual problem \eqref{eq:dual-programming-problem},
+we recover the original primal problem \eqref{eq:alternative-linear-programming-problem}.
+%
+Indeed, 
+since problems \eqref{eq:alternative-linear-programming-problem} and \eqref{eq:dual-programming-problem}
+are convex and satisfy Slater’s condition \cite{boyd2004convex},
+strong duality holds and their respective primal and dual optimal values
+are attained and equal and they form a saddle-point of their Lagrangian.
+
+
+Recall from \eqref{eq:lagrangian-primal-linear}
+the Lagrangian of the primal problem \eqref{eq:alternative-linear-programming-problem}:
+\begin{IEEEeqnarray}{rCl}
+L_{\mc{P}_1}(\myv, \myd) 
+= 
+	(1-\gamma) \mymu^\T \myv
+	+
+	\myd^\T
+	(\myr + \gamma P \myv - \Phi^\T \myv)
+\label{eq:lagrangian-primal}
+\end{IEEEeqnarray}
+%
+First order conditions for a saddle point of \eqref{eq:lagrangian-primal} are:
+%
+\begin{IEEEeqnarray}{rCl}
+\nabla_{\myv} L_{\mc{P}_1}(\myv, \myd) 
+&=& 
+	(1-\gamma) \mymu
+	+
+	\left(
+		\gamma P^\T - \Phi
+	\right) 
+	\myd
+=
+	\0
+\label{eq:saddle-point-v-primal}
+\\
+\nabla_{\myd} L_{\mc{P}_1}(\myv, \myd) 
+&=& 
+	\myr + \gamma P \myv - \Phi^\T \myv
+=
+	\0
+\label{eq:saddle-point-d-primal}
+\end{IEEEeqnarray}
+
+The Lagrangian of the dual problem \eqref{eq:dual-programming-problem} is given by:
+%
+\begin{IEEEeqnarray}{rCl}
+L_{\mc{P}_2}(\myd, \myg, \myv) 
+= 
+	\myd^\T \myr 
+	+ 
+	\myg^\T \myd 
+	+
+	\myv^\T
+	\left( 
+		(1-\gamma) \mymu 
+		+ 
+		\gamma P^{\T} \myd 
+		- \Phi \myd
+	\right)
+\label{eq:lagrangian-dual}
+\end{IEEEeqnarray}
+%
+with first order conditions for a saddle point given by
+%
+\begin{IEEEeqnarray}{rCl}
+\nabla_{\myd} L_{\mc{P}_2}(\myd, \myg, \myv) 
+&=& 
+	\myr 
+	+ 
+	\myg
+	+
+	\gamma P \myv
+	-
+	\Phi^{\T} \myv
+=
+	\0
+\label{eq:saddle-point-d-dual}
+\\
+\nabla_{\myg} L_{\mc{P}_2}(\myd, \myg, \myv) 
+&=& 
+	\myd	
+=
+	\0
+\label{eq:saddle-point-g-dual}
+\\
+\nabla_{\myv} L_{\mc{P}_2}(\myd, \myg, \myv) 
+&=& 
+	(1-\gamma) \mymu
+	+
+	\gamma P^\T \myd
+	-
+	\Phi \myd
+=
+	\0
+\label{eq:saddle-point-v-dual}
+\end{IEEEeqnarray}
+
+
+
+\textbf{To do:} Now, the idea could be to derive standard and derive novel actor-critic methods from these first order conditions.
+
+
+
+% =====================================
+%
+\section{Some Remarks to Explore}
+\label{sec:remarks}
+%
+% =====================================
+
+
+\begin{remark}
+I guess that \eqref{eq:dual-average-reward} and \eqref{eq:terms-unroll-dual} 
+are related to the deterministic policy gradient theorem \cite{silver2014deterministic}.
+\end{remark}
+
+
+
+
+
+
+\bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv,refs}
+
+
+
+
+
+
+
+
+\end{document}

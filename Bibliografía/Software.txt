@@ -1,0 +1,7 @@
+PyCharm Edu - https://www.jetbrains.com/pycharm-edu/download/#section=windows-version
+
+ANACONDA - https://www.continuum.io/downloads#windows
+
+TensorFlow/Theano y Keras
+
+Ejemplo básico para redes neuronales: MNIST

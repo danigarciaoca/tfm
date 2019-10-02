@@ -1,0 +1,560 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass book
+\begin_preamble
+
+
+\AtBeginDocument{
+  \def\labelitemii{\ding{71}}
+  \def\labelitemiii{\ding{111}}
+  \def\labelitemiv{\(\vartriangleright\)}
+}
+
+
+
+\usepackage{babel}
+\addto\shorthandsspanish{\spanishdeactivate{~<>}}
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding iso8859-15
+\fontencoding T1
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing double
+\use_hyperref true
+\pdf_bookmarks false
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref section
+\pdf_pdfusetitle false
+\papersize a4paper
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 2
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.5in
+\topmargin 1.6in
+\rightmargin 1.2in
+\bottommargin 1.6in
+\headheight 1.5in
+\headsep 0.3in
+\footskip 0.8in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle plain
+\bullet 0 2 21 1
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset FormulaMacro
+\newcommand{\T}{\mathcal{\top}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\S}{\mathcal{S}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\A}{\mathcal{A}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\R}{\mathcal{R}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\P}{\mathcal{P}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\Pr}{\mathbb{P}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\Sa}{\mathbb{S}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\Ba}{\mathbb{B}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\Na}{\mathbb{N}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Introducción
+\begin_inset CommandInset label
+LatexCommand label
+name "chap:Introducción"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Motivación
+\end_layout
+
+\begin_layout Standard
+Uno de los problemas que más se ha planteado en los últimos años ha sido
+ cómo un agente puede aprender a predecir y controlar la respuesta de su
+ entorno.
+ Esta disciplina se conoce comúnmente como 
+\emph on
+control óptimo estocástico
+\emph default
+.
+ Cuando el modelo del entorno es conocido, se dice que entonces el agente
+ puede 
+\emph on
+planificar
+\emph default
+ su secuencia de decisiones óptimas.
+ La programación dinámica (
+\emph on
+Dynamic Programming
+\emph default
+, DP) es una herramienta muy útil para resolver este tipo de problemas de
+ planificación.
+ Sin embargo, hay muchos casos en los cuales el modelo es desconocido.
+ En estas situaciones, más que planificar, se dice que el agente tiene que
+ 
+\emph on
+aprender
+\emph default
+ de la interacción con el entorno.
+ De este modo, el agente aspirará a predecir cómo reaccionará el entorno
+ a cada acción que se tome en cada posible estado y en consecuencia descubrir
+ qué acciones dan lugar a la respuesta más favorable.
+ Dicho 
+\begin_inset Quotes fld
+\end_inset
+
+descubrimiento
+\begin_inset Quotes frd
+\end_inset
+
+ se realizará mediante la prueba de diferentes acciones en las mismas situacione
+s, repetidas veces.
+\end_layout
+
+\begin_layout Standard
+Este último problema de aprendizaje es lo que se conoce como aprendizaje
+ por refuerzo (
+\emph on
+Reinforcement Learning
+\emph default
+, RL) ya que el agente tiende a reforzar aquellas acciones que producen
+ la respuesta más favorable.
+ En el caso general, el entorno cambiará de estado en función del estado
+ actual en que se encuentre y la acción escogida por el agente.
+ Por tanto, la acción del agente no sólo afectará a la respuesta inmediata
+ de la interacción actual, sino que también tendrá cierta repercusión en
+ todas las respuestas futuras.
+ Un enfoque clásico para abordar el problema de aprendizaje por refuerzo
+ es a través de los procesos de decisión de Markov (
+\emph on
+Markov Decision Process
+\emph default
+, MDP), pues permiten modelar de manera sencilla la interacción entre el
+ agente y su entorno.
+\end_layout
+
+\begin_layout Standard
+Con el objetivo de poder resolver el problema de RL, se dará por hecho que
+ el agente es capaz de percibir el estado del entorno y de tomar acciones
+ para alterarlo, obteniendo como resultado alguna recompensa.
+ Además, las transiciones de un estado del entorno a otro estarán gobernadas
+ por alguna regla decisoria.
+ De este modo, podemos definir los siguientes elementos principales del
+ problema de RL:
+\end_layout
+
+\begin_layout Enumerate
+los observables vistos por el agente, 
+\begin_inset Formula $O_{t}$
+\end_inset
+
+, que indican el estado del entorno, 
+\begin_inset Formula $S_{t}$
+\end_inset
+
+, el cual pertenece a algún conjunto de estados 
+\begin_inset Formula $\S$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Enumerate
+las acciones tomadas por el agente, 
+\begin_inset Formula $A_{t}$
+\end_inset
+
+, pertenecientes a algún conjunto de acciones 
+\begin_inset Formula $\A$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Enumerate
+y las recompensas proporcionadas por el entorno, 
+\begin_inset Formula $R_{t}\in\mathbb{R}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Los conjuntos de estados y acciones podrán ser, bien discretos o bien subconjunt
+os del espacio de vectores reales.
+ La recompensa 
+\begin_inset Formula $R_{t}$
+\end_inset
+
+ es una señal escalar de realimentación que indica cómo de bien se ha comportado
+ el agente en el instante 
+\begin_inset Formula $t$
+\end_inset
+
+.
+ El objetivo del agente será por tanto maximizar la recompensa total acumulada
+ a largo plazo, asumiendo la llamada 
+\begin_inset Quotes fld
+\end_inset
+
+hipótesis de la recompensa
+\begin_inset Quotes frd
+\end_inset
+
+: todos los objetivos que se quieran alcanzar en un problema deberán poder
+ ser descritos en términos de la maximización de la recompensa total acumulada
+ esperada.
+ Por ejemplo, si el objetivo del agente es escapar de un laberinto en el
+ menor tiempo posible, entonces el agente podría obtener una recompensa
+ negativa en cada instante 
+\begin_inset Formula $t$
+\end_inset
+
+ de tiempo y un recompensa nula sólo cuando encuentra la salida.
+\end_layout
+
+\begin_layout Standard
+En la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:interac-agente_entorno"
+
+\end_inset
+
+ se muestra, de manera esquemática, la interacción entre el agente y el
+ entorno.
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap1/interact-agent_env.png
+	lyxscale 30
+	width 60col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:interac-agente_entorno"
+
+\end_inset
+
+Interacción agente-entorno en aprendizaje por refuerzo 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Sutton98a"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La recompensa total acumulada que se esperaría obtener empezando desde un
+ estado concreto del entorno es lo que en terminología de teoría de control
+ y MDPs se conoce como función valor de estados.
+ Por tanto, para maximizar la recompensa total acumulada a largo plazo,
+ el agente deberá buscará transitar a aquellos estados cuya función valor
+ sea mayor.
+ El conjunto de decisiones que lleven al agente a actuar de manera óptima
+ en cada uno de los estados del entorno de nuestro problema será en consecuencia
+ la política de comportamiento (o de control) óptima.
+\end_layout
+
+\begin_layout Standard
+Cualquier algoritmo que sea capaz de aprender a partir la interacción con
+ el entorno con el fin de alcanzar un objetivo determinado, podrá ser considerad
+o un método de aprendizaje por refuerzo.
+ 
+\end_layout
+
+\begin_layout Standard
+En base a todo lo anterior, parece natural pensar que hasta ahora, el enfoque
+ predominante en los algoritmos de RL haya sido el de interactuar con el
+ entorno a fin de estimar la función valor asociada a cada estado del conjunto
+ de estados 
+\begin_inset Formula $\S$
+\end_inset
+
+ de nuestro problema, para posteriormente extraer la política que maximiza
+ la recompensa total acumulada.
+ Es decir, de alguna manera, estos algoritmos hacen una búsqueda en el espacio
+ de las funciones valor.
+\end_layout
+
+\begin_layout Standard
+La motivación principal de este trabajo de fin de máster es el estudio de
+ un enfoque alternativo que permita encontrar la solución al problema de
+ control planteado explorando directamente el espacio de políticas definido
+ por el entorno desconocido, a partir de la interacción con el mismo.
+ Con ello, se buscará reducir el tiempo necesario por el agente para aprender
+ la política de comportamiento óptima, o lo que es lo mismo, el tiempo que
+ tardamos en alcanzar la recompensa máxima.
+ Este tipo de métodos que permiten estimar la política se conocen en la
+ literatura como métodos de gradiente en la política (
+\emph on
+policy gradient methods
+\emph default
+), y hasta el momento han sido poco desarrollados.
+\end_layout
+
+\begin_layout Section
+Objetivo y estructura del documento
+\end_layout
+
+\begin_layout Standard
+El objetivo de este trabajo será la formulación de un algoritmo de aprendizaje
+ por refuerzo novedoso que base su comportamiento en la exploración del
+ espacio de políticas a través de la interacción con el entorno.
+ Para llegar a dicha formulación, se abordará el problema de aprendizaje
+ por refuerzo desde el punto de vista de la teoría de optimización, más
+ concretamente haciendo uso de la dualidad de Lagrange.
+ Primero se estudiará la problemática en que el espacio de acciones es pequeño,
+ para posteriormente, extender estas ideas a problemas en los que el espacio
+ de acciones es muy grande o incluso continuo.
+\end_layout
+
+\begin_layout Standard
+De acuerdo a estos objetivos, el documento se estructura de la siguiente
+ manera:
+\end_layout
+
+\begin_layout Itemize
+Capítulo 1: Introducción.
+ Presenta la motivación para la realización de este trabajo así como el
+ objetivo que se busca conseguir.
+\end_layout
+
+\begin_layout Itemize
+Capítulo 2: Estado del arte.
+ Se da una visión general de la situación actual en lo que a algoritmos
+ de aprendizaje por refuerzo se refiere.
+\end_layout
+
+\begin_layout Itemize
+Capítulo 3: Contexto del problema.
+ En este capítulo se pone en contexto el problema que se desea resolver,
+ definiendo cada una de las partes que lo componen.
+ Una vez conocida la problemática, se hace una clasificación general de
+ los métodos existentes para resolver dicho problema.
+\end_layout
+
+\begin_layout Standard
+Los capítulos que van del 4 al 8 constituyen los fundamentos teóricos en
+ los que se basa este trabajo:
+\end_layout
+
+\begin_layout Itemize
+Capítulo 4: Procesos de decisión de Markov.
+ Este capítulo introduce los procesos de decisión de Markov, elemento fundamenta
+l que permitirá modelar el problema de aprendizaje por refuerzo.
+ Se presentan además las ecuaciones de Bellman que como se verá, jugarán
+ un papel fundamental.
+\end_layout
+
+\begin_layout Itemize
+Capítulo 5: Resolución de las ecuaciones de Bellman en problemas de pequeña
+ escala.
+ En este capítulo se detallan dos técnicas ampliamente usadas en la resolución
+ de las ecuaciones de Bellman cuando los problemas tienen baja dimensionalidad:
+ programación dinámica y diferencias temporales.
+ Ambas técnicas serán de vital importancia en el desarrollo del nuevo algoritmo
+ que se plantea en este documento.
+\end_layout
+
+\begin_layout Itemize
+Capítulo 6: Resolución de las ecuaciones de Bellman en problemas de gran
+ escala.
+ En este capítulo se aborda la resolución de las ecuaciones de Bellman cuando
+ la dimensionalidad del problema es mayor, mediante la aproximación de funciones
+, dando lugar a las ecuaciones de Bellman proyectadas.
+ Se presenta una versión del método de las diferencias temporales detallado
+ en el capítulo 5 adaptado a la nueva situación, que cobrará especial relevancia
+ cuando se extienda el algoritmo desarrollado a problemas de gran escala.
+\end_layout
+
+\begin_layout Itemize
+Capítulo 7: Optimización convexa.
+ Se hace un breve resumen de las principales herramientas de optimización
+ convexa empleadas para derivar el nuevo algoritmo.
+\end_layout
+
+\begin_layout Itemize
+Capítulo 8: Dualidad.
+ Como continuación del capítulo anterior, se presenta la teoría de la dualidad,
+ la cual será el núcleo del algoritmo obtenido en este trabajo.
+\end_layout
+
+\begin_layout Standard
+Los capítulos que van del 9 al 11 recogen la derivación y formulación del
+ algoritmo novel desarrollado, tanto desde el punto de vista teórico como
+ de implementación.
+ Para cada una de las implementaciones realizadas, una para problemas de
+ pequeña escala y otra para problemas de gran escala, se evaluará el algoritmo
+ mediante la resolución de una serie de problemas típicos en el campo de
+ aprendizaje por refuerzo y se compararán dichos resultados con los obtenidos
+ al emplear algunos de los los algoritmos que constituyen el estado del
+ arte actual.
+\end_layout
+
+\begin_layout Itemize
+Capítulo 9: Ecuaciones de Bellman y teoría dual.
+ A partir de las ideas expuestas en los capítulos 4–8 se desarrolla un nuevo
+ método para resolver las ecuaciones de Bellman haciendo uso de la teoría
+ dual.
+ 
+\end_layout
+
+\begin_layout Itemize
+Capítulo 10: Desarrollo de un algoritmo primal-dual novel.
+ Se presenta un algoritmo para la resolución de problemas de aprendizaje
+ por refuerzo basado en el nuevo método expuesto en el capítulo 9.
+ Este capítulo se centra únicamente en problemas de pequeña escala.
+\end_layout
+
+\begin_layout Itemize
+Capítulo 11: Extensión del algoritmo BDA-MF a problemas de gran escala.
+ En este capítulo se extiende el método del capítulo 9 y el algoritmo desarrolla
+do en el capítulo 10 al caso en que el problema adquiere dimensionalidad
+ mayor en los conjuntos de estados y/o acciones.
+\end_layout
+
+\begin_layout Itemize
+Capítulo 12: Conclusiones y líneas de trabajo futuro.
+\end_layout
+
+\begin_layout Itemize
+Anexos: Recogen las demostraciones de los teoremas, proposiciones y lemas
+ empleados en el capítulo 9 para la formulación del nuevo método de resolución
+ de las ecuaciones de Bellman a partir de la teoría dual.
+\end_layout
+
+\begin_layout Itemize
+Referencias.
+\end_layout
+
+\end_body
+\end_document

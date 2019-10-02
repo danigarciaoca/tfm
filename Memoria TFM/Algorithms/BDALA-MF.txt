@@ -1,0 +1,37 @@
+\begin{algorithmic}[1] 
+	\Require {$\alpha_{_{D}}$, la tasa de aprendizaje de la etapa de control. $\epsilon$, el parámetro de exploración. Funciones base $\bar{\phi}$.}
+	\Ensure {$\pi$, la política óptima $\pi^*$ aproximada.}
+	\State Inicializar $\overline{\Gamma} = 0_{N\times N}$, $\overline{\Lambda} = 0_{N\times N}$, $\overline{z}=0_N$
+	\State Inicializar $d(s,a)$ con cualquier valor positivo, para todo $(s,a) \in \{\S\times\A\}$
+	\State  $d_{k}	\leftarrow	d$
+	\Repeat \Comment{Bucle principal de Bellman-ascenso dual}
+		\State	$\xi	\leftarrow	0$
+		\State Inicializar la memoria de repetición $\Sa =\{\}$ vacía
+		\Repeat (para cada episodio) \Comment{Etapa de predicción: evaluación de la política}
+			\State Inicializar $s,a$ y observar $\bar{\phi}(s)$
+			\Repeat (para cada paso en el episodio)
+				\State Tomar la acción $a$ y observar $r,s',\bar{\phi}(s')$
+				\State Escoger la acción $a'	\sim	\epsilon-\pi_{d_{k}} (\cdot|s)$
+				\State Aumentar la memoria de repetición $\Sa$ con la muestra actual $(s$, $a$, $r$, $s')$
+				\State $\overline{\Gamma} 	\gets 	\overline{\Gamma} + \bar{\phi}(s) \bar{\phi}(s)^T$
+				\State $\overline{\Lambda} 	\gets 	\overline{\Lambda} + \bar{\phi}(s) \bar{\phi}(s')^T$
+				\State $\overline{z}	\gets 	\overline{z} + \bar{\phi}(s) r$
+				\State $s \gets s'$
+				\State $a \gets a'$
+			\Until{$s$ sea terminal}
+		\Until{se hayan corrido $N_{epi}$ episodios} 
+		\State $\omega_{k+1} = \left(\overline{\Gamma}-\gamma\overline{\Lambda}\right)^{-1}\overline{z}$
+
+		\For {para cada muestra de $\Sa$} \Comment{Etapa de control: mejora de la política}
+				\State Recuperar $(s$, $a$, $r$, $s')$
+				\State $d_{antigua} \leftarrow	d(s,a)$
+				\State $d(s,a)	    \gets		d(s,a) + \alpha_{_{D}} (r+\gamma\bar{\phi}(s')^{T}\omega_{k+1}-\bar{\phi}(s)^{T}\omega_{k+1}) $
+				\State $d(s,a)	    \gets		\max\left(0,d(s,a)\right)$
+				\State $\xi	\leftarrow	\max \left[\xi, |\pi_{d}\left(a\mid s\right) - \pi_{d_{antigua}}\left(a\mid s\right)| \right]$
+		\EndFor
+	\State  $d_{k}	\leftarrow	d$
+	\State  $\omega_{k}	\leftarrow	\omega_{k+1}$
+	\Until{no se puedan correr más episodios o $\xi < \delta$} 
+	\State $\pi	\leftarrow	\pi_{d_{k}}$
+	\State \Return{$\pi$}
+\end{algorithmic}

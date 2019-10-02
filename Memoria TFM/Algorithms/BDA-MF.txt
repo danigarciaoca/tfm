@@ -1,0 +1,34 @@
+\begin{algorithmic}[1] 
+	\Require {$\alpha_{_{TD}}$, la tasa de aprendizaje de la etapa de predicción. $\alpha_{_{D}}$, la tasa de aprendizaje de la etapa de control. $\epsilon$, el parámetro de exploración.}
+	\Ensure {$\pi$, la política óptima $\pi^*$ aproximada.}
+	\State Inicializar $v(s)$ arbitrariamente (e.g., $v(s)=0$), para todo $s\in\S$
+	\State Inicializar $d(s,a)$ con cualquier valor positivo, para todo $(s,a) \in \{\S\times\A\}$
+	\State  $d_{k}	\leftarrow	d$
+	\State  $v_{k}	\leftarrow	v$
+	\Repeat \Comment{Bucle principal de Bellman-ascenso dual}
+	\State	$\xi	\leftarrow	0$
+	\State Inicializar la memoria de repetición $\Sa =\{\}$ vacía
+		\Repeat (para cada episodio) \Comment{Etapa de predicción: evaluación de la política}
+			\State Inicializar $s$
+			\Repeat (para cada paso en el episodio)
+				\State Escoger la acción $a	\sim	\epsilon-\pi_{d_{k}} (\cdot|s)$
+				\State Tomar la acción $a$ y observar $r, s'$
+				\State Aumentar la memoria de repetición $\Sa$ con la muestra actual $(s$, $a$, $r$, $s')$
+				\State $v(s)	    \gets		v(s) + \alpha_{_{TD}} ( r + \gamma v(s') - v(s) ) $
+				\State $\xi	\leftarrow	\max \left[\xi, \left\Vert v(s)-v_{k}(s)\right\Vert _{2}^{2} \right]$
+				\State $s \gets s'$
+			\Until{$s$ sea terminal}
+		\Until{se hayan corrido $N_{epi}$ episodios} 
+		\State $v_{k+1}	\leftarrow	v$
+		
+		\For {para cada muestra de $\Sa$} \Comment{Etapa de control: mejora de la política}
+			\State Recuperar $(s$, $a$, $r$, $s')$
+			\State $d(s,a)	    \gets		d(s,a) + \alpha_{_{D}} ( r + \gamma v_{k+1}(s') - v_{k+1}(s) ) $
+			\State $d(s,a)	    \gets		\max\left(0,d(s,a)\right)$
+		\EndFor
+		\State  $d_{k}	\leftarrow	d$
+		\State  $v_{k}	\leftarrow	v_{k+1}$
+	\Until{no se puedan correr más episodios o $\xi < \delta$} 
+	\State $\pi	\leftarrow	\pi_{d_{k}}$
+	\State \Return{$\pi$}
+\end{algorithmic}

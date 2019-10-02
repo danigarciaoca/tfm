@@ -1,0 +1,1415 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass book
+\begin_preamble
+
+
+\AtBeginDocument{
+  \def\labelitemii{\ding{71}}
+  \def\labelitemiii{\ding{111}}
+  \def\labelitemiv{\(\vartriangleright\)}
+}
+
+
+
+\usepackage{babel}
+\addto\shorthandsspanish{\spanishdeactivate{~<>}}
+\end_preamble
+\use_default_options false
+\begin_modules
+theorems-ams-bytype
+theorems-chap-bytype
+theorems-ams-extended-bytype
+\end_modules
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding iso8859-15
+\fontencoding T1
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing double
+\use_hyperref true
+\pdf_bookmarks false
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref section
+\pdf_pdfusetitle false
+\papersize a4paper
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 2
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.5in
+\topmargin 1.6in
+\rightmargin 1.2in
+\bottommargin 1.6in
+\headheight 1.5in
+\headsep 0.3in
+\footskip 0.8in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle plain
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Optimización convexa
+\end_layout
+
+\begin_layout Standard
+A continuación se presenta una de las herramientas que, junto a la teoría
+ dual que se contará en el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Dualidad"
+
+\end_inset
+
+, será la base del desarrollo del nuevo algoritmo de aprendizaje por refuerzo
+ propuesto en el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Cap8PrimyDual"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Formulación del problema de optimización
+\end_layout
+
+\begin_layout Subsection
+Terminología básica
+\end_layout
+
+\begin_layout Standard
+Se usará la notación:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\text{minimize} & \quad f_{0}(x)\\
+\text{subject to} & \quad f_{i}(x)\leq0,\quad i=1,\ldots,m\\
+ & \quad h_{i}(x)=0,\quad i=1,\ldots,p
+\end{aligned}
+\label{eq:opt}
+\end{equation}
+
+\end_inset
+
+para describir el problema de encontrar un valor 
+\begin_inset Formula $x$
+\end_inset
+
+ que minimice 
+\begin_inset Formula $f_{0}(x)$
+\end_inset
+
+ entre todos los 
+\begin_inset Formula $x$
+\end_inset
+
+ que satisfagan las condiciones 
+\begin_inset Formula $f_{i}(x)\leq0,\,i=1,\ldots,m$
+\end_inset
+
+ y 
+\begin_inset Formula $h_{i}(x)=0,\,i=1,\ldots,p$
+\end_inset
+
+.
+ Se llamará a 
+\begin_inset Formula $x\in\mathbb{R}^{n}$
+\end_inset
+
+ la 
+\emph on
+variable de optimización
+\emph default
+ y a la función 
+\begin_inset Formula $f_{0}:\mathbb{R}^{n}\rightarrow\mathbb{R}$
+\end_inset
+
+ la 
+\emph on
+función objetivo
+\emph default
+ o 
+\emph on
+función de coste
+\emph default
+.
+ Las desigualdades 
+\begin_inset Formula $f_{i}(x)\leq0$
+\end_inset
+
+ son llamadas 
+\emph on
+restricciones de desigualdad
+\emph default
+, y las correspondientes funciones 
+\begin_inset Formula $f_{i}:\mathbb{R}^{n}\rightarrow\mathbb{R}$
+\end_inset
+
+, 
+\emph on
+funciones de restricción de desigualdad
+\emph default
+.
+ Las ecuaciones 
+\begin_inset Formula $h_{i}(x)=0$
+\end_inset
+
+ reciben el nombre de 
+\emph on
+restricciones de igualdad
+\emph default
+, y las funciones 
+\begin_inset Formula $h_{i}:\mathbb{R}^{n}\rightarrow\mathbb{R}$
+\end_inset
+
+ son las 
+\emph on
+funciones de restricción de igualdad
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+El conjunto de puntos para el cual la función objetivo y las funciones de
+ restricciones están definidas:
+\begin_inset Formula 
+\[
+\mathcal{D}=\bigcap_{i=0}^{m}\text{\textbf{dom}}f_{i}\cap\bigcap_{i=0}^{p}\text{\textbf{dom}}h_{i}
+\]
+
+\end_inset
+
+se conoce como 
+\emph on
+dominio
+\emph default
+ del problema de optimización 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt"
+
+\end_inset
+
+.
+ Un punto 
+\begin_inset Formula $x\in\mathcal{D}$
+\end_inset
+
+ es 
+\emph on
+factible
+\emph default
+ o una 
+\emph on
+solución factible
+\emph default
+ si satisface las restricciones 
+\begin_inset Formula $f_{i}(x)\leq0,\,i=1,\ldots,m$
+\end_inset
+
+ y 
+\begin_inset Formula $h_{i}(x)=0,\,i=1,\ldots,p$
+\end_inset
+
+.
+ El problema 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt"
+
+\end_inset
+
+ se dice que es factible si existe al menos un punto factible.
+ Al conjunto de todos los puntos factibles se le llama 
+\emph on
+conjunto factible
+\emph default
+ o 
+\emph on
+conjunto de restricción 
+\emph default
+y se denota por 
+\begin_inset Formula $\mathcal{F}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+El 
+\emph on
+valor óptimo
+\emph default
+ 
+\begin_inset Formula $p^{\star}$
+\end_inset
+
+del problema 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt"
+
+\end_inset
+
+ se define como:
+\begin_inset Formula 
+\[
+p^{\star}=\inf\left\{ f_{0}(x)\mid f_{i}(x)\leq0,\,i=1,\ldots,m,\,\,h_{i}(x)=0,\,i=1,\ldots,p\right\} 
+\]
+
+\end_inset
+
+y se permite que tome valores de 
+\begin_inset Formula $\pm\infty$
+\end_inset
+
+.
+ Si el problema es no factible, tendremos 
+\begin_inset Formula $p^{\star}=\infty$
+\end_inset
+
+ (siguiendo la convención estándar de que el ínfimo de un conjunto vacío
+ es 
+\begin_inset Formula $\infty$
+\end_inset
+
+).
+ Si 
+\begin_inset Formula $p^{\star}=-\infty$
+\end_inset
+
+ se dice que el problema 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt"
+
+\end_inset
+
+ es 
+\emph on
+no acotado por abajo
+\emph default
+.
+\end_layout
+
+\begin_layout Subsection
+Forma estándar
+\end_layout
+
+\begin_layout Standard
+Se dice que el problema de optimización 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt"
+
+\end_inset
+
+ es un problema en 
+\emph on
+forma estándar
+\emph default
+.
+ En la formulación del problema estándar se adopta la convención de que
+ el lado derecho de las restricciones de igualdad y desigualdad es cero.
+\end_layout
+
+\begin_layout Subsubsection
+Problemas equivalentes
+\end_layout
+
+\begin_layout Standard
+Se dice que dos problemas son equivalentes si mediante la resolución de
+ uno, tenemos también la solución del otro, y viceversa 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Boyd2004"
+
+\end_inset
+
+.
+ Como un ejemplo simple, consideremos el problema:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\text{minimize} & \quad\widetilde{f}(x)=\alpha_{0}f_{0}(x)\\
+\text{subject to} & \quad\widetilde{f}_{i}(x)=\alpha_{i}f_{i}(x)\leq0,\quad i=1,\ldots,m\\
+ & \quad\widetilde{h}_{i}(x)=\beta_{i}h_{i}(x)=0,\quad i=1,\ldots,p
+\end{aligned}
+\label{eq:opt_equiv}
+\end{equation}
+
+\end_inset
+
+donde 
+\begin_inset Formula $\alpha_{i}>0,\,i=0,\ldots,m$
+\end_inset
+
+ y 
+\begin_inset Formula $\beta_{i}\neq0,\,i=0,\ldots,p$
+\end_inset
+
+.
+ Este problema es obtenido a partir del problema 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt"
+
+\end_inset
+
+ mediante un escalado de todas las funciones, siendo consecuentes con el
+ signo de cada una y el del factor de escala.
+ Como consecuencia, el conjunto factible del problema 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt_equiv"
+
+\end_inset
+
+ y del problema original 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt"
+
+\end_inset
+
+ son idénticos.
+ Un punto es óptimo en el problema 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt"
+
+\end_inset
+
+ sí y solo sí es óptimo en el problema escalado 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt_equiv"
+
+\end_inset
+
+, de manera que los dos problemas son equivalentes.
+ Sin embargo no son el mismo problema ya que las funciones objetivo y de
+ restricción son diferentes.
+\end_layout
+
+\begin_layout Section
+Optimización convexa
+\end_layout
+
+\begin_layout Standard
+Un 
+\emph on
+problema de optimización convexa
+\emph default
+ es uno de la forma:
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\text{minimize} & \quad f_{0}(x)\\
+\text{subject to} & \quad f_{i}(x)\leq0,\quad i=1,\ldots,m\\
+ & \quad a_{i}^{T}x=b_{i},\quad i=1,\ldots,p
+\end{aligned}
+\label{eq:opt_cvx}
+\end{equation}
+
+\end_inset
+
+donde 
+\begin_inset Formula $f_{0},\ldots,f_{m}$
+\end_inset
+
+ son funciones convexas.
+ Comparando 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt_cvx"
+
+\end_inset
+
+ con el problema general en forma estándar 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt"
+
+\end_inset
+
+, se aprecia que el problema convexo tiene tres requisitos adicionales:
+\end_layout
+
+\begin_layout Itemize
+la función objetivo debe ser convexa,
+\end_layout
+
+\begin_layout Itemize
+las funciones de restricción de desigualdad deben ser convexas,
+\end_layout
+
+\begin_layout Itemize
+las funciones de restricción de igualdad 
+\begin_inset Formula $h_{i}(x)=a_{i}^{T}x-b_{i}$
+\end_inset
+
+ deben ser afines.
+\end_layout
+
+\begin_layout Subsection
+Problemas de optimización lineales
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:ProblOptLin"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Cuando la función objetivo y las restricciones son todas afines, el problema
+ se conoce como 
+\emph on
+programa lineal
+\emph default
+ (
+\emph on
+linear program
+\emph default
+, LP).
+ Un programa lineal general tiene la siguiente forma:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\text{minimize} & \quad c^{T}x+d\\
+\text{subject to} & \quad Gx\leq h\\
+ & \quad Ax=b
+\end{aligned}
+\label{eq:opt_LP}
+\end{equation}
+
+\end_inset
+
+donde 
+\begin_inset Formula $G\in\mathbb{R}^{m\times n}$
+\end_inset
+
+ y 
+\begin_inset Formula $A\in\mathbb{R}^{p\times n}$
+\end_inset
+
+.
+ Los programas lineales son, por tanto, problemas de optimización convexos.
+ La interpretación geométrica de los programas lineales aparece ilustrada
+ en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:LP_geometrica"
+
+\end_inset
+
+.
+ El conjunto factible del LP 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt_LP"
+
+\end_inset
+
+ es un poliedro 
+\begin_inset Formula $\mathcal{P}$
+\end_inset
+
+; el problema consiste en minimizar la función afín 
+\begin_inset Formula $c^{T}x+d$
+\end_inset
+
+ (o de manera equivalente, la función 
+\begin_inset Formula $c^{T}x$
+\end_inset
+
+) sobre 
+\begin_inset Formula $\mathcal{P}$
+\end_inset
+
+.
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap6/LP_interpretacion.PNG
+	lyxscale 30
+	width 55col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:LP_geometrica"
+
+\end_inset
+
+Interpretación geométrica de un LP.
+ El conjunto factible 
+\begin_inset Formula $\mathcal{P}$
+\end_inset
+
+, el cual es un poliedro, aparece sombreado.
+ El punto 
+\begin_inset Formula $x^{\star}$
+\end_inset
+
+ es óptimo: es el punto en 
+\begin_inset Formula $\mathcal{P}$
+\end_inset
+
+ más lejano en la dirección 
+\begin_inset Formula $-c$
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Boyd2004"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para este tipo de problemas, se define el concepto de solución básica 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Bertsimas1997"
+
+\end_inset
+
+ de la siguiente manera.
+\end_layout
+
+\begin_layout Definition
+\begin_inset CommandInset label
+LatexCommand label
+name "def:feasible"
+
+\end_inset
+
+Considérese un poliedro 
+\begin_inset Formula $\mathcal{P}$
+\end_inset
+
+ definido por unas restricciones lineales de igualdad y desigualdad, y asumamos
+ que 
+\begin_inset Formula $x^{\star}$
+\end_inset
+
+ es un elemento perteneciente a 
+\begin_inset Formula $\mathbb{R}^{n}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+El vector 
+\begin_inset Formula $x^{\star}$
+\end_inset
+
+ es una 
+\emph on
+solución básica
+\emph default
+ si:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Todas las restricciones de igualdad están activas;
+\end_layout
+
+\begin_layout Enumerate
+De entre las restricciones que estén activas en 
+\begin_inset Formula $x^{\star}$
+\end_inset
+
+, hay 
+\begin_inset Formula $n$
+\end_inset
+
+ de ellas que son linealmente independientes.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+\begin_inset CommandInset label
+LatexCommand label
+name "enu:basicfeasible"
+
+\end_inset
+
+Si 
+\begin_inset Formula $x^{\star}$
+\end_inset
+
+ es una solución básica que satisface todas las restricciones, decimos que
+ se trata de una 
+\emph on
+solución básica factible
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+De la definición 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "def:feasible"
+
+\end_inset
+
+ 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "enu:basicfeasible"
+
+\end_inset
+
+ puede deducirse que una solución básica factible de un programa lineal
+ no deberá poder expresarse como la combinación convexa de cualquier otra
+ solución factible del programa lineal.
+\end_layout
+
+\begin_layout Standard
+Una propiedad de las soluciones básicas factibles que será de gran importancia,
+ pero que no se va a demostrar en este documento, es que cuando el programa
+ lineal tiene 
+\begin_inset Formula $m$
+\end_inset
+
+ restricciones de igualdad, cualquier solución básica factible podrá tener
+ como mucho 
+\begin_inset Formula $m$
+\end_inset
+
+ componentes positivas.
+ Como veremos, en el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Cap8PrimyDual"
+
+\end_inset
+
+ esta propiedad tomará especial relevancia.
+\end_layout
+
+\begin_layout Subsubsection
+Programación lineal en forma de desigualdad
+\end_layout
+
+\begin_layout Standard
+Se define el 
+\emph on
+programa lineal en forma de desigualdad
+\emph default
+ como un LP que carece de restricciones de igualdad, típicamente escrito
+ como:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\text{minimize} & \quad c^{T}x\\
+\text{subject to} & \quad Ax\leq b
+\end{aligned}
+\label{eq:opt_LP_desigualdad}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Optimización vectorial
+\end_layout
+
+\begin_layout Standard
+Se define un 
+\emph on
+problema de optimización vectorial
+\emph default
+ de manera general como:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\text{minimize (con respecto al cono \ensuremath{K})} & \quad f_{0}(x)\\
+\text{subject to} & \quad f_{i}(x)\leq0,\quad i=1,\ldots,m\\
+ & \quad h_{i}(x)=0,\quad i=1,\ldots,p
+\end{aligned}
+\label{eq:opt_vect}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Aquí 
+\begin_inset Formula $x\in\mathbb{R}^{n}$
+\end_inset
+
+ es la variable de optimización, 
+\begin_inset Formula $K\subseteq\mathbb{R}^{q}$
+\end_inset
+
+ es un cono convexo, 
+\begin_inset Formula $f_{0}:\mathbb{R}^{n}\rightarrow\mathbb{R}^{q}$
+\end_inset
+
+ es la función objetivo, 
+\begin_inset Formula $f_{i}:\mathbb{R}^{n}\rightarrow\mathbb{R}$
+\end_inset
+
+ son las funciones de restricción de desigualdad, y 
+\begin_inset Formula $h_{i}:\mathbb{R}^{n}\rightarrow\mathbb{R}$
+\end_inset
+
+ son las funciones de restricción de igualdad.
+ La única diferencia entre este problema y el problema de optimización estándar
+ 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt"
+
+\end_inset
+
+ es que ahora, la función objetivo toma valores de 
+\begin_inset Formula $\mathbb{R}^{q}$
+\end_inset
+
+, y las especificaciones del problema incluyen el cono convexo 
+\begin_inset Formula $K$
+\end_inset
+
+, que se emplea para comparar valores.
+ En el contexto de optimización vectorial, al problema de optimización estándar
+ 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt"
+
+\end_inset
+
+ a veces se le llama 
+\emph on
+problema de optimización escalar
+\emph default
+.
+\end_layout
+
+\begin_layout Subsection
+Puntos óptimos
+\end_layout
+
+\begin_layout Standard
+Considérese el conjunto de valores objetivo de los puntos factibles:
+\begin_inset Formula 
+\[
+\mathcal{O}=\left\{ f_{0}(x)\mid\exists x\in\mathcal{D},\,\,f_{i}(x)\leq0,\,\,i=1,\ldots,m,\,\,h_{i}(x)=0,\,\,i=1,\ldots,p\right\} \subseteq\mathbb{R}^{q}
+\]
+
+\end_inset
+
+al cual se le conoce como 
+\emph on
+valores objetivo alcanzables
+\emph default
+.
+ Si este conjunto tiene un elemento mínimo, es decir, existe un punto factible
+ 
+\begin_inset Formula $x$
+\end_inset
+
+ tal que 
+\begin_inset Formula $f_{0}(x)\leq_{K}\,f_{0}(y)$
+\end_inset
+
+ para todo 
+\begin_inset Formula $y$
+\end_inset
+
+ factible, entonces 
+\begin_inset Formula $x$
+\end_inset
+
+ es óptimo para el problema 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt_vect"
+
+\end_inset
+
+, y nos referimos a 
+\begin_inset Formula $f_{0}(x)$
+\end_inset
+
+ como el 
+\emph on
+valor óptimo
+\emph default
+ del problema.
+\end_layout
+
+\begin_layout Standard
+De manera más formal, se define que un punto 
+\begin_inset Formula $x^{\star}$
+\end_inset
+
+ es optimo sí y solo sí es factible y además:
+\begin_inset Formula 
+\[
+\mathcal{O}\subseteq f_{0}(x^{\star})+K
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Puntos óptimos de Pareto
+\end_layout
+
+\begin_layout Standard
+Cuando el conjunto de valores objetivo alcanzables no tiene un elemento
+ mínimo, el problema no tiene un punto óptimo.Para estos casos se define
+ el concepto de elementos 
+\emph on
+minimales
+\emph default
+ del conjunto de valores alcanzables, los cuales jugarán un rol muy importante.
+ Se dirá que un punto 
+\begin_inset Formula $x$
+\end_inset
+
+ factible es 
+\emph on
+Pareto óptimo
+\emph default
+ (o 
+\emph on
+eficiente
+\emph default
+) si 
+\begin_inset Formula $f_{0}(x)$
+\end_inset
+
+ es un elemento minimal del conjunto de valores alcanzables 
+\begin_inset Formula $\mathcal{O}$
+\end_inset
+
+.
+ En consecuencia, 
+\begin_inset Formula $f_{0}(x)$
+\end_inset
+
+ es un 
+\emph on
+valor óptimo de Pareto
+\emph default
+ para el problema de optimización 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt_vect"
+
+\end_inset
+
+.
+ De este modo, un punto 
+\begin_inset Formula $x$
+\end_inset
+
+ es Pareto óptimo si es factible y, para todo 
+\begin_inset Formula $y$
+\end_inset
+
+ factible, 
+\begin_inset Formula $f_{0}(y)\leq_{K}\,f_{0}(x)$
+\end_inset
+
+ implica 
+\begin_inset Formula $f_{0}(y)=f_{0}(x)$
+\end_inset
+
+.
+ En otras palabras: cualquier punto factible 
+\begin_inset Formula $y$
+\end_inset
+
+ que es mejor o igual que 
+\begin_inset Formula $x$
+\end_inset
+
+ (es decir 
+\begin_inset Formula $f_{0}(y)\leq_{K}\,f_{0}(x)$
+\end_inset
+
+) tiene exactamente el mismo valor objetivo que 
+\begin_inset Formula $x$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+De manera formal, un punto 
+\begin_inset Formula $x$
+\end_inset
+
+ es Pareto óptimo si y solo sí es factible y además:
+\begin_inset Formula 
+\[
+\left(f_{0}(x)-K\right)\cap\mathcal{O}=\left\{ f_{0}(x)\right\} 
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Un problema de optimización vectorial puede tener varios valores óptimos
+ de Pareto (y varios puntos).
+ El conjunto de valores óptimos de Pareto, denotado por 
+\begin_inset Formula $P$
+\end_inset
+
+, satisface:
+\begin_inset Formula 
+\[
+P\subseteq\mathcal{O\cap\text{\textbf{bd}}\mathcal{O}}
+\]
+
+\end_inset
+
+siendo 
+\begin_inset Formula $\text{\textbf{bd}}$
+\end_inset
+
+ la frontera o 
+\emph on
+boundary
+\emph default
+.
+ Es decir, todo valor óptimo de Pareto es un valor objetivo alcanzable que
+ cae en la frontera del conjunto de valores objetivos alcanzables.
+ Todos estos conceptos se ilustran en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Pareto_grafico"
+
+\end_inset
+
+.
+ 
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap6/pareto_optimo.PNG
+	lyxscale 30
+	width 50col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Pareto_grafico"
+
+\end_inset
+
+El conjunto de valores alcanzables 
+\begin_inset Formula $\mathcal{O}$
+\end_inset
+
+ para un problema de optimización vectorial con valores objetivo en 
+\begin_inset Formula $\mathbb{R}^{2}$
+\end_inset
+
+, con cono 
+\begin_inset Formula $K=\mathbb{R}_{++}^{2},$
+\end_inset
+
+ se muestra sombreado.
+ Este problema no tiene un punto o valor óptimo, pero sí tiene un conjunto
+ de puntos óptimos de Pareto, cuyos valores correspondientes aparecen marcados
+ en la curva negra en la parte baja de la izquierda de la frontera de 
+\begin_inset Formula $\mathcal{O}$
+\end_inset
+
+.
+ El punto marcado como 
+\begin_inset Formula $f_{0}(x^{po})$
+\end_inset
+
+ es un valor óptimo de Pareto, y 
+\begin_inset Formula $x^{po}$
+\end_inset
+
+ es un punto óptimo de Pareto.
+ La región marcada más suave corresponde a 
+\begin_inset Formula $f_{0}(x^{po})-K$
+\end_inset
+
+, y compone el conjunto de todos los puntos 
+\begin_inset Formula $z\in\mathbb{R}^{2}$
+\end_inset
+
+ correspondientes a valores objetivos mejores que (o iguales a) 
+\begin_inset Formula $f_{0}(x^{po})$
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Boyd2004"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Escalarización
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Escalarización"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La escalarización es una técnica estándar para encontrar puntos Pareto óptimos
+ en problemas de optimización vectorial.
+ Supóngase un vector 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ tal que 
+\begin_inset Formula $\lambda>_{K^{*}}0$
+\end_inset
+
+, es decir, un vector que sea positivo en la desigualdad dual generalizada.
+ Ahora consideremos el problema de optimización escalar:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\text{minimize} & \quad\lambda^{T}f_{0}(x)\\
+\text{subject to} & \quad f_{i}(x)\leq0,\quad i=1,\ldots,m\\
+ & \quad h_{i}(x)=0,\quad i=1,\ldots,p
+\end{aligned}
+\label{eq:opt_escalariza}
+\end{equation}
+
+\end_inset
+
+y definamos 
+\begin_inset Formula $x$
+\end_inset
+
+ como un punto óptimo.
+ Entonces 
+\begin_inset Formula $x$
+\end_inset
+
+ es Pareto optimo para el problema de optimización vectorial 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt_vect"
+
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Boyd2004"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Mediante la técnica de escalarización, podemos encontrar puntos Pareto óptimo
+ para cualquier problema de optimización vectorial mediante la resolución
+ de un problema de optimización escalar ordinario 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt_escalariza"
+
+\end_inset
+
+.
+ La única condición es que el vector 
+\begin_inset Formula $\lambda$
+\end_inset
+
+, a veces llamado vector de pesos, debe satisfacer 
+\begin_inset Formula $\lambda>_{K^{*}}0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Optimización multiobjetivo
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Optimización-multiobjetivo"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Cuando el problema de optimización vectorial involucra al cono 
+\begin_inset Formula $K=\mathbb{R}_{+}^{q}$
+\end_inset
+
+, se le denomina problema de optimización 
+\emph on
+multicriterio
+\emph default
+ o 
+\emph on
+multiobjetivo
+\emph default
+.
+ Las componentes de 
+\begin_inset Formula $f_{0},$
+\end_inset
+
+ digamos 
+\begin_inset Formula $F_{1},\ldots,F_{q}$
+\end_inset
+
+, pueden ser interpretadas como 
+\begin_inset Formula $q$
+\end_inset
+
+ objetivos escalares diferentes, cada uno de los cuales querremos minimizar.
+ Nos referiremos a 
+\begin_inset Formula $F_{1}$
+\end_inset
+
+ como el objetivo 
+\begin_inset Formula $i$
+\end_inset
+
+-ésimo del problema.
+ Un problema de optimización multiobjetivo es convexo si 
+\begin_inset Formula $f_{1},\ldots,f_{q}$
+\end_inset
+
+ son convexos, 
+\begin_inset Formula $h_{1},\ldots,h_{p}$
+\end_inset
+
+ son afines, y los objetivos 
+\begin_inset Formula $F_{1},\ldots,F_{q}$
+\end_inset
+
+ son convexos.
+\end_layout
+
+\begin_layout Standard
+En un problema multiobjetivo, un punto óptimo 
+\begin_inset Formula $x^{\star}$
+\end_inset
+
+ satisface:
+\begin_inset Formula 
+\[
+F_{i}(x^{\star})\leq F_{i}(y),\qquad i=1,\ldots,q
+\]
+
+\end_inset
+
+para todo 
+\begin_inset Formula $y$
+\end_inset
+
+ factible.
+ En otras palabras, 
+\begin_inset Formula $x^{\star}$
+\end_inset
+
+ es simultáneamente óptimo para cada uno de los problemas escalares:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\text{minimize} & \quad F_{j}(x)\\
+\text{subject to} & \quad f_{i}(x)\leq0,\quad i=1,\ldots,m\\
+ & \quad h_{i}(x)=0,\quad i=1,\ldots,p
+\end{aligned}
+\label{eq:opt_multiobjetivo}
+\end{equation}
+
+\end_inset
+
+para 
+\begin_inset Formula $j=1,\ldots,q$
+\end_inset
+
+.
+ Cuando únicamente hay un punto óptimo, se dice que los objetivos son 
+\emph on
+no competitivos
+\emph default
+, pues no se deberá llegar a ningún compromiso entre los objetivos; cada
+ objetivo es tan pequeño como podría ser, incluso si los demás fuesen ignorados.
+\end_layout
+
+\begin_layout Standard
+Un punto óptimo de Pareto 
+\begin_inset Formula $x^{po}$
+\end_inset
+
+ satisface lo siguiente: si 
+\begin_inset Formula $y$
+\end_inset
+
+ es factible y 
+\begin_inset Formula $F_{i}(y)\leq F_{i}(x^{po})$
+\end_inset
+
+ para 
+\begin_inset Formula $i=1,\ldots,q$
+\end_inset
+
+, entonces 
+\begin_inset Formula $F_{i}(x^{po})=F_{i}(y)$
+\end_inset
+
+, 
+\begin_inset Formula $i=1,\ldots,q$
+\end_inset
+
+.
+ Esto se puede reformular como: un punto es Pareto óptimo sí y solo sí es
+ factible y no hay otro punto factible mejor.
+\end_layout
+
+\end_body
+\end_document

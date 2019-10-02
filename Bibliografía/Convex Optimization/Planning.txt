@@ -1,0 +1,23 @@
+Hola Daniel,
+
+Se me había pasado enviarte el material que estuvimos comentando.
+
+Estos son dos libros y dos cursos que cubren "Reinforcement learning" y
+"Convex optimization":
+
+- "Reinforcement Learning: An Introduction" by R. Sutton and A. Barto
+Libro: https://www.dropbox.com/s/b3psxv2r0ccmf80/book2015oct.pdf?dl=0
+Videocurso de otros autores:
+https://www.udacity.com/course/reinforcement-learning--ud600
+
+
+- "Convex Optimization", by S. Boyd and L. Vandenberghe
+Libro: http://stanford.edu/~boyd/cvxbook/bv_cvxbook.pdf
+Página del libro: http://stanford.edu/~boyd/cvxbook/
+Videolectures: https://www.youtube.com/view_play_list?p=3940DD956CDF0622
+
+
+Ya hablaremos de "Deep learning" en Septiembre.
+
+
+Escríbenos o llámame al móvil si necesitas algo (móvil: 66 33 66 523)

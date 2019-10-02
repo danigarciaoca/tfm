@@ -1,0 +1,1558 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass book
+\begin_preamble
+\usepackage{hyperref}
+
+\usepackage{changepage}
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing double
+\use_hyperref false
+\papersize a4paper
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 0
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style plainnat
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.5in
+\topmargin 1.6in
+\rightmargin 1.2in
+\bottommargin 1.6in
+\headheight 1.5in
+\headsep 0.3in
+\footskip 0.8in
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle plain
+\bullet 1 2 6 -1
+\bullet 2 2 12 -1
+\bullet 3 1 25 -1
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+
+\series bold
+\size largest
+UNIVERSIDAD POLITÉCNICA DE MADRID
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+
+\size largest
+ESCUELA TÉCNICA SUPERIOR
+\begin_inset Newline newline
+\end_inset
+
+DE INGENIEROS DE TELECOMUNICACIÓN
+\size default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace*{0.9cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Images/Cover/LOGO_ESCUELA.png
+	scale 60
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace*{0.6cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+
+\series bold
+\size largest
+MÁSTER UNIVERSITARIO EN INGENIERÍA
+\begin_inset Newline newline
+\end_inset
+
+DE TELECOMUNICACIÓN
+\series default
+\size huge
+\noun on
+
+\begin_inset Newline newline
+\end_inset
+
+
+\size default
+\noun default
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace*{0.1cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+
+\size largest
+\noun on
+TRABAJO FIN DE MÁSTER
+\size default
+\noun default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace*{3.5cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{adjustwidth}{-1cm}{-1cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+
+\series bold
+\size largest
+\noun on
+ESTUDIO Y DESARROLLO DE ALGORITMOS
+\begin_inset Newline newline
+\end_inset
+
+DE APRENDIZAJE POR REFUERZO A PARTIR
+\begin_inset Newline newline
+\end_inset
+
+DE LA TEORÍA DE OPTIMIZACIÓN DUAL
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{adjustwidth}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+
+\series bold
+\size large
+\begin_inset VSpace vfill
+\end_inset
+
+DANIEL M.
+ GARCÍA-OCAÑA HERNÁNDEZ
+\begin_inset Newline newline
+\end_inset
+
+ 2017
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newpage
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace*{2cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newpage
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace*{1cm}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{adjustwidth}{-1cm}{-1cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+
+\series bold
+\size largest
+\noun on
+ESTUDIO Y DESARROLLO DE ALGORITMOS
+\begin_inset Newline newline
+\end_inset
+
+DE APRENDIZAJE POR REFUERZO A PARTIR
+\begin_inset Newline newline
+\end_inset
+
+DE LA TEORÍA DE OPTIMIZACIÓN DUAL
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{adjustwidth}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace*{1cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+
+\series bold
+\size larger
+Daniel M.
+ García-Ocaña Hernández
+\size large
+
+\begin_inset Newline newline
+\end_inset
+
+Tutor: D.
+ Santiago Zazo Bello
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace*{5.5cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+\noindent
+\align center
+
+\series bold
+\begin_inset Graphics
+	filename Images/Cover/logos_SSR.png
+	scale 70
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Images/Cover/logos_GAPS.png
+	scale 20
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Grupo de Aplicaciones de Procesado de Señales
+\begin_inset Newline newline
+\end_inset
+
+Departamento de Señales, Sistemas y Radiocomunicaciones
+\begin_inset Newline newline
+\end_inset
+
+Escuela Técnica Superior de Ingenieros de Telecomunicación
+\begin_inset Newline newline
+\end_inset
+
+Universidad Politécnica de Madrid 
+\begin_inset Newline newline
+\end_inset
+
+ Junio 2017
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newpage
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace*{20cm}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newpage
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+
+\series bold
+\size larger
+TRABAJO FIN DE MÁSTER
+\size large
+
+\begin_inset Newline newline
+\end_inset
+
+
+\series default
+\size default
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="2">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<row>
+<cell multicolumn="1" alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset VSpace 0.3cm
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Título:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Estudio y desarrollo de algoritmos de aprendizaje por refuerzo 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a partir de la teoría de optimización dual
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color white
+Departamento:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\color white
+Señales, Sistemas y Radiocomunicaciones
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="2">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Autor:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+D.
+ Daniel M.
+ García-Ocaña Hernández
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color white
+Departamento:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\color white
+Señales, Sistemas y Radiocomunicaciones
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="2">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Tutor:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+D.
+ Santiago Zazo Bello
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color white
+Departamento:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\color white
+Señales, Sistemas y Radiocomunicaciones
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="2">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Departamento:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Señales, Sistemas y Radiocomunicaciones
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset VSpace 2cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+
+\series bold
+\size larger
+MIEMBROS DEL TRIBUNAL
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="2">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<row>
+<cell multicolumn="1" alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset VSpace 0.3cm
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Presidente:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+D.
+ 
+\begin_inset Formula $\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color white
+Departamento:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\color white
+D.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="2">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Vocal:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+D.
+ 
+\begin_inset Formula $\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color white
+Departamento:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\color white
+D.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="2">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Secretario:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+D.
+ 
+\begin_inset Formula $\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color white
+Departamento:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\color white
+D.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="2">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Suplente:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+D.
+ 
+\begin_inset Formula $\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color white
+Departamento:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\color white
+D.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset VSpace vfill
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+
+\series bold
+\size larger
+FECHA DE LECTURA:
+\begin_inset Formula $\qquad$
+\end_inset
+
+________________
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset VSpace 0.2cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+
+\series bold
+\size larger
+CALIFICACIÓN:
+\begin_inset Formula $\qquad$
+\end_inset
+
+____________________
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newpage
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace*{2cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newpage
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+pagenumbering{roman} 
+\backslash
+setcounter{page}{1}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\color white
+a
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 1.1cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+
+\series bold
+\size giant
+\color black
+Resumen
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 1.3cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Uno de los problemas más importantes en el campo de aprendizaje automático
+ es la toma de decisiones para conseguir un objetivo.
+ Este tipo de problemas se suele denominar aprendizaje secuencial, y uno
+ de los marcos de trabajo más prometedores es el denominado aprendizaje
+ por refuerzo.
+ Históricamente, los algoritmos de aprendizaje por refuerzo han sido motivados
+ principalmente estableciendo conexiones con la teoría de control óptimo.
+ 
+\end_layout
+
+\begin_layout Standard
+En la actualidad existen diversos algoritmos de aprendizaje por refuerzo
+ que implementan programación dinámica estimando la función valor del problema
+ de forma estocástica, es decir, a partir de muestras y sin conocimiento
+ previo de los datos del problema.
+ Aunque estos algoritmos son completamente válidos, resulta interesante
+ buscar nuevas interpretaciones que den lugar a nuevos algoritmos capaces
+ de mejorar el desempeño de los ya existentes.
+\end_layout
+
+\begin_layout Standard
+El objetivo de este Trabajo de Fin de Máster será el estudio y desarrollo
+ de nuevos algoritmos de aprendizaje por refuerzo desde el punto de vista
+ de la teoría de optimización.
+ Para ello, se llevará a cabo una revisión de los fundamentos sobre los
+ que se construye el campo del aprendizaje por refuerzo: los procesos de
+ decisión de Markov y las ecuaciones de Bellman.
+ Seguidamente, se hará una breve presentación de los conceptos fundamentales
+ relativos a optimización convexa y teoría de la dualidad, y finalmente,
+ se estudiará el estado del arte en lo que a los algoritmos de aprendizaje
+ por refuerzo se refiere.
+\end_layout
+
+\begin_layout Standard
+Una vez completada la fase de revisión de estas teorías, se investigará
+ la conexión entre el problema de control óptimo y su formulación como un
+ problema de programación lineal, con la intención de desarrollar nuevos
+ algoritmos de optimización estocástica que resuelvan el problema de aprendizaje
+ por refuerzo.
+ De este modo, se derivará el problema dual asociado a dicho programa lineal,
+ y será precisamente a partir de esta formulación dual de la que se deriven
+ importantes propiedades que darán pie a tomar un nuevo enfoque diferente
+ de lo estudiado hasta ahora: la búsqueda en el espacio de políticas a través
+ de la variable dual.
+\end_layout
+
+\begin_layout Standard
+Por último, se formalizarán dos algoritmos que empleen el método primal-dual
+ desarrollado: uno para la resolución de problemas de pequeña escala, y
+ su correspondiente extensión a problemas de gran escala, y se realizarán
+ diversas pruebas de convergencia y comparación de resultados con algunas
+ de las técnicas más empleadas en la actualidad, con el objetivo de evaluar
+ la utilidad e idoneidad del algoritmo formulado.
+\end_layout
+
+\begin_layout Section*
+Palabras clave
+\end_layout
+
+\begin_layout Standard
+Control óptimo, programación dinámica, aprendizaje por refuerzo, proceso
+ de decisión de Markov, teoría de control, gradiente en la política, dualidad,
+ aprendizaje máquina, aprendizaje secuencial, ecuación de Bellman.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newpage
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\color white
+a
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 1.1cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+
+\series bold
+\size giant
+\color black
+Abstract
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 1.3cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+One of the most important problems in machine learning is the task of decision
+ making in order to achieve a target.
+ This problem is usually referred to as sequential learning, and one of
+ the most promising working frameworks is the so called reinforcement learning.
+ Historically, reinforcement learning algorithms have been driven by establishin
+g connections with optimal control theory.
+\end_layout
+
+\begin_layout Standard
+Currently, there exist several reinforcement learning algorithms implementing
+ dynamic programming by estimating the value function of the problem in
+ an stochastic manner, i.e., from samples and without knowledge of problem’s
+ environment.
+ Even though these algorithms are completely valid, it seems interesting
+ to seek for new interpretations which can lead to new algorithms able to
+ improve the performance of existing ones.
+\end_layout
+
+\begin_layout Standard
+The aim of this master’s thesis is the study and development of new reinforcemen
+t learning algorithms from the optimization theory approach.
+ With that goal in mind, a review of reinforcement learning basis will be
+ initially done, covering Markov decision processes and Bellman equations.
+ Following, fundamentals of convex optimization and duality will be introduced
+ and finally, it will be studied the state of the art, in terms of reinforcement
+ learning algorithms.
+\end_layout
+
+\begin_layout Standard
+Once this theoretical review had been completed, it will be investigated
+ the connection between optimal control problem and its formulation as a
+ linear program, with the intention of developing new stochastic optimization
+ algorithms which solves reinforcement learning problem.
+ After having this linear program form, the dual problem associated with
+ this optimization problem will be formulated, and it will be from the dual
+ form, from which important properties will be obtained.
+ These properties will be the basis of a new approach, different from that
+ currently studied in this field: the search in the policy space through
+ dual variable.
+\end_layout
+
+\begin_layout Standard
+Finally, two algorithms using this primal-dual method will be formalized:
+ one oriented to solve small scale problems, and its extension to big scale
+ problems.
+ In order to evaluate the performance of this novel algorithms, a batch
+ of typical reinforcement learning problems will be used, and the results
+ will be compared with those obtained when solving the same problems with
+ some of the most used algorithms nowadays.
+\end_layout
+
+\begin_layout Section*
+Keywords
+\end_layout
+
+\begin_layout Standard
+Optimal control, dynamic programming, reinforcement learning, Markov decision
+ process, control theory, policy gradient, duality, machine learning, sequential
+ learning, Bellman equation.
+\end_layout
+
+\begin_layout Chapter*
+Agradecimientos
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+En primer lugar quiero agradecer a Santiago la oportunidad que me ha dado
+ de introducirme en este campo de la inteligencia artificial que ha despertado
+ tanto interés en mi, y a Sergio todo el tiempo que ha dedicado a ayudarme
+ a resolver los problemas que me iban surgiendo.
+ Sin vosotros no habría sido posible llevar a cabo este gran trabajo que
+ hemos realizado.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+De igual manera, quiero darle las gracias a varias personas que han estado
+ siempre presente, en las duras y en las maduras, tanto estos dos años de
+ máster como todos los años anteriores desde que les conocí en el instituto:
+ la gente de Le Groupè.
+ Aunque nos hayamos podido distanciar más o menos en estos dos años, siempre
+ que he necesitado un respiro, quejarme o celebrar algo bueno que me haya
+ podido pasar habéis estado ahí.
+ Diego, Romo, Gabri, Miguel, Héctor, Iván, Jony: gracias por estar ahí.
+ Incluso muy a mi pesar, tengo que darle las gracias a Sergio, que con nuestros
+ más y nuestros menos, se ha portado bien cuando lo he necesitado.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Igual de importante es de agradecer el apoyo de mis queridos 
+\begin_inset Quotes fld
+\end_inset
+
+vesinos
+\begin_inset Quotes frd
+\end_inset
+
+: Puri, Antonio, y especialmente Nacho y Joaquín.
+ Gi, Juako, habéis sufrido y disfrutado conmigo prácticamente toda mi vida.
+ Desde luego que muchas veces no habría sacado las ganas de seguir si no
+ fuese por el apoyo de gente como vosotros, que ha confiado en que era capaz
+ de hacerlo y que valía para esto.
+ Muchas gracias.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Por último pero no menos importante, agradecer el apoyo continuo de mi familia,
+ de mis padres y mi hermano.
+ Vosotros os habéis llevado la peor parte de la historia: aguantar mis frustraci
+ones en casa.
+ Después de estos 6 años, quiero pediros perdón por las manías que me habéis
+ tenido que aguantar y daros las gracias por el apoyo incondicional que
+ me habéis ofrecido.
+ Gracias por haberme dado todo el cariño que teníais dentro y todo vuestro
+ tiempo.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\shape italic
+Daniel M.
+ García-Ocaña Hernández.
+\end_layout
+
+\begin_layout Standard
+
+\shape italic
+2017.
+\end_layout
+
+\end_body
+\end_document

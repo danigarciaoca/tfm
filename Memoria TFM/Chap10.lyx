@@ -1,0 +1,3549 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass book
+\begin_preamble
+\usepackage{optidef}
+\usepackage[bottom]{footmisc}
+\input{spanishPseudoAlgorithmic} % mi archivo de traducción
+\renewcommand\spanishtablename{Tabla}
+
+\usepackage{mathtools}
+
+\AtBeginDocument{
+  \def\labelitemii{\ding{71}}
+  \def\labelitemiii{\ding{111}}
+  \def\labelitemiv{\(\vartriangleright\)}
+}
+
+
+\usepackage{babel}
+\addto\shorthandsspanish{\spanishdeactivate{~<>}}
+\end_preamble
+\use_default_options false
+\begin_modules
+theorems-ams-bytype
+theorems-chap-bytype
+theorems-ams-extended-bytype
+\end_modules
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding iso8859-15
+\fontencoding T1
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing double
+\use_hyperref true
+\pdf_bookmarks false
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref section
+\pdf_pdfusetitle false
+\papersize a4paper
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 2
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.5in
+\topmargin 1.6in
+\rightmargin 1.2in
+\bottommargin 1.6in
+\headheight 1.5in
+\headsep 0.3in
+\footskip 0.8in
+\secnumdepth 2
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle plain
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset FormulaMacro
+\renewcommand{\T}{\mathcal{\top}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\S}{\mathcal{S}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\A}{\mathcal{A}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\R}{\mathcal{R}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\P}{\mathcal{P}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Pr}{\mathbb{P}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Sa}{\mathbb{S}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Ba}{\mathbb{B}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Na}{\mathbb{N}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Extensión del algoritmo BDA-MF a problemas de gran escala
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+chaptermark{ALGORITMO BDA-MF EN PROBLEMAS DE GRAN ESCALA}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:cap10BDAMF"
+
+\end_inset
+
+ se ha presentado el algoritmo Bellman-ascenso dual libre de modelo (BDA-MF),
+ el cual permitía resolver problemas de aprendizaje por refuerzo de pequeña
+ escala.
+ Lo que ahora se propone es la extensión de este algoritmo al caso en que
+ los conjuntos de estados y acciones sean muy grandes o continuos.
+ Para ello, se hará uso de aproximaciones de la función valor de la misma
+ forma que se explicaron en el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:solucionEcuBellmanAprox"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+v^{\pi}\left(s,\omega\right)=\bar{\phi}(s)^{T}\omega\label{eq:pre_aprox_lin}
+\end{equation}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+q\left(s,a_{m},\theta\right)=\phi\left(s,a_{m}\right)^{T}\theta
+\end{equation}
+
+\end_inset
+
+es decir, aproximaciones lineales.
+ En concreto, para el algoritmo BDA-MF se empleará la descrita por 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:pre_aprox_lin"
+
+\end_inset
+
+, pues se trabajará con la función valor de estados.
+\end_layout
+
+\begin_layout Standard
+Para evaluar el comportamiento del nuevo algoritmo derivado, se probará
+ en dos problemas típicos: el primero de ellos será el problema del paseo
+ por la cadena (
+\emph on
+chain walk
+\emph default
+).
+ Aunque el espacio de estados y de acciones de este problema sea pequeño
+ y discreto, servirá como prueba de concepto para verificar que BDA-MF con
+ aproximación lineal de la función valor funciona.
+ Tras ello, se pasará a probar en un problema de mayor complejidad donde
+ el espacio de estados es continuo y el de acciones se mantiene pequeño
+ y discreto.
+ Este problema se conoce en la literatura como el problema del coche de
+ montaña (
+\emph on
+mountain car
+\emph default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Sutton98a"
+
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Standard
+Por último, recalcar que nos centraremos únicamente en la versión libre
+ de modelo por ser la de mayor utilidad en la práctica.
+\end_layout
+
+\begin_layout Section
+Algoritmo Bellman-ascenso dual con aproximación lineal de funciones
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+sectionmark{
+\backslash
+protect
+\backslash
+parbox{0.7
+\backslash
+textwidth}{ALGORITMO BDALA}}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para derivar este nuevo algoritmo, habrá que partir de la formulación del
+ problema primal 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:primal"
+
+\end_inset
+
+, pero esta vez sustituyendo 
+\begin_inset Formula $v$
+\end_inset
+
+ por su versión aproximada.
+ Teniendo en cuenta que la forma vectorial de 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:pre_aprox_lin"
+
+\end_inset
+
+ es la siguiente:
+\begin_inset Formula 
+\[
+v^{\pi}=\overline{\Phi}\omega
+\]
+
+\end_inset
+
+donde 
+\begin_inset Formula $\overline{\Phi}$
+\end_inset
+
+ será la matriz de dimensión 
+\begin_inset Formula $S\times N$
+\end_inset
+
+ de funciones base dada por 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:matriz_basis"
+
+\end_inset
+
+, el problema primal correspondiente será:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\underset{v}{\text{minimize}} & \quad\mu^{T}\overline{\Phi}\omega\\
+\text{subject to} & \quad\Xi^{T}\overline{\Phi}\omega\geq\R+\gamma\P\overline{\Phi}\omega
+\end{aligned}
+\label{eq:primal_aprox}
+\end{equation}
+
+\end_inset
+
+con Lagrangiano:
+\begin_inset Formula 
+\[
+\mathcal{L}(v,d)=\mu^{T}\overline{\Phi}\omega+d^{T}\left(\R+\gamma\P\overline{\Phi}\omega-\Xi^{T}\overline{\Phi}\omega\right),\qquad d\geq0
+\]
+
+\end_inset
+
+Expresado en formal escalar:
+\begin_inset Formula 
+\[
+\mathcal{L}(v,d)=\sum_{s\in\S}\mu(s)\bar{\phi}(s)^{T}\omega+\sum_{s\in\S}\sum_{a\in\A}d(s,a)\left(\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}\bar{\phi}(s')^{T}\omega-\bar{\phi}(s)^{T}\omega\right)
+\]
+
+\end_inset
+
+siendo 
+\begin_inset Formula $d(s,a)\geq0,\,\forall s\in\S$
+\end_inset
+
+ y 
+\begin_inset Formula $\forall a\in\A$
+\end_inset
+
+, y 
+\begin_inset Formula $\bar{\phi}$
+\end_inset
+
+ el vector de características de longitud 
+\begin_inset Formula $N$
+\end_inset
+
+ que representa el estado 
+\begin_inset Formula $s$
+\end_inset
+
+, dado por 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:vect_basis"
+
+\end_inset
+
+.
+ Lo siguiente que se deberá hacer es adaptar la formulación Bellman-ascenso
+ dual al caso aproximado:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}v_{k+1}\coloneqq\; & v^{\pi_{d_{k}}}\in\mathcal{F}^{PR}\\
+d_{k+1}\coloneqq\; & \left[d_{k}+\alpha\nabla_{d}\mathcal{L}(v_{k+1},d)\right]_{+}
+\end{aligned}
+\label{eq:BDA_general}
+\end{equation}
+
+\end_inset
+
+donde 
+\begin_inset Formula $\mathcal{F}^{PR}$
+\end_inset
+
+ es la región factible del problema primal.
+ Para ello, nuevamente distinguiremos las etapas de predicción y de control.
+\end_layout
+
+\begin_layout Subsection
+Predicción
+\end_layout
+
+\begin_layout Standard
+La actualización de la variable primal de 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:BDA_general"
+
+\end_inset
+
+, como se vio en capítulos anteriores, se corresponderá con la etapa de
+ predicción.
+ Una vez más, para obtener la función valor para la política dada por la
+ variable dual 
+\begin_inset Formula $d_{k}$
+\end_inset
+
+, se resolverá la ecuación de Bellman para la función valor de estados.
+ Dado que ahora se están usando aproximaciones lineales, la evaluación de
+ la política consistirá en encontrar el parámetro 
+\begin_inset Formula $\omega$
+\end_inset
+
+ óptimo que resuelva la ecuación de Bellman proyectada, tal y como se explicó
+ en la subsección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:predicción_linearAprox"
+
+\end_inset
+
+.
+ Recordando las expresiones 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:linear-approx-cov"
+
+\end_inset
+
+–
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:linear-feature-reward-cov"
+
+\end_inset
+
+ y adaptándolas para el caso de la función valor de estados, se llega a
+ que 
+\begin_inset Formula $\omega^{*}$
+\end_inset
+
+ se puede obtener de la siguiente manera:
+\begin_inset Formula 
+\begin{equation}
+\omega^{*}=\left(\overline{\Gamma}-\gamma\overline{\Lambda}\right)^{-1}\overline{z}\label{eq:optimal-linear-state-action-param-vfunc}
+\end{equation}
+
+\end_inset
+
+definiéndose:
+\begin_inset Formula 
+\begin{align}
+\overline{\Gamma} & \triangleq\overline{\Phi}^{\T}\overline{D}\overline{\Phi}\label{eq:linear-approx-cov-vfunc}\\
+\overline{\Lambda} & \triangleq\overline{\Phi}^{\T}\overline{D}\mathcal{\mathit{\Pi}P}\overline{\Phi}\label{eq:linear-approx-transition-cross-cov-vfunc}\\
+\overline{z} & \triangleq\overline{\Phi}^{\T}\overline{D}\mathit{\Pi}\R\label{eq:linear-feature-reward-cov-vfunc}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Dado que se está considerando el caso en que se desconoce el modelo, habrá
+ que aproximar los términos 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:linear-approx-cov-vfunc"
+
+\end_inset
+
+–
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:linear-feature-reward-cov-vfunc"
+
+\end_inset
+
+ a partir de muestras y finalmente resolver 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:optimal-linear-state-action-param-vfunc"
+
+\end_inset
+
+ con los términos aproximados.
+ Para ello, se empleará el método LSTD que, como se pudo ver, implementa
+ esta solución basada en muestras.
+ La versión del algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:LSTD-q"
+
+\end_inset
+
+ adaptada para las funciones valor de estados se detalla en el algoritmo
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:LSTD-v"
+
+\end_inset
+
+, y será por tanto el que se use en la etapa de predicción.
+\begin_inset Float algorithm
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{algorithmic}[1]  	
+\backslash
+Require {$
+\backslash
+pi$, la política a ser evaluada.
+ Funciones base $
+\backslash
+bar{
+\backslash
+phi}$.} 	
+\backslash
+Ensure {$
+\backslash
+omega$, el parámetro estimado para la aproximación lineal de $v^
+\backslash
+pi$.} 	
+\backslash
+State Inicializar $
+\backslash
+overline{
+\backslash
+Gamma} = 0_{N
+\backslash
+times N}$, $
+\backslash
+overline{
+\backslash
+Lambda} = 0_{N
+\backslash
+times N}$, $
+\backslash
+overline{z}=0_N$ 	
+\backslash
+Repeat (para cada episodio) 		
+\backslash
+State Inicializar $s$ y observar $
+\backslash
+bar{
+\backslash
+phi}(s)$ 		
+\backslash
+Repeat (para cada paso en el episodio) 			
+\backslash
+State Tomar la acción $a$ y observar $r,s',
+\backslash
+bar{
+\backslash
+phi}(s')$ 			
+\backslash
+State Escoger la acción $a'	
+\backslash
+sim	
+\backslash
+pi (
+\backslash
+cdot|s)$ 			
+\backslash
+State $
+\backslash
+overline{
+\backslash
+Gamma} 	
+\backslash
+gets 	
+\backslash
+overline{
+\backslash
+Gamma} + 
+\backslash
+bar{
+\backslash
+phi}(s) 
+\backslash
+bar{
+\backslash
+phi}(s)^T$ 			
+\backslash
+State $
+\backslash
+overline{
+\backslash
+Lambda} 	
+\backslash
+gets 	
+\backslash
+overline{
+\backslash
+Lambda} + 
+\backslash
+bar{
+\backslash
+phi}(s) 
+\backslash
+bar{
+\backslash
+phi}(s')^T$ 			
+\backslash
+State $
+\backslash
+overline{z}	
+\backslash
+gets 	
+\backslash
+overline{z} + 
+\backslash
+bar{
+\backslash
+phi}(s) r$ 			
+\backslash
+State $s 
+\backslash
+gets s'$ 			
+\backslash
+State $a 
+\backslash
+gets a'$ 		
+\backslash
+Until{$s$ sea terminal} 	
+\backslash
+Until{no podamos correr más episodios}  	
+\backslash
+State Calcular: $
+\backslash
+omega = 
+\backslash
+left(
+\backslash
+overline{
+\backslash
+Gamma}-
+\backslash
+gamma
+\backslash
+overline{
+\backslash
+Lambda}
+\backslash
+right)^{-1}
+\backslash
+overline{z}$ 	
+\backslash
+State 
+\backslash
+Return{$
+\backslash
+hat{v}_
+\backslash
+omega = 
+\backslash
+overline{
+\backslash
+Phi}
+\backslash
+omega$} 
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:LSTD-v"
+
+\end_inset
+
+Algoritmo LSTD para la evaluación de la política sobre las funciones valor
+ de estados.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Control
+\end_layout
+
+\begin_layout Standard
+La actualización de la variable dual de 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:BDA_general"
+
+\end_inset
+
+ se corresponderá con la etapa de control.
+ Para poder presentar el algoritmo de control, se define a continuación
+ el gradiente del Lagrangiano respecto de la variable dual:
+\begin_inset Formula 
+\[
+\begin{aligned}\nabla_{d}\mathcal{L}(v_{k+1},d) & =\quad\nabla_{d}\left(\mu^{T}v_{k+1}+d^{T}\left(\R+\gamma\P v_{k+1}-\Xi^{T}v_{k+1}\right)\right)\\
+ & =\quad\nabla_{d}\left(\mu^{T}\overline{\Phi}\omega_{k+1}+d^{T}\left(\R+\gamma\P\overline{\Phi}\omega_{k+1}-\Xi^{T}\overline{\Phi}\omega_{k+1}\right)\right)\\
+ & =\quad\R+\gamma\P\overline{\Phi}\omega_{k+1}-\Xi^{T}\overline{\Phi}\omega_{k+1}\\
+ & =\quad\nabla_{d}\mathcal{L}(\omega_{k+1},d)
+\end{aligned}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+De este modo, se podrá reescribir 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:BDA_general"
+
+\end_inset
+
+ en términos del vector de parámetros:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\omega_{k+1}\coloneqq\; & \omega^{\pi_{d_{k}}}\in\mathcal{F}^{PR}\\
+d_{k+1}\coloneqq\; & \left[d_{k}+\alpha\nabla_{d}\mathcal{L}(\omega_{k+1},d)\right]_{+}
+\end{aligned}
+\label{eq:BDA_aprox}
+\end{equation}
+
+\end_inset
+
+y sustituyendo el gradiente:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\omega_{k+1}\coloneqq\; & \omega^{\pi_{d_{k}}}\in\mathcal{F}^{PR}\\
+d_{k+1}\coloneqq\; & \left[d_{k}+\alpha\left(\R+\gamma\P\overline{\Phi}\omega_{k+1}-\Xi^{T}\overline{\Phi}\omega_{k+1}\right)\right]_{+}
+\end{aligned}
+\label{eq:BDA_aprox_vec}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Si expresamos la actualización de la variable dual de manera escalar, en
+ términos de las derivadas parciales:
+\begin_inset Formula 
+\[
+d_{k+1}(s,a)\coloneqq\;\left[d_{k}(s,a)+\alpha\left(\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}\bar{\phi}(s')^{T}\omega_{k+1}-\bar{\phi}(s)^{T}\omega_{k+1}\right)\right]_{+}
+\]
+
+\end_inset
+
+se aprecia que de nuevo podremos hacer una aproximación estocástica del
+ gradiente como la que se hizo en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:estima_grad"
+
+\end_inset
+
+, llegando a:
+\begin_inset Formula 
+\[
+\widehat{d}_{k+1}(s,a)\coloneqq\;\left[\widehat{d}_{k}(s,a)+\left(r+\gamma\bar{\phi}(s')^{T}\omega_{k+1}-\bar{\phi}(s)^{T}\omega_{k+1}\right)\right]_{+}
+\]
+
+\end_inset
+
+donde 
+\begin_inset Formula $s$
+\end_inset
+
+ el estado actual, 
+\begin_inset Formula $s'$
+\end_inset
+
+ el estado al que se transita y 
+\begin_inset Formula $r$
+\end_inset
+
+ la recompensa instantánea obtenida en la transición de 
+\begin_inset Formula $s$
+\end_inset
+
+ a 
+\begin_inset Formula $s'$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Bajo las mismas ideas expuestas en la subsección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Control_BDA"
+
+\end_inset
+
+, la actualización de 
+\begin_inset Formula $d$
+\end_inset
+
+ se llevará a cabo con las muestras obtenidas de correr varios episodios,
+ pues así se conseguirá una aproximación más exacta del gradiente, y por
+ consiguiente, una mejor estimación de la actualización de 
+\begin_inset Formula $d$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Todas las ideas que se han presentado se recogen en el algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:algo_control_MF_aprox"
+
+\end_inset
+
+.
+ Como vemos, la actualización de 
+\begin_inset Formula $d$
+\end_inset
+
+ se refinará de manera iterativa, bien hasta que no se disponga de más episodios
+ que correr, o bien hasta asegurar un cierto grado de convergencia 
+\begin_inset Formula $\delta_{\pi_{d}}$
+\end_inset
+
+ de la política que se vaya extrayendo en cada iteración
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{algorithmic}[1]  	
+\backslash
+Require {$
+\backslash
+omega_{k+1}$, el vector de parámetros nuevo obtenido en la etapa de predicción.
+ $d_{k}$, la variable dual actual que se quiere mejorar.
+ $
+\backslash
+alpha_{_{D}}$, la tasa de aprendizaje.
+ Funciones base $
+\backslash
+bar{
+\backslash
+phi}$.} 	
+\backslash
+Ensure {$d_{k+1}$, la variable dual mejorada.} 	
+\backslash
+State  $d(s,a)	
+\backslash
+leftarrow	d_{k}(s,a)$ 	
+\backslash
+Repeat (para cada episodio) 		
+\backslash
+State	$
+\backslash
+Delta	
+\backslash
+leftarrow	0$ 		
+\backslash
+State Inicializar $s$ 		
+\backslash
+Repeat (para cada paso en el episodio) 			
+\backslash
+State Escoger la acción $a	
+\backslash
+sim	
+\backslash
+pi_{d_{k}} (
+\backslash
+cdot|s)$ 			
+\backslash
+State $d_{antigua} 
+\backslash
+leftarrow	d(s,a)$ 			
+\backslash
+State Tomar la acción $a$ y observar $r,s',
+\backslash
+bar{
+\backslash
+phi}(s')$ 			
+\backslash
+State $d(s,a)	    
+\backslash
+gets		d(s,a) + 
+\backslash
+alpha_{_{D}} (r+
+\backslash
+gamma
+\backslash
+bar{
+\backslash
+phi}(s')^{T}
+\backslash
+omega_{k+1}-
+\backslash
+bar{
+\backslash
+phi}(s)^{T}
+\backslash
+omega_{k+1}) $ 			
+\backslash
+State $d(s,a)	    
+\backslash
+gets		
+\backslash
+max
+\backslash
+left(0,d(s,a)
+\backslash
+right)$ 			
+\backslash
+State $
+\backslash
+Delta	
+\backslash
+leftarrow	
+\backslash
+max 
+\backslash
+left[
+\backslash
+Delta, |
+\backslash
+pi_{d}
+\backslash
+left(a
+\backslash
+mid s
+\backslash
+right) - 
+\backslash
+pi_{d_{antigua}}
+\backslash
+left(a
+\backslash
+mid s
+\backslash
+right)| 
+\backslash
+right]$ 			
+\backslash
+State $s 
+\backslash
+gets s'$ 		
+\backslash
+Until{$s$ sea terminal} 	
+\backslash
+Until{no podamos correr más episodios o $
+\backslash
+Delta < 
+\backslash
+delta_{
+\backslash
+pi_{d}}$}  	
+\backslash
+State $d_{k+1}	
+\backslash
+leftarrow	d$ 	
+\backslash
+State 
+\backslash
+Return{$d_{k+1}$} 
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:algo_control_MF_aprox"
+
+\end_inset
+
+Control libre de modelo basado en aproximaciones lineales: actualización
+ mediante ascenso por gradiente estocástico en la variable dual 
+\begin_inset Formula $d$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Algoritmo Bellman-ascenso dual con aproximación lineal libre de modelo (BDALA-MF
+)
+\end_layout
+
+\begin_layout Standard
+Por último, se van a juntar las dos etapas anteriores para presentar el
+ algoritmo Bellman-ascenso dual con aproximación lineal y libre de modelo
+ (
+\emph on
+Bellman-Dual Ascent with Linear Approximation - Model Free
+\emph default
+, BDALA-MF).
+ Para ello se tendrán en cuenta las mismas consideraciones que se hicieron
+ en la subsección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:BDA-MF_presentacion"
+
+\end_inset
+
+: el bucle principal sólo se detendrá cuando no podamos correr más episodios
+ o se haya alcanzado un cierto nivel de convergencia 
+\begin_inset Formula $\delta$
+\end_inset
+
+, lo que ocurra antes; se actualizarán ambas variables a partir de la experienci
+a generada con un número 
+\begin_inset Formula $N_{epi}$
+\end_inset
+
+ reducido de episodios; se seguirá una política 
+\begin_inset Formula $\epsilon-\pi_{d_{k}}$
+\end_inset
+
+ como la que se define en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:epsilon_pi_d"
+
+\end_inset
+
+; y se hará uso de una memoria de repetición 
+\begin_inset Formula $\Sa$
+\end_inset
+
+ que permitirá emplear las mismas muestras en la etapa de predicción y de
+ control.
+\end_layout
+
+\begin_layout Standard
+El pseudocódigo de BDALA-MF se muestra en el algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:algo_MF_aprox"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{algorithmic}[1]  	
+\backslash
+Require {$
+\backslash
+alpha_{_{D}}$, la tasa de aprendizaje de la etapa de control.
+ $
+\backslash
+epsilon$, el parámetro de exploración.
+ Funciones base $
+\backslash
+bar{
+\backslash
+phi}$.} 	
+\backslash
+Ensure {$
+\backslash
+pi$, la política óptima $
+\backslash
+pi^*$ aproximada.} 	
+\backslash
+State Inicializar $
+\backslash
+overline{
+\backslash
+Gamma} = 0_{N
+\backslash
+times N}$, $
+\backslash
+overline{
+\backslash
+Lambda} = 0_{N
+\backslash
+times N}$, $
+\backslash
+overline{z}=0_N$ 	
+\backslash
+State Inicializar $d(s,a)$ con cualquier valor positivo, para todo $(s,a)
+ 
+\backslash
+in 
+\backslash
+{
+\backslash
+S
+\backslash
+times
+\backslash
+A
+\backslash
+}$ 	
+\backslash
+State  $d_{k}	
+\backslash
+leftarrow	d$ 	
+\backslash
+Repeat 
+\backslash
+Comment{Bucle principal de Bellman-ascenso dual} 		
+\backslash
+State	$
+\backslash
+xi	
+\backslash
+leftarrow	0$ 		
+\backslash
+State Inicializar la memoria de repetición $
+\backslash
+Sa =
+\backslash
+{
+\backslash
+}$ vacía 		
+\backslash
+Repeat (para cada episodio) 
+\backslash
+Comment{Etapa de predicción: evaluación de la política} 			
+\backslash
+State Inicializar $s,a$ y observar $
+\backslash
+bar{
+\backslash
+phi}(s)$ 			
+\backslash
+Repeat (para cada paso en el episodio) 				
+\backslash
+State Tomar la acción $a$ y observar $r,s',
+\backslash
+bar{
+\backslash
+phi}(s')$ 				
+\backslash
+State Escoger la acción $a'	
+\backslash
+sim	
+\backslash
+epsilon-
+\backslash
+pi_{d_{k}} (
+\backslash
+cdot|s)$ 				
+\backslash
+State Aumentar la memoria de repetición $
+\backslash
+Sa$ con la muestra actual $(s$, $a$, $r$, $s')$ 				
+\backslash
+State $
+\backslash
+overline{
+\backslash
+Gamma} 	
+\backslash
+gets 	
+\backslash
+overline{
+\backslash
+Gamma} + 
+\backslash
+bar{
+\backslash
+phi}(s) 
+\backslash
+bar{
+\backslash
+phi}(s)^T$ 				
+\backslash
+State $
+\backslash
+overline{
+\backslash
+Lambda} 	
+\backslash
+gets 	
+\backslash
+overline{
+\backslash
+Lambda} + 
+\backslash
+bar{
+\backslash
+phi}(s) 
+\backslash
+bar{
+\backslash
+phi}(s')^T$ 				
+\backslash
+State $
+\backslash
+overline{z}	
+\backslash
+gets 	
+\backslash
+overline{z} + 
+\backslash
+bar{
+\backslash
+phi}(s) r$ 				
+\backslash
+State $s 
+\backslash
+gets s'$ 				
+\backslash
+State $a 
+\backslash
+gets a'$ 			
+\backslash
+Until{$s$ sea terminal} 		
+\backslash
+Until{se hayan corrido $N_{epi}$ episodios}  		
+\backslash
+State $
+\backslash
+omega_{k+1} = 
+\backslash
+left(
+\backslash
+overline{
+\backslash
+Gamma}-
+\backslash
+gamma
+\backslash
+overline{
+\backslash
+Lambda}
+\backslash
+right)^{-1}
+\backslash
+overline{z}$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+For {para cada muestra de $
+\backslash
+Sa$} 
+\backslash
+Comment{Etapa de control: mejora de la política} 				
+\backslash
+State Recuperar $(s$, $a$, $r$, $s')$ 				
+\backslash
+State $d_{antigua} 
+\backslash
+leftarrow	d(s,a)$ 				
+\backslash
+State $d(s,a)	    
+\backslash
+gets		d(s,a) + 
+\backslash
+alpha_{_{D}} (r+
+\backslash
+gamma
+\backslash
+bar{
+\backslash
+phi}(s')^{T}
+\backslash
+omega_{k+1}-
+\backslash
+bar{
+\backslash
+phi}(s)^{T}
+\backslash
+omega_{k+1}) $ 				
+\backslash
+State $d(s,a)	    
+\backslash
+gets		
+\backslash
+max
+\backslash
+left(0,d(s,a)
+\backslash
+right)$ 				
+\backslash
+State $
+\backslash
+xi	
+\backslash
+leftarrow	
+\backslash
+max 
+\backslash
+left[
+\backslash
+xi, |
+\backslash
+pi_{d}
+\backslash
+left(a
+\backslash
+mid s
+\backslash
+right) - 
+\backslash
+pi_{d_{antigua}}
+\backslash
+left(a
+\backslash
+mid s
+\backslash
+right)| 
+\backslash
+right]$ 		
+\backslash
+EndFor 	
+\backslash
+State  $d_{k}	
+\backslash
+leftarrow	d$ 	
+\backslash
+State  $
+\backslash
+omega_{k}	
+\backslash
+leftarrow	
+\backslash
+omega_{k+1}$ 	
+\backslash
+Until{no se puedan correr más episodios o $
+\backslash
+xi < 
+\backslash
+delta$}  	
+\backslash
+State $
+\backslash
+pi	
+\backslash
+leftarrow	
+\backslash
+pi_{d_{k}}$ 	
+\backslash
+State 
+\backslash
+Return{$
+\backslash
+pi$} 
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:algo_MF_aprox"
+
+\end_inset
+
+Algoritmo Bellman-ascenso dual con aproximación lineal, libre de modelo.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Evaluación del algoritmo
+\end_layout
+
+\begin_layout Standard
+En el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:solucionEcuBellmanAprox"
+
+\end_inset
+
+ se presentó el algoritmo LSPI como una de las soluciones basadas en aproximacio
+nes lineales más extendidas en la actualidad en lo que a métodos para resolver
+ problemas de RL cuando el problema es de gran escala se refiere.
+ El objetivo del algoritmo BDALA-MF desarrollado en este capítulo será por
+ tanto llegar a alcanzar resultados similares a los de LSPI, y en el mejor
+ de los casos, superarlo.
+\end_layout
+
+\begin_layout Standard
+A continuación, se pasa a evaluar el rendimiento del algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:algo_MF_aprox"
+
+\end_inset
+
+ con dos problemas típicos que se mencionaron al comienzo del capítulo:
+ el paseo por la cadena o (
+\emph on
+chain walk
+\emph default
+) y el problema del coche de montaña (
+\emph on
+mountain car
+\emph default
+).
+ Para ello, se resolverán ambos problemas con el algoritmo desarrollado
+ en este capítulo y con LSPI de cara a, finalmente, enfrentar los resultados
+ de ambas ejecuciones y poder medir el grado de eficacia de nuestro algoritmo
+ novel.
+\end_layout
+
+\begin_layout Standard
+La estructura de esta sección será la misma que la análoga del capítulo
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:cap10BDAMF"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Metodología de evaluación
+\end_layout
+
+\begin_layout Standard
+La metodología en la evaluación de los resultados será la misma que se presentó
+ en la subsección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Metodología-de-evaluación"
+
+\end_inset
+
+.
+ A grandes rasgos, se resume en que nuestro principal foco de interés se
+ situará en el retorno obtenido, medido a través de las curvas de aprendizaje
+ y de explotación tras convergencia.
+\end_layout
+
+\begin_layout Subsection
+Problema bajo estudio 5: paseo por la cadena
+\end_layout
+
+\begin_layout Subsubsection*
+Presentación del problema
+\end_layout
+
+\begin_layout Standard
+El problema del paseo por la cadena consiste en un MDP de naturaleza similar
+ al problema 
+\emph on
+random walk
+\emph default
+ del capítulo anterior.
+ Aunque el espacio de estados y de acciones de este problema sea pequeño
+ y discreto, servirá como prueba de concepto para verificar la validez del
+ método BDA-MF con aproximación lineal de la función valor propuesto.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap10/ChainWalkProblem.png
+	lyxscale 40
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:chainWlak"
+
+\end_inset
+
+Problema del paseo por la cadena.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El problema del paseo por la cadena se representa por una cadena con 4 estados
+ (numerados del 1 al 4) como la mostrada en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:chainWlak"
+
+\end_inset
+
+.
+ Existen 2 acciones posibles: izquierda (
+\emph on
+left
+\emph default
+, L) y derecha (
+\emph on
+right
+\emph default
+, R); es decir: 
+\begin_inset Formula $\left|\A\right|=2$
+\end_inset
+
+, 
+\begin_inset Formula $\A=\{a_{1},a_{2}\}=\{\text{L, R}\}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+En lo que respecta a la matriz de transición, esta presenta un ligero carácter
+ aleatorio de manera que, si elegimos movernos en una dirección, se tendrá
+ éxito con probabilidad 
+\begin_inset Formula $0.9$
+\end_inset
+
+, cambiando de estado en la dirección deseada, y fracaso con probabilidad
+ 
+\begin_inset Formula $0.1$
+\end_inset
+
+, cambiando de estado en la dirección opuesta.
+\end_layout
+
+\begin_layout Standard
+Como se puede apreciar a partir de la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:chainWlak"
+
+\end_inset
+
+, no habrá estados terminales; al alcanzar los estados 1 o 4 se seguirá
+ la ejecución con total normalidad, sin que finalice ningún episodio.
+ De este modo, la simulación de un episodio terminará cuando se alcance
+ un número máximo de pasos determinado por el agente.
+ Todos los episodios comenzarán en el estado 
+\begin_inset Formula $s=1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+El vector de recompensas sobre los estados será el siguiente:
+\begin_inset Formula 
+\[
+\R=\left[0,\,\,1,\,\,1,\,\,0\right]^{T}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Parece entonces claro que la política óptima será:
+\begin_inset Formula 
+\[
+\pi\left(s_{1}\right)=R,\,\,\pi\left(s_{2}\right)=R,\,\,\pi\left(s_{3}\right)=L,\,\,\pi\left(s_{4}\right)=L
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Respecto a las funciones base que se emplearán, se escogerá un conjunto
+ de 3 características polinómicas de la forma 
+\begin_inset Formula $\overline{\phi}=\left[1,s,s^{2}\right]$
+\end_inset
+
+, donde 
+\begin_inset Formula $s$
+\end_inset
+
+ es el número del estado.
+\end_layout
+
+\begin_layout Standard
+Por último, añadir que el factor de descuento 
+\begin_inset Formula $\gamma$
+\end_inset
+
+ escogido para el cálculo del retorno fue 
+\begin_inset Formula $\gamma=0.9$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection*
+Calibración de parámetros
+\end_layout
+
+\begin_layout Standard
+El proceso de calibración seguido consiste en el mismo análisis que se realizó
+ en el problema bajo estudio 1 del capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:cap10BDAMF"
+
+\end_inset
+
+, pero adaptado al nuevo problema.
+ Dado que mostrar las gráficas de calibración de nuevo no aportaría información
+ adicional, se pasa directamente a presentar los resultados obtenidos tras
+ encontrar los parámetros óptimos del algoritmo para el problema actual.
+\end_layout
+
+\begin_layout Standard
+Siguiendo este mismo criterio, tampoco se hará mención al proceso de calibración
+ en el siguiente problema bajo estudio.
+\end_layout
+
+\begin_layout Subsubsection*
+Presentación de resultados óptimos y comparación con LSPI
+\end_layout
+
+\begin_layout Standard
+Todos los resultados que se muestran a continuación fueron obtenidos mediante
+ el promedio de 100 experimentos independientes.
+\end_layout
+
+\begin_layout Standard
+Los parámetros óptimos del algoritmo BDALA-MF para el problema que se está
+ tratando son:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $N_{epi}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{D}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\epsilon$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.5$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.2$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Parámetros óptimos del algoritmo BDALA-MF, para el problema 
+\emph on
+paseo por la cadena
+\emph default
+.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Aunque el número de episodios 
+\begin_inset Formula $N_{epi}$
+\end_inset
+
+ sea pequeño, recordar que el número total de episodios simulados viene
+ dado por 
+\begin_inset Formula $N_{epi}^{TOT}=N_{iter}N_{epi}$
+\end_inset
+
+, habiéndose escogido 
+\begin_inset Formula $N_{iter}=300$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Los resultados óptimos de la curva de aprendizaje y la curva de explotación
+ durante el aprendizaje para LSPI y BDALA-MF se muestran en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:comparativaChainWalk"
+
+\end_inset
+
+.
+ Como se puede observar, para este problema los valores del parámetro de
+ exploración óptimo son bajos en ambos casos.
+ En consecuencia, las curvas de aprendizaje y de explotación durante el
+ aprendizaje convergen a valores similares ya que un valor 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+ pequeño implica explotación del conocimiento aprendido, que es lo que precisame
+nte se hace en la gráfica 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:comparativaChainWalk"
+
+\end_inset
+
+
+\begin_inset Formula $(b)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+La tabla 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:ResumenChainWalk"
+
+\end_inset
+
+ recoge, a modo resumen, el episodio en que converge cada algoritmo y el
+ valor de 
+\begin_inset Formula $G$
+\end_inset
+
+ al que se converge cuando explotamos la política aprendida.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Episodios hasta convergencia
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $G$
+\end_inset
+
+ tras convergencia 
+\begin_inset Formula $(\epsilon=0)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+LSPI
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $80$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $8.5288$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BDALA-MF
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $2$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $9.1425$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:ResumenChainWalk"
+
+\end_inset
+
+Número de episodios necesarios hasta converger a una solución estable (columna
+ central), y retorno obtenido de la explotación de la política aprendida
+ tras la convergencia (columna derecha), para el problema 
+\emph on
+paseo por la cadena
+\emph default
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En vista de los resultados obtenidos, se puede concluir que esta prueba
+ de concepto ha sido exitosa: BDALA-MF consigue converger a un retorno mayor
+ que LSPI y en un número insignificante de episodios.
+ La convergencia de LSPI a un valor menor, se traduce en que, en determinados
+ experimentos de entre los 100 promediados, no se conseguía encontrar la
+ política óptima.
+\end_layout
+
+\begin_layout Standard
+El hecho de que haya funcionado tan bien esta prueba se piensa que pueda
+ ser debido a que la matriz de transición del problema evaluado no es determinis
+ta.
+ Tal y como se vio en la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:EvalAlgExac"
+
+\end_inset
+
+, el algoritmo Bellman-ascenso dual se ve favorecido cuando las transiciones
+ presentan cierta aleatoriedad, pues ello se traduce en exploración.
+ Como se concluyó en la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:AnalisResulExac"
+
+\end_inset
+
+, la exploración será el aspecto fundamental para la búsqueda en el espacio
+ de políticas llevada a cabo por BDALA-MF.
+\end_layout
+
+\begin_layout Standard
+Por último, comentar que el valor de 
+\begin_inset Formula $G$
+\end_inset
+
+ al que convergen las gráficas de la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:comparativaChainWalk"
+
+\end_inset
+
+ presentan cierto ruido.
+ Esto es debido principalmente a que la matriz de transición no es determinista,
+ con lo cual la acción elegida por el agente no es siempre la tomada finalmente
+ por el entorno.
+ 
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap10/CW_results/aprendizaje_optimo.svg
+	lyxscale 50
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Evolución durante el aprendizaje.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap10/CW_results/explotacion_optima.svg
+	lyxscale 50
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Evaluación del aprendizaje tras cada episodio.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:comparativaChainWalk"
+
+\end_inset
+
+Comparativa de los algoritmos BDALA-MF y LSPI para el problema 
+\emph on
+paseo por la cadena
+\emph default
+.
+ En 
+\begin_inset Formula $(a)$
+\end_inset
+
+ se muestra la curva de aprendizaje y en 
+\begin_inset Formula $(b)$
+\end_inset
+
+ la curva de explotación del aprendizaje realizado en cada episodio, ambas
+ con los parámetros óptimos de cada algoritmo.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Problema bajo estudio 6: el coche de montaña
+\end_layout
+
+\begin_layout Standard
+A continuación se pone a prueba el algoritmo BDALA-MF con un problema de
+ mayores exigencias.
+\end_layout
+
+\begin_layout Subsubsection*
+Presentación del problema
+\end_layout
+
+\begin_layout Standard
+El problema del coche de montaña, una prueba estándar en el campo de aprendizaje
+ por refuerzo, es un problema en el cual un coche con poca potencia tiene
+ que conseguir subir la ladera de una colina.
+ Puesto que la gravedad es más fuerte que el motor del coche, incluso cuando
+ este acelera al máximo no es capaz de subir la ladera.
+ El coche comienza situado en el medio del valle y debe aprender a aprovechar
+ la energía potencial subiendo la colina opuesta para ganar aceleración
+ en la caída.
+ Es decir, deberá balancearse entre las laderas del valle para conseguir
+ ganar la inercia suficiente como para salir de él (por el lado derecho).
+ La figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MC_problem"
+
+\end_inset
+
+ ilustra el problema.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap10/MountainCarProblem.png
+	lyxscale 50
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:MC_problem"
+
+\end_inset
+
+Problema del coche de montaña.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Cabe destacar que este problema ha sido empleado como banco de pruebas en
+ varios artículos de aprendizaje por refuerzo.
+ Aunque parezca relativamente sencillo, el problema del coche de montaña
+ es comúnmente empleado porque requiere que el agente de RL aprenda a partir
+ de dos variables continuas: posición y velocidad.
+\end_layout
+
+\begin_layout Standard
+Para un estado dado (posición y velocidad) del coche, el agente tendrá la
+ posibilidad de conducir a la izquierda, a la derecha o no usar el motor.
+ Mientras que el objetivo no se alcance, el agente recibirá una recompensa
+ negativa en cada paso temporal que transcurra.
+ Además, el agente no dispone de información sobre el objetivo hasta que
+ lo consigue alcanzar por primera vez.
+\end_layout
+
+\begin_layout Standard
+Respecto a las funciones base que se emplearán, esta vez se escogerán caracterís
+ticas de tipo RBF.
+ El número de características 
+\begin_inset Formula $N_{v}$
+\end_inset
+
+ a emplear será ahora uno de los parámetros de optimización también.
+ Recordar que para construir los vectores de RBF, cada dimensión del problema
+ se dividirá en 
+\begin_inset Formula $N_{v}$
+\end_inset
+
+ partes que determinarán la media (o centroide) de la distribución Gaussiana
+ con que se aproximará cada estado.
+\end_layout
+
+\begin_layout Subsubsection*
+Adaptación de BDALA-MF al caso continuo
+\end_layout
+
+\begin_layout Standard
+Observando la etapa de control del algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:algo_MF_aprox"
+
+\end_inset
+
+, se puede intuir que ahora, el hecho de que el espacio de estados sea bidimensi
+onal y continuo en cada una de las variables (posición y velocidad) va a
+ suponer un problema, pues no se podrá llevar a cabo la actualización de
+ la variable dual de manera tabular/exacta.
+ Por ello, habrá que emplear también algún tipo de aproximación en la variable
+ dual.
+ De entre todos los tipos que se estudiaron en la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:FamiliasFunBase"
+
+\end_inset
+
+, se decidió escoger la técnica de agregación de estados: particionar el
+ conjunto de estados en 
+\begin_inset Formula $N_{d}$
+\end_inset
+
+ subconjuntos separados.
+ De este modo, se puede seguir empleando el mismo esquema que el mostrado
+ en el algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:algo_MF_aprox"
+
+\end_inset
+
+ con la salvedad de que ahora cada estado en el que se encuentre el coche
+ estará asociado a una de las 
+\begin_inset Formula $N_{d}$
+\end_inset
+
+ particiones.
+ En consecuencia, la política que se extraiga de la variable dual será una
+ política generalista en el sentido de que, para todos los estados que caigan
+ dentro de la misma partición, se tomará la misma decisión sin tener en
+ cuenta la variación entre dos estados consecutivos.
+ La modificación que se le hizo a la etapa de control de BDALA-MF se muestra
+ en el algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:algo_controlAprox_BDALA"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{algorithmic}[1]  	
+\backslash
+For {para cada muestra de $
+\backslash
+Sa$} 
+\backslash
+Comment{Etapa de control: mejora de la política} 		
+\backslash
+State Recuperar $(s$, $a$, $r$, $s')$ 		
+\backslash
+State Encontrar la partición $
+\backslash
+S_{n}$  a la que pertenece el estado $s$ 		
+\backslash
+State $d_{antigua} 
+\backslash
+leftarrow	d(
+\backslash
+S_{n} ,a)$ 		
+\backslash
+State $d(
+\backslash
+S_{n} ,a)	    
+\backslash
+gets		d(
+\backslash
+S_{n} ,a) + 
+\backslash
+alpha_{_{D}} (r+
+\backslash
+gamma
+\backslash
+bar{
+\backslash
+phi}(s')^{T}
+\backslash
+omega_{k+1}-
+\backslash
+bar{
+\backslash
+phi}(s)^{T}
+\backslash
+omega_{k+1}) $ 		
+\backslash
+State $d(
+\backslash
+S_{n},a)	    
+\backslash
+gets		
+\backslash
+max
+\backslash
+left(0,d(
+\backslash
+S_{n},a)
+\backslash
+right)$ 		
+\backslash
+State $
+\backslash
+xi	
+\backslash
+leftarrow	
+\backslash
+max 
+\backslash
+left[
+\backslash
+xi, |
+\backslash
+pi_{d}
+\backslash
+left(a
+\backslash
+mid 
+\backslash
+S_{n}
+\backslash
+right) - 
+\backslash
+pi_{d_{antigua}}
+\backslash
+left(a
+\backslash
+mid 
+\backslash
+S_{n}
+\backslash
+right)| 
+\backslash
+right]$ 	
+\backslash
+EndFor 
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:algo_controlAprox_BDALA"
+
+\end_inset
+
+Modificación de la etapa de control del algoritmo BDALA-MF, incluyendo aproximac
+ión de la variable dual mediante agregación de estados.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En cuanto a la partición del espacio de estados realizada, este se dividió
+ en 
+\begin_inset Formula $N_{d}=N_{v}^{2}$
+\end_inset
+
+ partes.
+ Para determinar estas 
+\begin_inset Formula $N_{v}^{2}$
+\end_inset
+
+ partes, se tomaron los 
+\begin_inset Formula $N_{v}$
+\end_inset
+
+ centroides definidos en las RBF para la dimensión 
+\begin_inset Quotes fld
+\end_inset
+
+velocidad
+\begin_inset Quotes frd
+\end_inset
+
+ del estado, los otros 
+\begin_inset Formula $N_{v}$
+\end_inset
+
+ definidos en las las RBFs para la dimensión 
+\begin_inset Quotes fld
+\end_inset
+
+posición
+\begin_inset Quotes frd
+\end_inset
+
+, y se hicieron todas las posibles combinaciones (sin repetición).
+ De esta manera, para cada par posición-velocidad fue posible determinar
+ su partición más cercana en base a su distancia hasta la partición.
+\end_layout
+
+\begin_layout Subsubsection*
+Presentación de resultados óptimos y comparación con LSPI
+\end_layout
+
+\begin_layout Standard
+Todos los resultados que se muestran fueron obtenidos mediante el promedio
+ de 50 experimentos independientes.
+\end_layout
+
+\begin_layout Standard
+Los parámetros óptimos del algoritmo BDALA-MF para el problema que se está
+ tratando son:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $N_{epi}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{D}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\epsilon$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $N_{v}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.0001$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.01$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $6$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Parámetros óptimos del algoritmo BDALA-MF, para el problema del 
+\emph on
+coche de montaña
+\emph default
+.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El número total de episodios simulados viene dado por 
+\begin_inset Formula $N_{epi}^{TOT}=N_{iter}N_{epi}$
+\end_inset
+
+, habiéndose escogido 
+\begin_inset Formula $N_{iter}=300$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Los resultados óptimos de la curva de aprendizaje y la curva de explotación
+ durante el aprendizaje para LSPI y BDALA-MF se muestran en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:comparativaMount"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+La tabla 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:ResumenMount"
+
+\end_inset
+
+ recoge, a modo resumen, el episodio en que converge cada algoritmo y el
+ valor de 
+\begin_inset Formula $G$
+\end_inset
+
+ al que se converge cuando explotamos la política aprendida.
+ Como se puede deducir a partir de la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:comparativaMount"
+
+\end_inset
+
+ y de la tabla 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:ResumenMount"
+
+\end_inset
+
+, BDALA-MF ahora no funcionará tan bien como en el problema bajo estudio
+ anterior, pues se tardará más en converger y con un retorno menor.
+ En vista de las conclusiones que se sacaron en la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:AnalisResulExac"
+
+\end_inset
+
+, la ventaja que LSPI consigue frente a BDALA-MF será debido a que el entorno
+ se comporta de manera determinista.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Episodios hasta convergencia
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $G$
+\end_inset
+
+ tras convergencia 
+\begin_inset Formula $(\epsilon=0)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+LSPI
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $100$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-149.1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BDALA-MF
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $155$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-160.7$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:ResumenMount"
+
+\end_inset
+
+Número de episodios necesarios hasta converger a una solución estable (columna
+ central), y retorno obtenido de la explotación de la política aprendida
+ tras la convergencia (columna derecha), para el problema del 
+\emph on
+coche de montaña
+\emph default
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Si se compara el número de episodios necesario para alcanzar la convergencia
+ mostrado en la tabla 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:ResumenMount"
+
+\end_inset
+
+ con lo que gráficamente se puede observar en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:comparativaMount"
+
+\end_inset
+
+ 
+\begin_inset Formula $(b)$
+\end_inset
+
+, se aprecia una ligera discrepancia en el caso de LSPI que se explica de
+ la siguiente manera: para obtener el número de episodios hasta convergencia
+ en la tabla 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:ResumenMount"
+
+\end_inset
+
+ se empleó el criterio de alcanzar el 
+\begin_inset Formula $95\%$
+\end_inset
+
+ del retorno tras convergencia, criterio que se cumple a los 100 episodios.
+ No obstante, por inspección visual de la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:comparativaMount"
+
+\end_inset
+
+ 
+\begin_inset Formula $(b)$
+\end_inset
+
+ se observa que cuando han transcurrido 100 episodios, prácticamente se
+ ha convergido, el problema es que no al retorno máximo sino a un valor
+ cercano.
+ De manera práctica, se podría considerar que LSPI converge en aproximadamente
+ 20 episodios de acuerdo a las gráficas.
+ No obstante, dependerá de la aplicación final el poder considerar uno u
+ otro valor como suficiente para asegurar la convergencia del algoritmo.
+\end_layout
+
+\begin_layout Standard
+Para concluir, únicamente mencionar el detalle del ruido que presentan las
+ gráficas de la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:comparativaMount"
+
+\end_inset
+
+.
+ Si bien es cierto que ahora el entorno es determinista y cabría esperar
+ una convergencia constante, hay que tener en cuenta que cuando se introducen
+ aproximaciones se pierde todo el carácter ideal y esperado posible.
+ Dado que ahora la política se extrae 
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap10/MounCar_results/aprendizaje_optimo.svg
+	lyxscale 50
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Evolución durante el aprendizaje.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap10/MounCar_results/explotacion_optima.svg
+	lyxscale 50
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Evaluación del aprendizaje tras cada episodio.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:comparativaMount"
+
+\end_inset
+
+Comparativa de los algoritmos BDALA-MF y LSPI para el problema del 
+\emph on
+coche de montaña
+\emph default
+.
+ En 
+\begin_inset Formula $(a)$
+\end_inset
+
+ se muestra la curva de aprendizaje y en 
+\begin_inset Formula $(b)$
+\end_inset
+
+ la curva de explotación del aprendizaje realizado en cada episodio, ambas
+ con los parámetros óptimos de cada algoritmo.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+\noindent
+por medio (o a partir) de una estimación de la función valor, si esta es
+ poco precisa, dará lugar a políticas ligeramente oscilantes y en consecuencia
+ convergencias ruidosas.
+ 
+\end_layout
+
+\begin_layout Section
+Análisis y discusión de los resultados
+\end_layout
+
+\begin_layout Standard
+De cara a facilitar la comparativa, se recogen en la tabla 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:resumenExplotAprox"
+
+\end_inset
+
+ los resultados de explotación de las pruebas anteriores:
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Episodios hasta convergencia
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $G$
+\end_inset
+
+ tras convergencia 
+\begin_inset Formula $(\epsilon=0)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+LSPI
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $80$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $8.5288$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BDALA-MF
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $2$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $9.1425$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Paseo por la cadena (entorno aleatorio, conjunto de estados pequeño y discreto)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Episodios hasta convergencia
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $G$
+\end_inset
+
+ tras convergencia 
+\begin_inset Formula $(\epsilon=0)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+LSPI
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $100$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-149.1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BDALA-MF
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $155$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-160.7$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Coche de montaña (entorno determinista, conjunto de estados continuo)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:resumenExplotAprox"
+
+\end_inset
+
+Resultados de explotación para los dos problemas bajo estudio evaluados.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A pesar de que la complejidad de los problemas sea muy diferente, al comparar
+ el comportamiento de BDALA-MF relativo a LSPI en cada caso de estudio,
+ se deduce que el haber aproximado la variable dual ha degradado notablemente
+ el desempeño del algoritmo desarrollado.
+ Para estas pruebas se ha utilizado una discretización del conjunto de estados,
+ pero esta es sólo una opción de entre muchas disponibles.
+ Sin ir más lejos, otra alternativa hubiese sido probar una aproximación
+ lineal de la variable dual mediante RBFs del mismo modo que se hizo con
+ la función valor.
+ Dado que de este modo se podría tener en cuenta la variación entre dos
+ estados consecutivos de una manera más precisa, se intuye que esta elección
+ habría mejorado la convergencia.
+ No obstante, por limitaciones de tiempo no se pudo probar, de manera que
+ se plantea como una idea futura a desarrollar.
+\end_layout
+
+\end_body
+\end_document

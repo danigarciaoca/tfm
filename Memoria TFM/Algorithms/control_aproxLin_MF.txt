@@ -1,0 +1,20 @@
+\begin{algorithmic}[1] 
+	\Require {$\omega_{k+1}$, el vector de parámetros nuevo obtenido en la etapa de predicción. $d_{k}$, la variable dual actual que se quiere mejorar. $\alpha_{_{D}}$, la tasa de aprendizaje. Funciones base $\bar{\phi}$.}
+	\Ensure {$d_{k+1}$, la variable dual mejorada.}
+	\State  $d(s,a)	\leftarrow	d_{k}(s,a)$
+	\Repeat (para cada episodio)
+		\State	$\Delta	\leftarrow	0$
+		\State Inicializar $s$
+		\Repeat (para cada paso en el episodio)
+			\State Escoger la acción $a	\sim	\pi_{d_{k}} (\cdot|s)$
+			\State $d_{antigua} \leftarrow	d(s,a)$
+			\State Tomar la acción $a$ y observar $r,s',\bar{\phi}(s')$
+			\State $d(s,a)	    \gets		d(s,a) + \alpha_{_{D}} (r+\gamma\bar{\phi}(s')^{T}\omega_{k+1}-\bar{\phi}(s)^{T}\omega_{k+1}) $
+			\State $d(s,a)	    \gets		\max\left(0,d(s,a)\right)$
+			\State $\Delta	\leftarrow	\max \left[\Delta, |\pi_{d}\left(a\mid s\right) - \pi_{d_{antigua}}\left(a\mid s\right)| \right]$
+			\State $s \gets s'$
+		\Until{$s$ sea terminal}
+	\Until{no podamos correr más episodios o $\Delta < \delta_{\pi_{d}}$} 
+	\State $d_{k+1}	\leftarrow	d$
+	\State \Return{$d_{k+1}$}
+\end{algorithmic}

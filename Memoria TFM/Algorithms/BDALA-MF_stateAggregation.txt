@@ -1,0 +1,10 @@
+\begin{algorithmic}[1] 
+	\For {para cada muestra de $\Sa$} \Comment{Etapa de control: mejora de la política}
+		\State Recuperar $(s$, $a$, $r$, $s')$
+		\State Encontrar la partición $\S_{n}$  a la que pertenece el estado $s$
+		\State $d_{antigua} \leftarrow	d(\S_{n} ,a)$
+		\State $d(\S_{n} ,a)	    \gets		d(\S_{n} ,a) + \alpha_{_{D}} (r+\gamma\bar{\phi}(s')^{T}\omega_{k+1}-\bar{\phi}(s)^{T}\omega_{k+1}) $
+		\State $d(\S_{n},a)	    \gets		\max\left(0,d(\S_{n},a)\right)$
+		\State $\xi	\leftarrow	\max \left[\xi, |\pi_{d}\left(a\mid \S_{n}\right) - \pi_{d_{antigua}}\left(a\mid \S_{n}\right)| \right]$
+	\EndFor
+\end{algorithmic}

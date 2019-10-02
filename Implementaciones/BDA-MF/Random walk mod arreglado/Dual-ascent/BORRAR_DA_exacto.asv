@@ -1,0 +1,91 @@
+clear all, clc
+
+% % % % ENTORNO:
+name = 'RandomWalk';
+N_states = 13;
+initType = 'leftCorner'; % {'center', 'leftCorner'}
+transitionType = 'det'; % {'det', 'rand'}
+rewardType = 'rand'; % {'det', 'rand'} || if rand, extra argument: finalReward=50
+finalReward=50;
+env = GetRndWalkEnv(name, N_states, initType, transitionType, rewardType);
+
+A = eye(env.numStates);
+B = [1; 0];
+mult1 = kron(A,B);
+B = [0; 1];
+mult2 = kron(A,B);
+
+% % % % AGENTE:
+numExperiments = 20; % Número de experimentos de numRep*numEpisodes episodios
+numRep = 500; % Número de repeticiones de cada set de episodios
+numEpisodes = 3; % Número de episodios de cada repeticion
+maxNumStepsPerEpisode = 500; % Número máximo de pasos en cada episodio
+G = zeros(numExperiments, numRep*numEpisodes); % Return por episodio
+G_eps0_final = zeros(numExperiments, 1); % Return por episodio cuando epsilon = 0
+G_eps0_each_epi = zeros(numExperiments, numRep*numEpisodes); % Return por episodio cuando epsilon = 0
+epsilon = 0.5; % e-greedy value (entre 0.05 y 0.2)
+alphaD = 0.8; % Stepsize para la iteración de la variable dual d
+alphaTD = 0.5; % Stepsize para la iteración de la variable primal v
+% con alphaTD = 0.5 converge más rápido la return
+
+DoAction = env.DoAction;
+S = env.numStates; % Número de estados
+A = env.numActions; % Número de acciones
+env.mu(:) = (1/S)/(S-1); env.mu(2) = 1-(1/S); mu = env.mu; % Distribución inicial de probabilida de los estados
+P = env.P; % Matriz de transiciones
+R = env.R; % Vector de rewards
+terminal = false; % flag used when terminal state reached
+
+% Optimum values
+% Optimum value (value iteration)
+N_steps = 1000;
+[v_opt, q_opt, q_opt_format] = value_iteration(env, N_steps, env.terminal_states);
+[~, pi_lineal] = max(q_opt_format,[],2); % Comprobación policy obtenida
+
+% Valor óptimo de d (política en forma vector)
+d_opt_norm = getPolicyVector(q_opt, env); % policy óptima
+
+% Variable que acumulará la funcion V y el error en la política al final de cada episodio
+Vs_acumulada = nan(S, numRep*numEpisodes, numExperiments);
+errorD = nan(numExperiments, numRep*numEpisodes);
+d_norm_acumulada = nan(S*A, numRep*numEpisodes, numExperiments);
+% d_acumulada = nan(game.N_states*game.N_actions, numRep*numEpisodes, numExperiments);
+
+for exp = 1:numExperiments
+    % Inicializamos D y V
+    d = rand(S*A,1);
+    v = rand(S,1);
+    v(1) = 0; v(end) = 0;
+    
+    exp
+    
+    episodeCountV = 0; % episodeCount counts the number of episodes taken in all numRep (para el bucle de V)
+    episodeCountD = 0; % episodeCount counts the number of episodes taken in all numRep (para el bucle de D)
+    
+    for k = 1:numRep
+        s_a_sNext = []; % Vector que almacena la secuencia de estados recorridos en un episodio
+        totalStepsPerRep = 1; % totalStepsPerRep counts the number of steps taken in ALL numEpi episodes simulated in ONE numRep
+        
+        % Normalize d
+        d_norm = getPolicyVectorFromD( d, env );
+        % Get policy matrix
+        policy_by_action = reshape(d_norm', [A,S])';
+        policy_matrix = diag(policy_by_action(:,1))*mult1' + diag(policy_by_action(:,2))*mult2';
+        v = (inv(eye(S)-env.gamma*policy_matrix*P))*policy_matrix*(P*R);
+        
+        for i=1:100
+            d = d + alphaD*((P*R) + env.gamma*P*v - env.duplicar*v);
+            d(d<0)=0; % Projection of d over positives
+            % Normalize d
+            d_norm = getPolicyVectorFromD( d, env );
+            % Get policy matrix
+            policy_by_action = reshape(d_norm', [A,S])';
+            d_formato = reshape(d', [A,S])';
+            [d_formato policy_by_action]
+            disp('i')
+        end
+        
+    end
+    [~, ~, G_eps0] = RL_core(env, d, v, 0, alphaTD, alphaD, maxNumStepsPerEpisode, mult1, mult2);
+    G_eps0_final(exp,:) = G_eps0;
+end

@@ -1,0 +1,2402 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass book
+\begin_preamble
+\usepackage{optidef}
+\usepackage[pagestyles]{titlesec}
+
+\AtBeginDocument{
+  \def\labelitemii{\ding{71}}
+  \def\labelitemiii{\ding{111}}
+  \def\labelitemiv{\(\vartriangleright\)}
+}
+
+
+\usepackage{babel}
+\addto\shorthandsspanish{\spanishdeactivate{~<>}}
+\end_preamble
+\use_default_options false
+\begin_modules
+theorems-ams-bytype
+theorems-chap-bytype
+theorems-ams-extended-bytype
+\end_modules
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding iso8859-15
+\fontencoding T1
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing double
+\use_hyperref true
+\pdf_bookmarks false
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref section
+\pdf_pdfusetitle false
+\papersize a4paper
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 2
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.5in
+\topmargin 1.6in
+\rightmargin 1.2in
+\bottommargin 1.6in
+\headheight 1.5in
+\headsep 0.3in
+\footskip 0.8in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle plain
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset FormulaMacro
+\renewcommand{\T}{\mathcal{\top}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\S}{\mathcal{S}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\A}{\mathcal{A}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\R}{\mathcal{R}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\P}{\mathcal{P}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Pr}{\mathbb{P}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+renewcommand{
+\backslash
+thechapter}{}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+renewcommand{
+\backslash
+chaptername}{}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+titleformat{
+\backslash
+chapter}[display]{
+\backslash
+normalfont
+\backslash
+bfseries}{}{20pt}{
+\backslash
+Huge}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+titlespacing{
+\backslash
+chapter}{0pt}{0pt}{30pt}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Anexos
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+renewcommand{
+\backslash
+thesection}{
+\backslash
+Alph{section}} % Con el 
+\backslash
+renewcommand{
+\backslash
+thesection}{} de abajo, esto no tiene efecto.
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+renewcommand{
+\backslash
+theequation}{
+\backslash
+Alph{section}.
+\backslash
+arabic{equation}}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+renewcommand{
+\backslash
+thefigure}{
+\backslash
+Alph{section}.
+\backslash
+arabic{figure}}
+\end_layout
+
+\begin_layout Plain Layout
+
+% Para quitar la numeración de la sección pero mantener la numeración en
+ las ecuaciones contemplando en qué sección estamos.
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+renewcommand{
+\backslash
+thesection}{}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+makeatletter
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+@seccntformat#1{
+\backslash
+csname #1ignore
+\backslash
+expandafter
+\backslash
+endcsname
+\backslash
+csname the#1
+\backslash
+endcsname
+\backslash
+quad}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+let
+\backslash
+sectionignore
+\backslash
+@gobbletwo
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+let
+\backslash
+latex@numberline
+\backslash
+numberline
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+numberline#1{
+\backslash
+if
+\backslash
+relax#1
+\backslash
+relax
+\backslash
+else
+\backslash
+latex@numberline{#1}
+\backslash
+fi}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+makeatother
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Anexo A
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Anexo-A"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Antes de explicar el vínculo entre la minimización de una función lineal
+ definida a trozos y el problema del epigrafo, se va a hacer una pequeña
+ introducción a estos conceptos.
+\end_layout
+
+\begin_layout Subsubsection*
+Definición de epigrafo
+\end_layout
+
+\begin_layout Standard
+El grafo de una función 
+\begin_inset Formula $f:\mathbb{R}^{n}\rightarrow\mathbb{R}$
+\end_inset
+
+ se define como:
+\begin_inset Formula 
+\[
+\left\{ \left(x,f(x)\right)\mid x\in\text{dom }f\right\} 
+\]
+
+\end_inset
+
+el cual es un subconjunto de 
+\begin_inset Formula $\mathbb{R}^{n+1}$
+\end_inset
+
+.
+ El 
+\emph on
+epigrafo
+\emph default
+ de una función 
+\begin_inset Formula $f:\mathbb{R}^{n}\rightarrow\mathbb{R}$
+\end_inset
+
+ se define como:
+\begin_inset Formula 
+\[
+\text{epi }f=\left\{ \left(x,t\right)\mid x\in\text{dom }f,f(x)\leq t\right\} 
+\]
+
+\end_inset
+
+el cual es un subconjunto de 
+\begin_inset Formula $\mathbb{R}^{n+1}$
+\end_inset
+
+.
+ Esta definición se ilustra en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:epigrafoDefinicion"
+
+\end_inset
+
+.
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap8/Epigrafo.PNG
+	lyxscale 50
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:epigrafoDefinicion"
+
+\end_inset
+
+Sombreado en gris se muestra el epigrafo de una función 
+\begin_inset Formula $f$
+\end_inset
+
+.
+ El límite inferior, mostrado en negro, representa el grafo de 
+\begin_inset Formula $f$
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Boyd2004"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+Problema de optimización en forma de epigrafo
+\end_layout
+
+\begin_layout Standard
+La 
+\emph on
+forma de epigrafo
+\emph default
+ del problema estándar 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt"
+
+\end_inset
+
+ es la siguiente:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\underset{t}{\text{minimize}} & \quad t\\
+\text{subject to} & \quad f_{o}(x)-t\leq0\\
+ & \quad f_{i}(x)\leq0,\qquad i=1,\ldots,m\\
+ & \quad h_{i}(x)=0,\qquad i=1,\ldots,m
+\end{aligned}
+\label{eq:epiProb}
+\end{equation}
+
+\end_inset
+
+cuyas variables son 
+\begin_inset Formula $x\in\mathbb{R}^{n}$
+\end_inset
+
+ y 
+\begin_inset Formula $t\in\mathbb{R}$
+\end_inset
+
+.
+ Se puede ver fácilmente que esta forma es equivalente al problema original:
+ 
+\begin_inset Formula $(x,t)$
+\end_inset
+
+ es optimo para 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:epiProb"
+
+\end_inset
+
+ sí y solo sí 
+\begin_inset Formula $x$
+\end_inset
+
+ es óptimo para 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:opt"
+
+\end_inset
+
+ y 
+\begin_inset Formula $t=f_{o}(x)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+El problema 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:epiProb"
+
+\end_inset
+
+ en forma de epigrafo se puede interpretar geométricamente como un problema
+ de optimización en el espacio del grafo 
+\begin_inset Formula $(x,t)$
+\end_inset
+
+: buscamos minimizar 
+\begin_inset Formula $t$
+\end_inset
+
+ sobre el epigrafo de 
+\begin_inset Formula $f_{o}$
+\end_inset
+
+, sujeto a las restricciones de 
+\begin_inset Formula $x$
+\end_inset
+
+.
+ Esta interpretación se ilustra en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:formaEpigrafo"
+
+\end_inset
+
+.
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap8/Interpretación forma epigrafo.PNG
+	lyxscale 50
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:formaEpigrafo"
+
+\end_inset
+
+Interpretación geométrica del problema en forma de epigrafo, para un problema
+ sin restricciones.
+ El problema a resolver será encontrar el punto del epigrafo (sombreado
+ en gris) que minimiza 
+\begin_inset Formula $t$
+\end_inset
+
+; es decir, el punto más 
+\begin_inset Quotes fld
+\end_inset
+
+pequeño
+\begin_inset Quotes frd
+\end_inset
+
+ del epigrafo.
+ El punto óptimo es 
+\begin_inset Formula $\left(x^{*},t^{*}\right)$
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Boyd2004"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+Minimización de una función lineal a trozos
+\end_layout
+
+\begin_layout Standard
+Consideremos el problema sin restricciones de minimizar la siguiente función
+ convexa lineal a trozos:
+\begin_inset Formula 
+\begin{equation}
+f(x)=\underset{i=1\ldots m}{\text{\ensuremath{\max}}}(a_{i}^{T}x+b_{i})\label{eq:piecewiseLinear}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Este problema puede ser transformado a un programa lineal equivalente, primero
+ convirtiéndolo en un problema en forma de epigrafo:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\underset{t}{\text{minimize}} & \quad t\\
+\text{subject to} & \quad\underset{i=1\ldots m}{\text{\max}}(a_{i}^{T}x+b_{i})\leq t
+\end{aligned}
+\label{eq:epiProb-1}
+\end{equation}
+
+\end_inset
+
+y a continuación expresando la desigualdad como un conjunto de 
+\begin_inset Formula $m$
+\end_inset
+
+ desigualdades separadas:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\underset{t}{\text{minimize}} & \quad t\\
+\text{subject to} & \quad a_{i}^{T}x+b_{i}\leq t,\qquad i=1\ldots m
+\end{aligned}
+\label{eq:epiProbLP}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+De este modo se consigue expresar un problema como 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:piecewiseLinear"
+
+\end_inset
+
+ en forma de programa lineal en forma de desigualdad, y variables 
+\begin_inset Formula $x$
+\end_inset
+
+ y 
+\begin_inset Formula $t$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Comparando 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:preEpi"
+
+\end_inset
+
+ con 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:piecewiseLinear"
+
+\end_inset
+
+, se deduce por analogía con 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:epiProbLP"
+
+\end_inset
+
+ que 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:prePrimal_unit"
+
+\end_inset
+
+ está expresado como un problema en forma de epigrafo.
+\end_layout
+
+\begin_layout Section
+Anexo B
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Anexo-B"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Antes de comenzar la demostración, será conveniente introducir algunas definicio
+nes de gran utilidad en los desarrollos subsecuentes.
+ La primera de ellas será 
+\begin_inset Formula $\rho^{\pi}(s,j)$
+\end_inset
+
+, la cual representa la distribución de probabilidad descontada sobre los
+ estados, condicionada al estado inicial 
+\begin_inset Formula $j$
+\end_inset
+
+ y siguiendo la política 
+\begin_inset Formula $\pi$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+\rho^{\pi}(s,j)=\sum_{t=0}^{\infty}\gamma^{t}\Pr[S_{t}=s\mid S_{o}=j,\pi]\label{eq:ro_s}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+De manera análoga, se define 
+\begin_inset Formula $\rho^{\pi}(s,a,j)$
+\end_inset
+
+ como la distribución de probabilidad descontada sobre los estados y acciones,
+ condicionada al estado inicial 
+\begin_inset Formula $j$
+\end_inset
+
+ y siguiendo la política 
+\begin_inset Formula $\pi$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+\rho^{\pi}(s,a,j)=\sum_{t=0}^{\infty}\gamma^{t}\Pr[S_{t}=s,A_{t}=a\mid S_{o}=j,\pi]\label{eq:ro_sa}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La relación existente entre 
+\begin_inset Formula $\rho^{\pi}(s,j)$
+\end_inset
+
+ y 
+\begin_inset Formula $\rho^{\pi}(s,a,j)$
+\end_inset
+
+ es por tanto la siguiente:
+\begin_inset Formula 
+\[
+\rho^{\pi}(s,a,j)=\rho^{\pi}(s,j)\pi(a\mid s)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\rho^{\pi}(s,j)=\sum_{a\in\A}\rho^{\pi}(s,a,j)=\sum_{a\in\A}\rho^{\pi}(s,j)\pi(a\mid s)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Atendiendo a estas definiciones, según 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:teor8.1"
+
+\end_inset
+
+ podremos expresar 
+\begin_inset Formula $d^{\pi}(s,a)$
+\end_inset
+
+ de la siguiente manera:
+\begin_inset Formula 
+\begin{equation}
+d^{\pi}(s,a)=\sum_{j\in S}\mu(j)\rho^{\pi}(s,a,j)=\sum_{j\in S}\mu(j)\sum_{t=0}^{\infty}\gamma^{t}\Pr[S_{t}=s,A_{t}=a\mid S_{o}=j,\pi]\label{eq:d_v1}
+\end{equation}
+
+\end_inset
+
+o de forma equivalente:
+\begin_inset Formula 
+\begin{equation}
+d^{\pi}(s,a)=\sum_{j\in S}\mu(j)\rho^{\pi}(s,j)\pi(a\mid s)=\sum_{j\in S}\mu(j)\sum_{t=0}^{\infty}\gamma^{t}\Pr[S_{t}=s\mid S_{o}=j,\pi]\pi(a\mid s)\label{eq:d_v2}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Con estas representaciones alternativas de 
+\begin_inset Formula $d^{\pi}(s,a)$
+\end_inset
+
+ en mente, podemos comenzar la demostración del teorema 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_1"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Proof
+Para que 
+\begin_inset Formula $d^{\pi}(s,a)$
+\end_inset
+
+ sea una solución factible del programa lineal dual, deberán satisfacerse
+ las restricciones que aparecen en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:preProbDualEsc"
+
+\end_inset
+
+.
+ Es decir:
+\begin_inset Formula 
+\[
+\begin{aligned}\text{} & d^{\pi}(s,a)\geq0\\
+ & \mu(s')+\gamma\sum_{s\in\S}\sum_{a\in\A}\P_{ss'}^{a}d^{\pi}(s,a)-\sum_{a\in\A}d^{\pi}(s',a)=0
+\end{aligned}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Por simple inspección de 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:d_v1"
+
+\end_inset
+
+ o 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:d_v2"
+
+\end_inset
+
+, se puede verificar que la restricción de no negatividad se cumplirá siempre,
+ pues todos los términos de los que depende 
+\begin_inset Formula $d^{\pi}(s,a)$
+\end_inset
+
+ son no negativos.
+ Por tanto, únicamente queda por demostrar el cumplimiento de la segunda
+ restricción:
+\begin_inset Formula 
+\begin{equation}
+\gamma\sum_{s\in\S}\sum_{a\in\A}\P_{ss'}^{a}d^{\pi}(s,a)=\sum_{a\in\A}d^{\pi}(s',a)-\mu(s')\label{eq:restr2}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Para ello, vamos a desarrollar el lado izquierdo de la igualdad 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:restr2"
+
+\end_inset
+
+.
+ Según la definición de 
+\begin_inset Formula $d^{\pi}(s,a)$
+\end_inset
+
+ propuesta:
+\begin_inset Formula 
+\begin{equation}
+\gamma\sum_{s\in\S}\sum_{a\in\A}\P_{ss'}^{a}d^{\pi}(s,a)=\gamma\sum_{s\in\S}\sum_{a\in\A}\P_{ss'}^{a}\sum_{j\in S}\mu(j)\sum_{t=0}^{\infty}\gamma^{t}\Pr[S_{t}=s,A_{t}=a\mid S_{o}=j,\pi]\label{eq:demoTeor8_1-1}
+\end{equation}
+
+\end_inset
+
+donde el producto 
+\begin_inset Formula $\gamma\sum_{a\in\A}\P_{ss'}^{a}\gamma^{t}\Pr[S_{t}=s,A_{t}=a\mid S_{o}=j,\pi]$
+\end_inset
+
+ se puede expresar de la siguiente manera:
+\begin_inset Formula 
+\[
+\gamma\sum_{a\in\A}\P_{ss'}^{a}\gamma^{t}\Pr[S_{t}=s,A_{t}=a\mid S_{o}=j,\pi]=\gamma^{t+1}\Pr[S_{t+1}=s'\mid S_{o}=j,\pi]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Devolviendo este cambio a 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:demoTeor8_1-1"
+
+\end_inset
+
+ se llega a:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\gamma\sum_{s\in\S}\sum_{a\in\A}\P_{ss'}^{a}d^{\pi}(s,a) & =\gamma\sum_{s\in\S}\sum_{a\in\A}\P_{ss'}^{a}\sum_{j\in S}\mu(j)\sum_{t=0}^{\infty}\gamma^{t}\Pr[S_{t}=s,A_{t}=a\mid S_{o}=j,\pi]\\
+ & =\sum_{j\in S}\mu(j)\sum_{t=0}^{\infty}\gamma^{t+1}\Pr[S_{t+1}=s'\mid S_{o}=j,\pi]
+\end{aligned}
+\label{eq:demoTeor8_1-2}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+A continuación, vamos a buscar una forma más conveniente de expresar el
+ sumatorio en 
+\begin_inset Formula $t$
+\end_inset
+
+.
+ Para ello partimos de:
+\begin_inset Formula 
+\begin{equation}
+\sum_{t=0}^{\infty}\gamma^{t}\Pr[S_{t}=s'\mid S_{o}=j,\pi]=\gamma^{0}\Pr[S_{o}=s'\mid S_{o}=j,\pi]+\sum_{t=1}^{\infty}\gamma^{t}\Pr[S_{t}=s'\mid S_{o}=j,\pi]\label{eq:intermedia_8.1-1}
+\end{equation}
+
+\end_inset
+
+donde:
+\begin_inset Formula 
+\begin{equation}
+\Pr[S_{o}=s'\mid S_{o}=j,\pi]=\begin{cases}
+1 & \text{si }s'=j\\
+0 & \text{si }s'\neq j
+\end{cases}\label{eq:prob_init}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Por comodidad en los desarrollos, vamos a definir 
+\begin_inset Formula $\delta(s'\mid j)$
+\end_inset
+
+ como el elemento 
+\begin_inset Formula $(s',j)-ésimo$
+\end_inset
+
+ de la matriz 
+\begin_inset Formula $I_{\left|\S\right|}$
+\end_inset
+
+.
+ De este modo, y haciendo además un ajuste en el índice 
+\begin_inset Formula $t$
+\end_inset
+
+ del sumatorio, podremos expresar 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:intermedia_8.1-1"
+
+\end_inset
+
+ como:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\sum_{t=0}^{\infty}\gamma^{t}\Pr[S_{t}=s'\mid S_{o}=j,\pi] & =\delta(s'\mid j)+\sum_{t=1}^{\infty}\gamma^{t}\Pr[S_{t}=s'\mid S_{o}=j,\pi]\\
+ & =\delta(s'\mid j)+\sum_{t=0}^{\infty}\gamma^{t+1}\Pr[S_{t+1}=s'\mid S_{o}=j,\pi]
+\end{aligned}
+\label{eq:demoTeor8_aux}
+\end{equation}
+
+\end_inset
+
+donde, como vemos, el segundo sumando del lado derecho de la última igualdad
+ es el término que aparece en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:demoTeor8_1-2"
+
+\end_inset
+
+.
+ Despejando dicho término de 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:demoTeor8_aux"
+
+\end_inset
+
+ tenemos:
+\begin_inset Formula 
+\[
+\sum_{t=0}^{\infty}\gamma^{t+1}\Pr[S_{t+1}=s'\mid S_{o}=j,\pi]=\sum_{t=0}^{\infty}\gamma^{t}\Pr[S_{t}=s'\mid S_{o}=j,\pi]-\delta(s'\mid j)
+\]
+
+\end_inset
+
+y al sustituirlo en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:demoTeor8_1-2"
+
+\end_inset
+
+ se llega a:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\gamma\sum_{s\in\S}\sum_{a\in\A}\P_{ss'}^{a}d^{\pi}(s,a) & =\gamma\sum_{s\in\S}\sum_{a\in\A}\P_{ss'}^{a}\sum_{j\in S}\mu(j)\sum_{t=0}^{\infty}\gamma^{t}\Pr[S_{t}=s,A_{t}=a\mid S_{o}=j,\pi]\\
+ & =\sum_{j\in S}\mu(j)\sum_{t=0}^{\infty}\gamma^{t+1}\Pr[S_{t+1}=s'\mid S_{o}=j,\pi]\\
+ & =\sum_{j\in S}\mu(j)\left(\sum_{t=0}^{\infty}\gamma^{t}\Pr[S_{t}=s'\mid S_{o}=j,\pi]-\delta(s'\mid j)\right)
+\end{aligned}
+\label{eq:demoTeor8_1-3}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+A partir de la última igualdad de 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:demoTeor8_1-3"
+
+\end_inset
+
+ se deduce:
+\end_layout
+
+\begin_layout Proof
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{enumerate}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+item 
+\end_layout
+
+\end_inset
+
+De la relación existente entre 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:ro_s"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:ro_sa"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\sum_{j\in S}\mu(j)\sum_{t=0}^{\infty}\gamma^{t}\Pr[S_{t}=s'\mid S_{o}=j,\pi] & =\sum_{j\in S}\mu(j)\sum_{a\in\A}\sum_{t=0}^{\infty}\gamma^{t}\Pr[S_{t}=s'\mid S_{o}=j,\pi]\pi(a\mid s')\\
+ & =\sum_{a\in\A}\left(\sum_{j\in S}\mu(j)\rho^{\pi}(s',j)\pi(a\mid s')\right)\\
+ & =\sum_{a\in\A}\sum_{j\in S}\mu(j)\rho^{\pi}(s',a,j)\\
+ & =\sum_{a\in\A}d^{\pi}(s',a)
+\end{aligned}
+\label{eq:aux1teor8.1}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+item 
+\end_layout
+
+\end_inset
+
+ De 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:prob_init"
+
+\end_inset
+
+: 
+\begin_inset Formula 
+\begin{equation}
+\sum_{j\in S}\mu(j)\delta(s'\mid j)=\mu(s')\label{eq:aux2teor8.1}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{enumerate}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Con lo cual, 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:demoTeor8_1-3"
+
+\end_inset
+
+ resulta en:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\gamma\sum_{s\in\S}\sum_{a\in\A}\P_{ss'}^{a}d^{\pi}(s,a) & =\gamma\sum_{s\in\S}\sum_{a\in\A}\P_{ss'}^{a}\sum_{j\in S}\mu(j)\sum_{t=0}^{\infty}\gamma^{t}\Pr[S_{t}=s,A_{t}=a\mid S_{o}=j,\pi]\\
+ & =\sum_{j\in S}\mu(j)\sum_{t=0}^{\infty}\gamma^{t+1}\Pr[S_{t+1}=s'\mid S_{o}=j,\pi]\\
+ & =\sum_{j\in S}\mu(j)\left(\sum_{t=0}^{\infty}\gamma^{t}\Pr[S_{t}=s'\mid S_{o}=j,\pi]-\delta(s'\mid j)\right)\\
+ & =\sum_{a\in\A}d^{\pi}(s',a)-\mu(s')
+\end{aligned}
+\label{eq:demoTeor8_1-4}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+De este modo, se demuestra el cumplimiento de la segunda restricción:
+\begin_inset Formula 
+\[
+\gamma\sum_{s\in\S}\sum_{a\in\A}\P_{ss'}^{a}d^{\pi}(s,a)=\sum_{a\in\A}d^{\pi}(s',a)-\mu(s')
+\]
+
+\end_inset
+
+y se concluye que 
+\begin_inset Formula $d^{\pi}(s,a)$
+\end_inset
+
+, tal y como se define en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:teor8.1"
+
+\end_inset
+
+, es una solución factible del programa lineal dual 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:preProbDualEsc"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Anexo C
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Anexo-C"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Supongamos que 
+\begin_inset Formula $d(s,a)$
+\end_inset
+
+ es una solución factible del programa lineal dual, y definamos 
+\begin_inset Formula $u(s)$
+\end_inset
+
+ como:
+\begin_inset Formula 
+\[
+u(s)=\sum_{a\in\A}d(s,a)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+El hecho de que 
+\begin_inset Formula $u(s)>0$
+\end_inset
+
+ se desprende de la restricción de igualdad del programa lineal dual 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:preProbDualEsc"
+
+\end_inset
+
+, de la no negatividad de 
+\begin_inset Formula $d(s,a)$
+\end_inset
+
+ y de que 
+\begin_inset Formula $\mu$
+\end_inset
+
+ es positivo.
+\end_layout
+
+\begin_layout Proof
+Si reescribimos la restricción de igualdad del programa lineal dual 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:preProbDualEsc"
+
+\end_inset
+
+ en términos de 
+\begin_inset Formula $u$
+\end_inset
+
+ obtenemos:
+\begin_inset Formula 
+\[
+\begin{aligned}\mu(j) & =u(j)-\gamma\sum_{s\in\S}\sum_{a\in\A}\P_{sj}^{a}d(s,a)\\
+ & =u(j)-\gamma\sum_{s\in\S}\sum_{a\in\A}\P_{sj}^{a}d(s,a)\frac{u(s)}{\sum_{a'\in\A}d(s,a')}
+\end{aligned}
+\]
+
+\end_inset
+
+donde, según 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:prob"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\[
+\begin{aligned}\mu(j) & =u(j)-\gamma\sum_{s\in\S}\sum_{a\in\A}\P_{sj}^{a}d(s,a)\Pr[\pi_{d}(s)=a]u(s)\\
+ & =u(j)-\gamma\sum_{s\in\S}\P_{sj}^{\pi_{d}}u(s)
+\end{aligned}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Expresando este resultado en forma matricial, tenemos:
+\begin_inset Formula 
+\[
+\mu^{T}=u^{T}\left(I_{\left|\S\right|}-\gamma\P^{\pi_{d}}\right)
+\]
+
+\end_inset
+
+y despejando para 
+\begin_inset Formula $u$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+u^{T}=\mu^{T}\left(I_{\left|\S\right|}-\gamma\P^{\pi_{d}}\right)^{-1}\label{eq:u_inv}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+De 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Puterman2005"
+
+\end_inset
+
+ sabemos que 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:u_inv"
+
+\end_inset
+
+ se puede expresar como:
+\begin_inset Formula 
+\[
+u^{T}=\mu^{T}\left(I_{\left|\S\right|}-\gamma\P^{\pi_{d}}\right)^{-1}=\mu^{T}\left[\sum_{t=1}^{\infty}\left(\gamma\P^{\pi_{d}}\right)^{t-1}\right]=\mu^{T}\left[\sum_{t=0}^{\infty}\left(\gamma\P^{\pi_{d}}\right)^{t}\right]
+\]
+
+\end_inset
+
+o en forma escalar:
+\begin_inset Formula 
+\[
+u(s)=\sum_{k\in\S}\mu(k)\sum_{t=0}^{\infty}\gamma^{t}\sum_{a\in\A}\Pr[S_{t}=s,A_{t}=a\mid S_{o}=k,\pi_{d}]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Por tanto, se deduce de 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:teor8.1"
+
+\end_inset
+
+ que:
+\begin_inset Formula 
+\[
+u(s)=\sum_{k\in\S}\mu(k)\sum_{t=0}^{\infty}\gamma^{t}\sum_{a\in\A}\Pr[S_{t}=s,A_{t}=a\mid S_{o}=k,\pi_{d}]=\sum_{a\in\A}d^{\pi_{d}}(s,a)
+\]
+
+\end_inset
+
+y se puede concluir:
+\begin_inset Formula 
+\begin{equation}
+\sum_{a\in\A}d(s,a)=\sum_{a\in\A}d^{\pi_{d}}(s,a)\label{eq:igualSumaTeor8_2}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Para terminar con la demostración, de 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:d_v2"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:igualSumaTeor8_2"
+
+\end_inset
+
+ llegamos a:
+\end_layout
+
+\begin_layout Proof
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}d^{\pi_{d}}(s,a) & =\sum_{j\in S}\mu(j)\sum_{t=0}^{\infty}\gamma^{t}\Pr[S_{t}=s\mid S_{o}=j,\pi_{d}]\pi_{d}(a\mid s)\\
+ & =\sum_{j\in S}\mu(j)\sum_{t=0}^{\infty}\gamma^{t}\Pr[S_{t}=s\mid S_{o}=j,\pi_{d}]\frac{d(s,a)}{\sum_{a'\in\A}d(s,a')}
+\end{aligned}
+\label{eq:auxteor8_2}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Dado que:
+\begin_inset Formula 
+\[
+\sum_{a\in\A}d^{\pi_{d}}(s,a)=\sum_{j\in S}\mu(j)\sum_{t=0}^{\infty}\gamma^{t}\Pr[S_{t}=s\mid S_{o}=j,\pi_{d}]
+\]
+
+\end_inset
+
+se deduce de 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:igualSumaTeor8_2"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:auxteor8_2"
+
+\end_inset
+
+ que:
+\begin_inset Formula 
+\[
+d^{\pi_{d}}(s,a)=\sum_{a\in\A}d^{\pi_{d}}(s,a)\frac{d(s,a)}{\sum_{a'\in\A}d^{\pi_{d}}(s,a')}=d(s,a)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+De esta manera se da por demostrado el teorema 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_2"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Anexo D
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Anexo-D"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Recordando el desarrollo que se hizo en la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:8_1_FormulPrim"
+
+\end_inset
+
+, el problema primal que nos permite resolver las ecuaciones de Bellman
+ de manera alternativa a la programación dinámica es el siguiente, expresado
+ tanto en forma escalar como vectorial:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\underset{v(s)}{\text{minimize}} & \quad\sum_{s\in\S}\mu(s)v(s)\\
+\text{subject to} & \quad v(s)\geq\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}v\left(s'\right)
+\end{aligned}
+\qquad\qquad\begin{aligned}\underset{v}{\text{minimize}} & \quad\mu^{T}v\\
+\text{subject to} & \quad\Xi^{T}v\geq\R+\gamma\P v
+\end{aligned}
+\label{eq:recordPrimal}
+\end{equation}
+
+\end_inset
+
+para todo 
+\begin_inset Formula $s\in\S$
+\end_inset
+
+ y todo 
+\begin_inset Formula $a\in\A$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+En la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:8_2_1InterpretaciónDual"
+
+\end_inset
+
+ se definió la función objetivo del problema dual 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:preProbDualEsc"
+
+\end_inset
+
+ como la recompensa total descontada esperada, resultado de seguir la política
+ 
+\begin_inset Formula $\pi_{d}$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+\sum_{s\in\S}\sum_{a\in\A}d(s,a)\R_{s}^{a}=\sum_{s\in\S}\sum_{a\in\A}\sum_{j\in S}\mu(j)\sum_{t=0}^{\infty}\gamma^{t}\Pr[S_{t}=s,A_{t}=a\mid S_{o}=j,\pi_{d}]\R_{s}^{a}\label{eq:desarDualAnexo}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Haciendo una interpretación similar de la función objetivo 
+\begin_inset Formula $\sum_{s\in\S}\mu(s)v(s)$
+\end_inset
+
+ del problema primal 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:recordPrimal"
+
+\end_inset
+
+, se demostrará el cumplimiento de las igualdades:
+\begin_inset Formula 
+\[
+\sum_{j\in\S}\mu(j)v^{\pi_{d}}(j)=\sum_{s\in\S}\sum_{a\in\A}d(s,a)\R_{s}^{a}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\sum_{j\in\S}\mu(j)v^{\pi}(j)=\sum_{s\in\S}\sum_{a\in\A}d^{\pi}(s,a)\R_{s}^{a}
+\]
+
+\end_inset
+
+establecidas en el corolario 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "cor:corolPrimDu"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Proof
+De acuerdo a la relación que se puede encontrar en 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Sutton2000"
+
+\end_inset
+
+, podemos expresar 
+\begin_inset Formula $v^{\pi}(j)$
+\end_inset
+
+ como:
+\begin_inset Formula 
+\[
+\begin{aligned}v^{\pi}(j)= & \;\sum_{s\in\S}\rho^{\pi}(s,j)\sum_{a\in\A}\pi(a\mid s)\R_{s}^{a}\end{aligned}
+\]
+
+\end_inset
+
+donde 
+\begin_inset Formula $\rho^{\pi}(s,j)$
+\end_inset
+
+, tal y como se definió en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:ro_s"
+
+\end_inset
+
+, representa la distribución de probabilidad descontada sobre los estados,
+ condicionada al estado inicial 
+\begin_inset Formula $j$
+\end_inset
+
+ y siguiendo la política 
+\begin_inset Formula $\pi$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Proof
+De este modo:
+\begin_inset Formula 
+\[
+\begin{aligned}v^{\pi}(j)= & \;\sum_{s\in\S}\rho^{\pi}(s,j)\sum_{a\in\A}\pi(a\mid s)\R_{s}^{a}\\
+= & \;\sum_{s\in\S}\sum_{t=0}^{\infty}\sum_{a\in\A}\gamma^{t}\Pr[S_{t}=s\mid S_{o}=j,\pi]\pi(a\mid s)\R_{s}^{a}\\
+= & \;\sum_{s\in\S}\sum_{a\in\A}\sum_{t=0}^{\infty}\gamma^{t}\Pr[S_{t}=s,A_{t}=a\mid S_{o}=j,\pi]\R_{s}^{a}
+\end{aligned}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Si ahora se multiplica 
+\begin_inset Formula $v^{\pi}(j)$
+\end_inset
+
+ por la distribución inicial de estados 
+\begin_inset Formula $\mu(s)$
+\end_inset
+
+ y se suma sobre todos los estados (función objetivo del problema primal
+ 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:recordPrimal"
+
+\end_inset
+
+), se llega a:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\sum_{j\in\S}\mu(j)v^{\pi}(j)= & \;\sum_{j\in S}\mu(j)\sum_{s\in\S}\sum_{a\in\A}\sum_{t=0}^{\infty}\gamma^{t}\Pr[S_{t}=s,A_{t}=a\mid S_{o}=j,\pi]\R_{s}^{a}\\
+= & \;\sum_{s\in\S}\sum_{a\in\A}\sum_{j\in S}\mu(j)\sum_{t=0}^{\infty}\gamma^{t}\Pr[S_{t}=s,A_{t}=a\mid S_{o}=j,\pi]\R_{s}^{a}
+\end{aligned}
+\label{eq:desarrolloPrimal}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Comparando este resultado con la expresión 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:desarDualAnexo"
+
+\end_inset
+
+, se deduce que para una política 
+\begin_inset Formula $\pi\in\Pi$
+\end_inset
+
+ cualquiera se cumplirá:
+\end_layout
+
+\begin_layout Proof
+\begin_inset Formula 
+\[
+\sum_{j\in\S}\mu(j)v^{\pi}(j)=\sum_{s\in\S}\sum_{a\in\A}d^{\pi}(s,a)\R_{s}^{a}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Si en lugar de seguir una política cualquiera 
+\begin_inset Formula $\pi$
+\end_inset
+
+ se sigue aquella obtenida a partir de la variable dual según el teorema
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_2"
+
+\end_inset
+
+, se demuestra que:
+\begin_inset Formula 
+\[
+\sum_{j\in\S}\mu(j)v^{\pi_{d}}(j)=\sum_{s\in\S}\sum_{a\in\A}d^{\pi_{d}}(s,a)\R_{s}^{a}=\sum_{s\in\S}\sum_{a\in\A}d(s,a)\R_{s}^{a}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Por tanto, se puede afirmar que la función objetivo de los problemas primal
+ y dual representan el mismo concepto: la recompensa total descontada esperada,
+ resultado de seguir una política 
+\begin_inset Formula $\pi$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Proof
+De manera más informal, se puede intuir esta relación por la propia definición
+ de función valor 
+\begin_inset Formula $-$
+\end_inset
+
+recompensa total descontada esperada cuando se empieza en el estado 
+\begin_inset Formula $j$
+\end_inset
+
+ y a continuación se sigue la política 
+\begin_inset Formula $\pi-$
+\end_inset
+
+, ya que si ponderamos la función valor de cada estado por la probabilidad
+ de empezar en dicho estado y lo sumamos, 
+\begin_inset Formula $\sum_{s\in\S}\mu(s)v^{\pi}(s)$
+\end_inset
+
+, se obtiene la recompensa total descontada esperada, resultado de seguir
+ la política 
+\begin_inset Formula $\pi$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Anexo E
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Anexo-E"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+En la demostración del teorema 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_2"
+
+\end_inset
+
+, se dedujo que, para cada 
+\begin_inset Formula $s\in\S$
+\end_inset
+
+, 
+\begin_inset Formula $\sum_{a\in\A}d(s,a)>0$
+\end_inset
+
+.
+ Además, dado que 
+\begin_inset Formula $d$
+\end_inset
+
+ es una solución básica factible y el programa lineal dual tiene 
+\begin_inset Formula $\left|\S\right|$
+\end_inset
+
+ restricciones de igualdad, 
+\begin_inset Formula $d$
+\end_inset
+
+ podrá tener como mucho 
+\begin_inset Formula $\left|\S\right|$
+\end_inset
+
+ componentes positivas.
+ De estos dos argumentos se deduce por tanto que para cada 
+\begin_inset Formula $s$
+\end_inset
+
+, 
+\begin_inset Formula $d(s,a)>0$
+\end_inset
+
+ para una única acción 
+\begin_inset Formula $a\in\A$
+\end_inset
+
+.
+ Por tanto, 
+\begin_inset Formula $\pi_{d}$
+\end_inset
+
+ tal y como se definió en el teorema 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_2"
+
+\end_inset
+
+ será igual a 1 o a 0, y en consecuencia es determinista.
+\end_layout
+
+\begin_layout Section
+Anexo F
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Anexo-F"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Supongamos que 
+\begin_inset Formula $d^{\pi}$
+\end_inset
+
+ es una solución factible pero no básica.
+ Entonces existen unas soluciones básicas factibles 
+\begin_inset Formula $w$
+\end_inset
+
+ y 
+\begin_inset Formula $z$
+\end_inset
+
+, y 
+\begin_inset Formula $\beta$
+\end_inset
+
+, 
+\begin_inset Formula $0\leq\beta\leq1$
+\end_inset
+
+ tal que 
+\begin_inset Formula $d(s,a)=\beta w(s,a)+(1-\beta)z(s,a)$
+\end_inset
+
+.
+ Dado que 
+\begin_inset Formula $w(s,a)$
+\end_inset
+
+ y 
+\begin_inset Formula $z(s,a)$
+\end_inset
+
+ son básicas y distintas, sabemos de la primera parte del teorema 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_2"
+
+\end_inset
+
+ que 
+\begin_inset Formula $\sum_{a\in\A}w(s,a)>0$
+\end_inset
+
+ y 
+\begin_inset Formula $\sum_{a\in\A}z(s,a)>0$
+\end_inset
+
+ para cada 
+\begin_inset Formula $s\in\S$
+\end_inset
+
+.
+ Puesto que 
+\begin_inset Formula $w\neq z$
+\end_inset
+
+, para algún 
+\begin_inset Formula $s\in\S$
+\end_inset
+
+ existirán dos acciones 
+\begin_inset Formula $a$
+\end_inset
+
+ y 
+\begin_inset Formula $a'$
+\end_inset
+
+ para las cuales 
+\begin_inset Formula $w(s,a)>0$
+\end_inset
+
+ y 
+\begin_inset Formula $z(s,a')>0$
+\end_inset
+
+.
+ En consecuencia 
+\begin_inset Formula $d$
+\end_inset
+
+ tendrá más de una componente no nula para ese estado 
+\begin_inset Formula $s\in\S$
+\end_inset
+
+ y 
+\begin_inset Formula $\pi_{d}$
+\end_inset
+
+ ya no será determinista.
+ Puesto que 
+\begin_inset Formula $\pi=\pi_{d}$
+\end_inset
+
+, esto contradice la hipótesis de que 
+\begin_inset Formula $\pi$
+\end_inset
+
+ es determinista.
+\end_layout
+
+\begin_layout Section
+Anexo G
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Anexo-G"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Sea 
+\begin_inset Formula $d$
+\end_inset
+
+ una solución factible del programa lineal dual, a partir del teorema 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:8_2"
+
+\end_inset
+
+ sabemos que existe una política 
+\begin_inset Formula $\pi\in\Pi^{MR}$
+\end_inset
+
+ para la cual 
+\begin_inset Formula $d=d^{\pi}$
+\end_inset
+
+.
+ De 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:igualPrimDualPolicyGener"
+
+\end_inset
+
+ se sabe que:
+\begin_inset Formula 
+\begin{equation}
+\sum_{j\in\S}\mu(j)v^{\pi}(j)=\sum_{s\in\S}\sum_{a\in\A}d^{\pi}(s,a)\R_{s}^{a}\label{eq:demoOpt1}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Por la desigualdad de Cauchy-Schwarz y las propiedades de la norma
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+A partir de la desigualdad de Cauchy-Schwarz puede demostrarse que 
+\begin_inset Formula $\left\Vert x\right\Vert _{2}\leq\left\Vert x\right\Vert _{1}\leq\sqrt{n}\left\Vert x\right\Vert _{2}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+ además se cumple:
+\begin_inset Formula 
+\[
+\left(\sum_{s\in\S}\sum_{a\in\A}d^{\pi}(s,a)\R_{s}^{a}\right)^{2}\leq\left(\sum_{s\in\S}\sum_{a\in\A}\left(d^{\pi}(s,a)\right)^{2}\right)\left(\sum_{s\in\S}\sum_{a\in\A}\left(\R_{s}^{a}\right)^{2}\right)=\left\Vert d^{\pi}\right\Vert _{2}^{2}\left\Vert \R\right\Vert _{2}^{2}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+\begin_inset Formula 
+\begin{equation}
+\sum_{s\in\S}\sum_{a\in\A}d^{\pi}(s,a)\R_{s}^{a}\leq\left\Vert d^{\pi}\right\Vert _{2}\left\Vert \R\right\Vert _{2}\leq\left\Vert d^{\pi}\right\Vert _{1}\left\Vert \R\right\Vert _{1}\label{eq:demoOpt2}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Debido a la no negatividad de 
+\begin_inset Formula $d$
+\end_inset
+
+ por ser una solución factible, podemos expresar 
+\begin_inset Formula $\left\Vert d^{\pi}\right\Vert _{1}$
+\end_inset
+
+ como:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\left\Vert d^{\pi}\right\Vert _{1}= & \;\sum_{s\in\S}\sum_{a\in\A}\left|d^{\pi}(s,a)\right|=\sum_{s\in\S}\sum_{a\in\A}d^{\pi}(s,a)\\
+= & \;\sum_{s\in\S}\sum_{a\in\A}\sum_{j\in S}\mu(j)\sum_{t=0}^{\infty}\gamma^{t}\Pr[S_{t}=s,A_{t}=a\mid S_{o}=j,\pi]\\
+= & \;\sum_{t=0}^{\infty}\sum_{j\in S}\mu(j)\sum_{s\in\S}\sum_{a\in\A}\gamma^{t}\Pr[S_{t}=s,A_{t}=a\mid S_{o}=j,\pi]\\
+= & \;\sum_{t=0}^{\infty}\gamma^{t}=\left(1-\gamma\right)^{-1}
+\end{aligned}
+\label{eq:demoOpt3}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Combinando los resultados de 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:demoOpt1"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:demoOpt2"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:demoOpt3"
+
+\end_inset
+
+ se deduce que la función objetivo del problema dual (y del primal) estará
+ acotada por:
+\begin_inset Formula 
+\begin{equation}
+\sum_{j\in\S}\mu(j)v^{\pi}(j)=\sum_{s\in\S}\sum_{a\in\A}d^{\pi}(s,a)\R_{s}^{a}\leq\left(1-\gamma\right)^{-1}\underset{a\in\A}{\text{\ensuremath{\max}}}\:\underset{s\in\S}{\text{\ensuremath{\max}}}\left\Vert \R_{s}^{a}\right\Vert _{1}\label{eq:finDemoBasicFeasOpt}
+\end{equation}
+
+\end_inset
+
+y por tanto, la solución óptima del problema dual tendrá una cota superior.
+\end_layout
+
+\begin_layout Proof
+En 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Puterman2005"
+
+\end_inset
+
+ se demuestra que si el problema primal o el dual tiene una solución óptima
+ finita, entonces tiene una solución óptima que es solución básica factible.
+ En base a este argumento y a 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:finDemoBasicFeasOpt"
+
+\end_inset
+
+,queda demostrado que existe una solución básica factible óptima acotada
+ 
+\begin_inset Formula $d^{*}$
+\end_inset
+
+ para el programa lineal dual.
+\end_layout
+
+\begin_layout Section
+Anexo H
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Anexo-H"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+De la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:8_1_FormulPrim"
+
+\end_inset
+
+ se sabe que el problema primal 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:primalEsc"
+
+\end_inset
+
+ que resuelve las ecuaciones óptimas de Bellman es un programa lineal.
+ En este tipo de problemas de optimización, de acuerdo a la teoría detallada
+ en la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:StrongDualSlater"
+
+\end_inset
+
+, siempre se satisfacen las condiciones de Slater en su forma débil ya que
+ tanto la función objetivo como las restricciones de desigualdad son afines.
+ Como consecuencia del cumplimiento de estas condiciones, se puede garantizar
+ la existencia de dualidad fuerte y por tanto la brecha de dualidad óptima
+ es cero, es decir:
+\begin_inset Formula 
+\[
+\sum_{s\in\S}\mu(s)v^{*}(s)=\sum_{s\in\S}\sum_{a\in\A}d^{*}(s,a)\R_{s}^{a}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Si además tenemos en cuenta 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:igualPrimDualPolicy"
+
+\end_inset
+
+, podemos extender la igualdad anterior a:
+\begin_inset Formula 
+\[
+\sum_{s\in\S}\mu(s)v^{*}(s)=\sum_{s\in\S}\sum_{a\in\A}d^{*}(s,a)\R_{s}^{a}=\sum_{s\in\S}\mu(s)v^{\pi_{d^{*}}}(s)
+\]
+
+\end_inset
+
+donde 
+\begin_inset Formula $v^{\pi_{d^{*}}}$
+\end_inset
+
+ será la función valor obtenida al seguir la política 
+\begin_inset Formula $\pi_{d^{*}}$
+\end_inset
+
+ extraída de la variable dual óptima 
+\begin_inset Formula $d^{*}$
+\end_inset
+
+.
+ En vista del resultado anterior, parece claro que:
+\begin_inset Formula 
+\begin{eqnarray*}
+\sum_{s\in\S}\mu(s)v^{*}(s)=\sum_{s\in\S}\mu(s)v^{\pi_{d^{*}}}(s) & \Longleftrightarrow & v^{*}(s)=v^{\pi_{d^{*}}}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Por tanto se concluye que, si la función valor obtenida al seguir la política
+ 
+\begin_inset Formula $\pi_{d^{*}}$
+\end_inset
+
+ es igual a la función valor óptima, la política 
+\begin_inset Formula $\pi_{d^{*}}$
+\end_inset
+
+ es la política óptima:
+\begin_inset Formula 
+\[
+\pi_{d^{*}}=\pi*
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+De este modo queda demostrado que la política extraída de la variable dual
+ óptima es la política óptima.
+\end_layout
+
+\begin_layout Section
+Anexo I
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Anexo-I"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Del capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:cap4MDP"
+
+\end_inset
+
+ se sabe que las ecuaciones de Bellman de la función valor de estados y
+ de acciones-estados para una política 
+\begin_inset Formula $\pi$
+\end_inset
+
+ vienen dadas por:
+\begin_inset Formula 
+\[
+\begin{aligned}v^{\pi}(s)=\; & \sum_{a\in\A}\pi(a\mid s)q^{\pi}(s,a)\\
+q^{\pi}(s,a)=\; & \R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}v\left(s'\right)
+\end{aligned}
+\]
+
+\end_inset
+
+respectivamente.
+ Además:
+\begin_inset Formula 
+\[
+0\leq\pi(a\mid s)\leq1,\,\forall s\in\S,\:\forall a\in\A\qquad\qquad\qquad\qquad\sum_{a\in\A}\pi(a\mid s)=1,\,\forall s\in\S
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+De todo ello se deduce que siempre deberá cumplirse:
+\begin_inset Formula 
+\begin{equation}
+v^{\pi}(s)\geq q^{\pi}(s,a),\qquad\forall s\in\S,\:\forall a\in\A\label{eq:demoFeasible}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Por otro lado, tenemos que la restricción impuesta por el problema primal
+ 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:primalEsc"
+
+\end_inset
+
+ es la siguiente:
+\begin_inset Formula 
+\begin{equation}
+v^{\pi}(s)\geq\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}v^{\pi}\left(s'\right)\label{eq:restri}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Como vemos, el lado derecho de 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:restri"
+
+\end_inset
+
+ es por definición 
+\begin_inset Formula $q^{\pi}(s,a)$
+\end_inset
+
+.
+ Por tanto, y de acuerdo a 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:demoFeasible"
+
+\end_inset
+
+, queda demostrado que cualquier punto 
+\begin_inset Formula $v$
+\end_inset
+
+ que satisfaga las ecuaciones de Bellman para una política dada, será un
+ punto factible del problema primal 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:primalEsc"
+
+\end_inset
+
+ que resuelve las ecuaciones óptimas de Bellman.
+\end_layout
+
+\end_body
+\end_document

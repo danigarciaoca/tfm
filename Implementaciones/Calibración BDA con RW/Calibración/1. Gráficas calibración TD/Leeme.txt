@@ -1,0 +1,6 @@
+Estas gráficas se extrajeron tras correr el algoritmo RL.m para un vector 'd' concreto (d representa la política); más concretamente, para:
+- el vector d óptimo
+- uno "aleatorio y 
+- el óptimo con e-greedy y e=0.2
+
+Es decir, estas gráficas representan una calibración de la parte Temporal-Diference. Se emplearon para saber en cuántos episodios convergía TD en función de alfa.

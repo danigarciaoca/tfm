@@ -1,0 +1,2 @@
+BDA: el algoritmo Bellman-dual ascent
+RW: el problema Random Walk

@@ -1,0 +1,921 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass book
+\begin_preamble
+
+
+\AtBeginDocument{
+  \def\labelitemii{\ding{71}}
+  \def\labelitemiii{\ding{111}}
+  \def\labelitemiv{\(\vartriangleright\)}
+}
+
+
+
+\usepackage{babel}
+\addto\shorthandsspanish{\spanishdeactivate{~<>}}
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding iso8859-15
+\fontencoding T1
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing double
+\use_hyperref true
+\pdf_bookmarks false
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref section
+\pdf_pdfusetitle false
+\papersize a4paper
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 2
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.5in
+\topmargin 1.6in
+\rightmargin 1.2in
+\bottommargin 1.6in
+\headheight 1.5in
+\headsep 0.3in
+\footskip 0.8in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle plain
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset FormulaMacro
+\renewcommand{\T}{\mathcal{\top}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\S}{\mathcal{S}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\A}{\mathcal{A}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\R}{\mathcal{R}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\P}{\mathcal{P}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Pr}{\mathbb{P}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Sa}{\mathbb{S}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Ba}{\mathbb{B}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Na}{\mathbb{N}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Contexto del problema
+\begin_inset CommandInset label
+LatexCommand label
+name "chap:cap3Contexto-del-problema"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+El problema de decisión secuencial
+\end_layout
+
+\begin_layout Standard
+Tal y como se presentó en la 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "chap:Introducción"
+
+\end_inset
+
+, uno de los problemas que más se ha planteado en los últimos años ha sido
+ cómo un agente puede aprender a predecir y controlar la respuesta de su
+ entorno cuando se desconocen las reglas que lo modelan.
+ Generalmente, este tipo de problemas se resuelven mediante lo que se conoce
+ como aprendizaje por refuerzo (RL): el agente aprende a través de la interacció
+n con el entorno, descubriendo qué acciones dan lugar a la respuesta más
+ favorable y reforzándolas.
+ Un enfoque clásico para abordar el problema de aprendizaje por refuerzo
+ es a través de los procesos de decisión de Markov (MDP), pues permiten
+ modelar de manera sencilla la interacción entre el agente y su entorno.
+\end_layout
+
+\begin_layout Standard
+Tras estas consideraciones, podremos afirmar que cualquier algoritmo que
+ sea capaz de aprender a partir la interacción con el entorno con el fin
+ de alcanzar un objetivo determinado, podrá ser considerado un método de
+ aprendizaje por refuerzo.
+\end_layout
+
+\begin_layout Standard
+Todas estas nociones dan aún una idea un tanto difusa sobre lo que es RL.
+ A continuación, se presentan algunos conceptos que caracterizan el problema
+ de aprendizaje por refuerzo de manera más detallada:
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Objetivo:
+\series default
+ típicamente se define como un estado del entorno al que desea llegar el
+ agente, de manera que se tomarán una serie de acciones que provocarán transicio
+nes de un estado a otro hasta que el entorno alcance el estado objetivo
+ deseado.
+ Otra interpretación puede darse desde el punto de vista de la señal de
+ recompensa: el objetivo del agente será maximizar la recompensa total acumulada
+ a largo plazo.
+ Se puede deducir que ambas definiciones deberán ser consistentes, es decir,
+ el agente deberá tomar aquellas acciones que lleven al entorno al estado
+ deseado, de manera que se obtenga la mayor recompensa acumulada posible.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Secuencial:
+\series default
+ el aprendizaje por refuerzo es un problema de decisión secuencial.
+ Las acciones del agente determinarán el siguiente estado al que se transite
+ y la recompensa obtenida.
+ Por tanto, el agente aprende a partir de datos correlados.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Señal de recompensa:
+\series default
+ se trata de la realimentación que el agente recibe del entorno.
+ Permite hacerse una idea respecto a si el agente se está acercando al objetivo.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Realimentación atrasada:
+\series default
+ las acciones que se toman influyen tanto en la recompensa actual como en
+ la futura.
+ A veces, la recompensa obtenida en un instante de tiempo 
+\begin_inset Formula $t$
+\end_inset
+
+ no es muy significativa en dicho instante, pero si podría serlo su influencia
+ en recompensas futuras.
+ De este modo, habrá ocasiones en las que el agente tenga que sacrificar
+ la recompensa instantánea obtenida en aras de obtener una recompensa mayor
+ a largo plazo.
+ Siguiendo con el ejemplo de escapar del laberinto que se mencionó en la
+ 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "chap:Introducción"
+
+\end_inset
+
+, a veces el agente deberá escoger desvíos del camino más corto con intención
+ de saber que no tiene que ir por ellos.
+ De esta manera, se evita que en un futuro se decida tomar ese camino peor,
+ y por tanto se garantiza la máxima recompensa a largo plazo.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Exploración vs explotación:
+\series default
+ el dilema entre exploración y explotación es una de las cuestiones fundamentale
+s de RL.
+ Cuando el agente se enfrenta a una situación determinada, puede optar por
+ tomar la mejor decisión en base a la información de que dispone (esto es,
+ explotación).
+ Puesto que se considera que las transiciones de estados y la señal de recompens
+a son estocásticas, una decisión alternativa podría dar lugar a un resultado
+ mejor, peor o igual, pero en cualquier caso, el agente podría recabar más
+ información y aumentar su conocimiento sobre la respuesta del entorno (esto
+ es, exploración), En otras palabras, el agente puede decidir tomar las
+ acciones que ya se comprobó en el pasado que eran efectivas (explotación)
+ o tratar de descubrir acciones que podrían dar lugar a resultados mejores
+ (exploración).
+ En la práctica, los algoritmos de RL deben encontrar un grado de compromiso
+ entre el nivel de exploración y de explotación.
+\end_layout
+
+\begin_layout Standard
+En base a todos estos conceptos, se puede detallar de manera más precisa
+ la labor que llevará a cabo un algoritmo de aprendizaje por refuerzo: dado
+ un entorno desconocido, el algoritmo de aprendizaje por refuerzo tratará
+ de deducir una serie de reglas de actuación –política de comportamiento–
+ que permitan encontrar la secuencia de acciones que dirijan al agente al
+ estado objetivo, maximizando la recompensa total obtenida a largo plazo.
+ Para lograrlo, deberá existir un cierto balance entre la exploración y
+ la explotación realizadas de manera que se pueda 
+\begin_inset Formula $(a)$
+\end_inset
+
+ explorar todo el entorno y aprender su comportamiento en base a la interacción
+ con él, a la par que 
+\begin_inset Formula $(b)$
+\end_inset
+
+ explotemos el aprendizaje realizado y podamos alcanzar el objetivo deseado.
+ Se dice que el algoritmo ha convergido cuando se ha encontrado la política
+ de comportamiento óptima.
+\end_layout
+
+\begin_layout Standard
+Uno de los problemas a los que se enfrenta el campo del aprendizaje por
+ refuerzo en la actualidad es el de encontrar la política óptima en un tiempo
+ razonable; es decir, se busca un aprendizaje rápido y efectivo.
+ Si bien es cierto que los algoritmos que existen hasta la fecha presentan
+ un buen desempeño, se piensa que aún puede mejorarse más la velocidad de
+ convergencia, bien mediante modificaciones de los algoritmos ya existentes
+ o a través de nuevos enfoques poco estudiados hasta el momento.
+\end_layout
+
+\begin_layout Section
+Conceptos fundamentales en aprendizaje secuencial
+\end_layout
+
+\begin_layout Subsection
+Agente y entorno
+\end_layout
+
+\begin_layout Standard
+De aquí en adelante, se van a considerar problemas de aprendizaje secuencial
+ donde, en cada instante de tiempo 
+\begin_inset Formula $t$
+\end_inset
+
+, el agente toma una acción 
+\begin_inset Formula $A_{t}$
+\end_inset
+
+, percibe la observación 
+\begin_inset Formula $O_{t}$
+\end_inset
+
+ y obtiene una recompensa escalar 
+\begin_inset Formula $R_{t}$
+\end_inset
+
+.
+ Desde un punto de vista complementario, el del entorno, la acción será
+ un parámetro de entrada mientras que la observación y la recompensa serán
+ parámetros de salida.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap3/agent_environment
+	lyxscale 50
+	scale 65
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Agente y entorno
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La 
+\emph on
+historia
+\emph default
+ en el instante 
+\begin_inset Formula $t$
+\end_inset
+
+, a la que nos referiremos por 
+\begin_inset Formula $H_{t}$
+\end_inset
+
+, se constituye por la secuencia de observaciones, acciones y recompensas
+ obtenidas hasta ese instante 
+\begin_inset Formula $t$
+\end_inset
+
+, es decir:
+\begin_inset Formula 
+\[
+H_{t}=\left\{ O_{1}=o_{1},R_{1}=r_{1},A_{1}=a_{1},\cdots,A_{t-1}=a_{t-1},O_{t}=o_{t},R_{t}=r_{t}\right\} 
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Obsérvese que se usarán letras mayúsculas para referirse a las variables
+ aleatorias y letras minúsculas para referirse a realizaciones concretas
+ de esas variables.
+\end_layout
+
+\begin_layout Standard
+Emplearemos el término 
+\emph on
+estado
+\emph default
+ del entorno en el instante 
+\begin_inset Formula $t$
+\end_inset
+
+, al cual nos referiremos por 
+\begin_inset Formula $S_{t}$
+\end_inset
+
+, como la parte de la historia 
+\begin_inset Formula $H_{t}$
+\end_inset
+
+ que determina (en un sentido estocástico) la observación y la recompensa
+ en el instante 
+\begin_inset Formula $t+1$
+\end_inset
+
+, es decir, 
+\begin_inset Formula $O_{t+1}$
+\end_inset
+
+ y 
+\begin_inset Formula $R_{t+1}$
+\end_inset
+
+.
+ De manera más formal, el estado será una función de la historia: 
+\begin_inset Formula $S_{t}=f\left(H_{t}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+De aquí en adelante, se va a suponer que los entornos considerados son totalment
+e observables, de manera que 
+\begin_inset Formula $O_{t}=S_{t}$
+\end_inset
+
+.
+ De hecho, cuando se dice que el entorno puede modelarse como un MDP, implícitam
+ente se está asumiendo que el agente puede observar totalmente el estado
+ (es decir, un MDP asume que 
+\begin_inset Formula $O_{t}=S_{t}$
+\end_inset
+
+).
+ Una propiedad de los MDP que será de gran importancia es que satisfacen
+ la 
+\emph on
+propiedad de Markov
+\emph default
+ para las transiciones de estados, lo cual significa que la transición del
+ estado actual al siguiente sólo dependerá del estado y acción actual, en
+ lugar de depender de toda la historia.
+ Es decir:
+\begin_inset Formula 
+\begin{equation}
+\mathbb{P}\left(S_{t+1}\mid H_{t}\right)=\mathbb{P}\left(S_{t+1}\mid S_{t},A_{t}\right)\label{eq:Markov-property}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para los subsecuentes capítulos, resultará conveniente clasificar los problemas
+ en base al tamaño de sus conjuntos de estados y acciones.
+ Cuando estos conjuntos sean pequeños y discretos, se hablará de 
+\emph on
+problemas de pequeña escala
+\emph default
+, y dichos problemas se caracterizarán por el hecho de que la mayoría de
+ las funciones involucradas pueden ser representadas a través de tablas.
+ Sin embargo, esta representación tabular resultará computacionalmente inabordab
+le cuando los conjuntos de estados y acciones sean muy grandes o continuos.
+ En este caso, se hablará de 
+\emph on
+problemas de gran escala
+\emph default
+ y la representación eficiente de estos espacios grandes y continuos se
+ convertirá en un problema.
+ Para solucionarlo, se recurrirá a las aproximaciones, tal y como veremos
+ en el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:solucionEcuBellmanAprox"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Política, recompensa y función valor
+\end_layout
+
+\begin_layout Standard
+Además del agente y el entorno, se pueden identificar otros tres elementos
+ más en cualquier problema de aprendizaje por refuerzo: las políticas, la
+ señal de recompensa y las funciones valor.
+\end_layout
+
+\begin_layout Subsubsection
+Política
+\end_layout
+
+\begin_layout Standard
+Una 
+\emph on
+política 
+\begin_inset Formula $\pi$
+\end_inset
+
+
+\emph default
+ dictamina cómo se comporta el agente, y se define como una función de los
+ estados.
+ Las políticas pueden ser deterministas o estocásticas.
+\end_layout
+
+\begin_layout Enumerate
+Si la política es determinista, se define formalmente como una aplicación
+ de los estados a las acciones, tal que la acción tomada en cualquier estado
+ vendrá dada de manera determinista como la salida de la política.
+ Por ejemplo, si nos encontramos en el estado 
+\begin_inset Formula $S_{t}=s$
+\end_inset
+
+, la acción tomada por el agente en el instante 
+\begin_inset Formula $t$
+\end_inset
+
+ estará definida por 
+\begin_inset Formula $a=\pi(s)$
+\end_inset
+
+.
+ El espacio de políticas determinista se denota por 
+\begin_inset Formula $\Pi^{MD}$
+\end_inset
+
+, siendo MD las siglas de 
+\emph on
+Markovian Deterministic
+\emph default
+.
+ El término 
+\begin_inset Quotes fld
+\end_inset
+
+Markoviano
+\begin_inset Quotes frd
+\end_inset
+
+ hace referencia a que el problema cumple la propiedad de Markov anteriormente
+ citada.
+\end_layout
+
+\begin_layout Enumerate
+Si la política es estocástica, entonces la política es una distribución
+ de probabilidad condicionada, tal que la probabilidad de tomar la acción
+ 
+\begin_inset Formula $a$
+\end_inset
+
+ supuesto que estamos en el estado 
+\begin_inset Formula $S_{t}=s$
+\end_inset
+
+ viene dada por 
+\begin_inset Formula $\pi\left(a\mid s\right)=\mathbb{P}\left(A_{t}=a\mid S_{t}=s\right)$
+\end_inset
+
+.
+ El espacio de políticas estocásticas se denota por 
+\begin_inset Formula $\Pi^{MR}$
+\end_inset
+
+, siendo MR las siglas de 
+\emph on
+Markovian Randomized
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+El espacio de políticas general, incluyendo tanto aquellas deterministas
+ como las estocásticas, será referido como 
+\begin_inset Formula $\Pi$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Por último, se dice que una política es estacionaria cuando es independiente
+ del instante temporal en el que estemos o del tiempo transcurrido.
+\end_layout
+
+\begin_layout Subsubsection
+Recompensa
+\end_layout
+
+\begin_layout Standard
+Como ya se ha comentado anteriormente, la señal de 
+\emph on
+recompensa
+\emph default
+, 
+\begin_inset Formula $R_{t}$
+\end_inset
+
+, se encarga de definir el objetivo en un problema de RL.
+ En cada instante de tiempo, el entorno manda al agente una señal escalar.
+ De este modo, el único objetivo del agente será maximizar la recompensa
+ obtenida a largo plazo.
+\end_layout
+
+\begin_layout Subsubsection
+Función valor
+\end_layout
+
+\begin_layout Standard
+Esta idea de la recompensa a largo plazo se define de manera formal como
+ 
+\emph on
+función valor
+\emph default
+.
+ La función valor de estados es una función de los estados del entorno y
+ la política del agente, y comúnmente se refiere a ella como 
+\begin_inset Formula $v^{\pi}(s)$
+\end_inset
+
+.
+ Representa la recompensa total que el agente podría esperar acumular en
+ el futuro, cuando el entorno está en el estado 
+\begin_inset Formula $s$
+\end_inset
+
+ y el agente se comporta de acuerdo a la política 
+\begin_inset Formula $\pi$
+\end_inset
+
+.
+ Por tanto, dado que el agente tiene por objetivo encontrar la política
+ que maximiza la recompensa a largo plazo –es decir, la función valor–,
+ el proceso de aprendizaje debería estar guiado por la función valor más
+ que por las recompensas instantáneas 
+\begin_inset Formula $R_{t}$
+\end_inset
+
+.
+ Sin embargo, mientras que las recompensas son recibidas directamente del
+ entorno, las funciones valor deben ser estimadas a partir de 
+\begin_inset Formula $H_{t}$
+\end_inset
+
+ (es decir, la historia de estados, acciones y recompensas), y esta estimación
+ debe ser actualizada durante todo el ciclo de vida del problema.
+ Por ello, muchos de los algoritmos más eficientes de RL incluyen algún
+ tipo de método para estimar la función valor de manera eficiente.
+ El interés por estimar la función valor, tal y como se verá en el capítulo
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:cap4MDP"
+
+\end_inset
+
+, será debido a que una vez la función valor es conocida, podremos mejorar
+ la política disponible.
+ De hecho, cuando se resuelven problemas de aprendizaje por refuerzo, habitualme
+nte se diferencian dos fases del problema:
+\end_layout
+
+\begin_layout Itemize
+Predicción: se refiere al problema de estimar la función valor 
+\begin_inset Formula $v^{\pi}(s)$
+\end_inset
+
+ para una política 
+\begin_inset Formula $\pi$
+\end_inset
+
+ y todo estado posible 
+\begin_inset Formula $s$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Control: se refiere a la tarea de aprender la política óptima que maximiza
+ la función valor.
+\end_layout
+
+\begin_layout Standard
+Para referirnos a la política óptima y a la función valor óptima emplearemos
+ la notación 
+\begin_inset Formula $\pi^{*}$
+\end_inset
+
+ y 
+\begin_inset Formula $v^{*}$
+\end_inset
+
+ respectivamente.
+\end_layout
+
+\begin_layout Standard
+Como se verá en los siguientes capítulos, las tareas de predicción y control
+ suelen intercalarse entre sí, y cada algoritmo emplea un método diferente
+ para resolver cada una de ellas.
+\end_layout
+
+\begin_layout Section
+Taxonomía de los métodos empleados en RL
+\end_layout
+
+\begin_layout Standard
+El reto principal al que se enfrentan tanto la programación dinámica como
+ el aprendizaje por refuerzo es por tanto encontrar la política óptima que
+ maximiza el rendimiento a largo plazo, medido a través de la función valor.
+ La diferencia fundamental entre programación dinámica y aprendizaje por
+ refuerzo es que la primera de ellas asume que el modelo es conocido –entendiend
+o por modelo la probabilidad de transición entre estados, así como la distribuci
+ón de recompensas para cualquier posible transición–, mientras que la última
+ considera que el modelo se desconoce y aprende a partir de la interacción
+ con el entorno (
+\emph on
+basado en muestras
+\emph default
+ o 
+\emph on
+basado en trayectoria
+\emph default
+).
+\end_layout
+
+\begin_layout Standard
+A continuación, se presenta una clasificación de los algoritmos de DP y
+ RL en función del enfoque algorítmico que sigan.
+ Esta clasificación será seguida en el resto de capítulos:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap3/taxonomia_RL.jpeg
+	lyxscale 50
+	scale 40
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Clasificación de los métodos de RL.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Value iteration
+\emph default
+: El agente busca la función valor óptima.
+ A continuación, esta función valor es empleada para calcular la política
+ óptima.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Policy iteration
+\emph default
+: El agente escoge una política y calcula su función valor.
+ Después, emplea esa función valor para mejorar la política.
+ El proceso se repite de manera iterativa hasta que se converge a la política
+ óptima.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Policy search
+\emph default
+: El agente emplea técnicas de optimización para buscar la política óptima
+ directamente sobre el espacio de políticas.
+\end_layout
+
+\begin_layout Standard
+Este tipo de clasificación no es excluyente (por ejemplo, 
+\emph on
+value iteration
+\emph default
+ puede ser considerado un caso extremo de 
+\emph on
+policy iteration
+\emph default
+).
+ Además, muchos algoritmos combinan las ideas de más de una de estas clases.
+\end_layout
+
+\begin_layout Standard
+Desde una perspectiva de implementación, se puede diferenciar también entre
+ algoritmos 
+\emph on
+online
+\emph default
+ y 
+\emph on
+offline
+\emph default
+:
+\end_layout
+
+\begin_layout Enumerate
+Algoritmos 
+\emph on
+offline
+\emph default
+: El agente aprende a partir de datos recopilados de antemano, antes de
+ que el algoritmo se ejecute.
+ La mayor adversidad a la que se enfrentan estos algoritmos, es que los
+ datos disponibles no sean muy representativos de la política óptima, dando
+ lugar a soluciones de mucha varianza.
+\end_layout
+
+\begin_layout Enumerate
+Algoritmos 
+\emph on
+online
+\emph default
+: el agente aprende al mismo tiempo que captura los datos.
+\end_layout
+
+\begin_layout Standard
+Una vez se tiene claro el contexto del problema de aprendizaje por refuerzo,
+ se puede situar mejor el objetivo de este trabajo.
+ Lo que se pretende es formular un nuevo algoritmo 
+\emph on
+online
+\emph default
+ de aprendizaje por refuerzo que permita encontrar la política óptima de
+ alguna manera no muy explorada hasta el momento, de forma que dé pie a
+ nuevas líneas de estudio e investigación.
+ Por ello, se decidió tratar de desarrollar un método de tipo 
+\emph on
+policy search
+\emph default
+, pues actualmente apenas se han explotado.
+ En el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Cap8PrimyDual"
+
+\end_inset
+
+ se presentará la solución planteada.
+\end_layout
+
+\begin_layout Standard
+Los cuatro capítulos siguientes asentarán la base teórica que será empleada
+ en el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Cap8PrimyDual"
+
+\end_inset
+
+ para desarrollar el algoritmo propuesto.
+\end_layout
+
+\end_body
+\end_document

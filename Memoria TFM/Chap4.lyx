@@ -1,0 +1,2326 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass book
+\begin_preamble
+
+
+\AtBeginDocument{
+  \def\labelitemii{\ding{71}}
+  \def\labelitemiii{\ding{111}}
+  \def\labelitemiv{\(\vartriangleright\)}
+}
+
+
+
+\usepackage{babel}
+\addto\shorthandsspanish{\spanishdeactivate{~<>}}
+\end_preamble
+\use_default_options false
+\begin_modules
+theorems-ams-bytype
+theorems-chap-bytype
+theorems-ams-extended-bytype
+\end_modules
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding iso8859-15
+\fontencoding T1
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing double
+\use_hyperref true
+\pdf_bookmarks false
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref section
+\pdf_pdfusetitle false
+\papersize a4paper
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 2
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.5in
+\topmargin 1.6in
+\rightmargin 1.2in
+\bottommargin 1.6in
+\headheight 1.5in
+\headsep 0.3in
+\footskip 0.8in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle plain
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset FormulaMacro
+\renewcommand{\T}{\mathcal{\top}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\S}{\mathcal{S}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\A}{\mathcal{A}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\R}{\mathcal{R}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\P}{\mathcal{P}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Pr}{\mathbb{P}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Sa}{\mathbb{S}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Ba}{\mathbb{B}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Na}{\mathbb{N}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Pr}{\mathbb{P}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\E}{\mathbb{E}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\1}{\mathbb{1}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Procesos de decisión de Markov
+\begin_inset CommandInset label
+LatexCommand label
+name "chap:cap4MDP"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Proceso de Markov
+\end_layout
+
+\begin_layout Standard
+Un proceso de Markov (Markov Process, MP) es el modelo más sencillo que
+ existe para representar una señal que no sea blanca, pues la probabilidad
+ de cualquier muestra depende únicamente del valor de la muestra anterior.
+ Se define como una tupla 
+\begin_inset Formula $\langle\S,\P\rangle$
+\end_inset
+
+ donde 
+\begin_inset Formula $\S$
+\end_inset
+
+ es el conjunto de estados y 
+\begin_inset Formula $\P$
+\end_inset
+
+ es el 
+\emph on
+kernel
+\emph default
+ de la probabilidad de transición de estados.
+ Por simplicidad, se asumirá que 
+\begin_inset Formula $\S$
+\end_inset
+
+ es finito (lo cual implica que es contable) y no vacío, que las transiciones
+ de estados ocurren en instantes de tiempo discretos (la extensión a conjuntos
+ de estados finitos y tiempo continuo es posible, pero se escapa del alcance
+ de este trabajo) y que el 
+\emph on
+kernel
+\emph default
+ de la probabilidad de transición de estados es estacionario.
+ El 
+\emph on
+kernel
+\emph default
+ de la probabilidad de transición de estados asigna a cada estado 
+\begin_inset Formula $s\in\S$
+\end_inset
+
+ una medida de probabilidad sobre 
+\begin_inset Formula $\S$
+\end_inset
+
+.
+ Supóngase que 
+\begin_inset Formula $S_{t}$
+\end_inset
+
+ hace referencia al estado en el instante 
+\begin_inset Formula $t$
+\end_inset
+
+, donde, de nuevo, se usarán letras mayúsculas para referirse a las variables
+ aleatorias y letras minúsculas para referirse a las realizaciones de la
+ variable aleatoria.
+ Dado que se está asumiendo un conjunto de estados finito, el número de
+ posibles transiciones desde cualquier estado 
+\begin_inset Formula $s\in\S$
+\end_inset
+
+ a cualquier otro estado 
+\begin_inset Formula $s'\in\S$
+\end_inset
+
+ será 
+\begin_inset Formula $\left|\S\right|^{2}$
+\end_inset
+
+, donde 
+\begin_inset Formula $\left|\,\cdot\,\right|$
+\end_inset
+
+ denota la cardinalidad del conjunto.
+ Por tanto, se podrá expresar de manera conveniente el 
+\emph on
+kernel
+\emph default
+ de la probabilidad de transición en forma matricial.
+ Más concretamente, se tendrá que 
+\begin_inset Formula $\P$
+\end_inset
+
+ es una matriz de dimensión 
+\begin_inset Formula $|\S|\times|\S|$
+\end_inset
+
+ cuyos elementos serán:
+\begin_inset Formula 
+\begin{equation}
+\P_{ss'}\triangleq\Pr\left(S_{t+1}=s'|S_{t}=s\right),\quad s,s\text{'\in\S}
+\end{equation}
+
+\end_inset
+
+donde 
+\begin_inset Formula $\P_{ss'}$
+\end_inset
+
+ hace referencia al elemento de la fila 
+\begin_inset Formula $s$
+\end_inset
+
+ y columna 
+\begin_inset Formula $s'$
+\end_inset
+
+.
+ Destacar que 
+\begin_inset Formula $\P$
+\end_inset
+
+ es una matriz estocástica ya que sus filas son vectores de probabilidad,
+ es decir:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align}
+\P_{ss'} & \ge0,\quad\forall s,s'\in\S\\
+\sum_{s'\in\S}\P_{ss'} & =1
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Se dirá que el proceso es de Markov ya que la probabilidad de transición
+ dependerá únicamente del estado actual y no de la historia de los estados
+ anteriores al instante 
+\begin_inset Formula $t$
+\end_inset
+
+ actual.
+ En otras palabras, la transición estará influenciada por el estado en el
+ que nos encontramos, no por cómo llegamos a él:
+\begin_inset Formula 
+\begin{align}
+\Pr(S_{t+1}=s_{t+1}\mid & S_{t}=s_{t},S_{t-1}=s_{t-1},S_{t-2}=s_{t-2},\ldots,S_{0}=s_{0})\nonumber \\
+=\: & \Pr\left(S_{t+1}=s_{t+1}|S_{t}=s_{t}\right)
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A continuación se enunciarán algunas definiciones y propiedades que presentan
+ este tipo de procesos estocásticos, también conocidos como 
+\emph on
+cadenas de Markov
+\emph default
+.
+\end_layout
+
+\begin_layout Definition
+\begin_inset CommandInset label
+LatexCommand label
+name "def:homogeneidad"
+
+\end_inset
+
+Sea 
+\begin_inset Formula $\P_{ss'}^{(n)}\triangleq\Pr(S_{t+n}=s'|S_{t}=s)$
+\end_inset
+
+ la probabilidad de alcanzar el estado 
+\begin_inset Formula $s'\in\S$
+\end_inset
+
+ en 
+\begin_inset Formula $n$
+\end_inset
+
+ pasos cuando estamos en el estado 
+\begin_inset Formula $s$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Se dice que el estado 
+\begin_inset Formula $s'$
+\end_inset
+
+ es alcanzable desde el estado 
+\begin_inset Formula $s$
+\end_inset
+
+, si existe algún 
+\begin_inset Formula $n>1$
+\end_inset
+
+ tal que 
+\begin_inset Formula $\P_{ss'}^{(n)}>0$
+\end_inset
+
+.
+ Una cadena de Markov se dice que es irreducible si cualquier estado 
+\begin_inset Formula $s'$
+\end_inset
+
+ es alcanzable desde cualquier otro estado 
+\begin_inset Formula $s$
+\end_inset
+
+, para todo 
+\begin_inset Formula $s'\in\S$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Se dice que una cadena de Markov es homogénea en el tiempo si la matriz
+ de transición 
+\begin_inset Formula $\P$
+\end_inset
+
+ se mantiene invariante después de cada paso.
+\end_layout
+
+\begin_layout Enumerate
+Se dice que el estado 
+\begin_inset Formula $s$
+\end_inset
+
+ es aperiódico si existe un 
+\begin_inset Formula $n$
+\end_inset
+
+ tal que para todo 
+\begin_inset Formula $n'>n$
+\end_inset
+
+ se tiene que 
+\begin_inset Formula $\P_{ss}^{(n)}>0$
+\end_inset
+
+.
+ Una cadena de Markov se dice que es aperiódica si todos sus estados son
+ aperiódicos.
+\end_layout
+
+\begin_layout Definition
+Sea 
+\begin_inset Formula $d(t)=\left(d_{s}(t)\right)_{s\in\text{\S}}$
+\end_inset
+
+ el vector de probabilidades de visita de estados en el instante 
+\begin_inset Formula $t$
+\end_inset
+
+, con componentes 
+\begin_inset Formula $d_{s}(t)\triangleq\Pr(S_{t}=s)$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Enumerate
+El vector de probabilidades de visita de estados evoluciona de acuerdo a
+ la ecuación:
+\begin_inset Formula 
+\begin{equation}
+d(t)^{T}=d(t-1)^{T}\P
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Este tipo de vector se conoce como 
+\emph on
+vector de probabilidad
+\emph default
+.
+ 
+\begin_inset Formula 
+\begin{align}
+d_{s}(t) & \ge0\quad\textrm{para todo}\;s\in\S\\
+\sum_{s\in\S}d_{s}(t) & =1
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El interés real, para nuestro caso, se encuentra en el comportamiento asintótico
+ de la cadena de Markov.
+ Más adelante se verá que para que podamos aprender a partir de la interacción,
+ el entorno deberá comportarse de manera consistente a lo largo del tiempo.
+ Esto significa que las probabilidades de transición de estado deberán manteners
+e constantes (este hecho ha sido implícitamente asumido cuando se ha escrito
+ 
+\begin_inset Formula $\P$
+\end_inset
+
+ de manera independiente a 
+\begin_inset Formula $t$
+\end_inset
+
+, y es conocido como homogeneidad en el tiempo, tal y como se describió
+ en la definición 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "def:homogeneidad"
+
+\end_inset
+
+).
+ Bajo esta asunción, deberá existir una distribución de visita de estados
+ estacionaria para la cadena de Markov (es decir, la distribución de visita
+ de estados tenderá a una distribución límite), la cual deberá ser también
+ independiente de la distribución inicial.
+ El aprendizaje en entornos no estacionarios se escapa del alcance de este
+ trabajo.
+\end_layout
+
+\begin_layout Proposition
+Para una cadena de Markov homogénea en el tiempo, se tiene:
+\begin_inset Formula 
+\begin{align}
+d(t)^{T} & =d(t-1)^{T}\P\nonumber \\
+ & =d(t-2)^{T}\P\P=d(t-2)^{T}\P^{2}\nonumber \\
+ & \vdots\nonumber \\
+ & =d(0)^{T}\P^{t}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A continuación, se introduce de manera formal el concepto de distribución
+ estacionaria.
+\end_layout
+
+\begin_layout Definition
+\begin_inset CommandInset label
+LatexCommand label
+name "def:markovEstaci"
+
+\end_inset
+
+Se dice que una distribución 
+\begin_inset Formula $d$
+\end_inset
+
+ es una distribución estacionaria para la cadena de Markov si:
+\begin_inset Formula 
+\begin{equation}
+d^{T}=d{}^{T}\mathcal{P}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Definition
+Esta distribución puede ser interpretada como la distribución de visita
+ de estados, es decir, como la proporción media de tiempo que la cadena
+ pasa en cada estado.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Definition
+Se dice que una distribución 
+\begin_inset Formula $d$
+\end_inset
+
+ es la distribución límite de la cadena de Markov si para toda distribución
+ inicial se cumple:
+\begin_inset Formula 
+\begin{equation}
+d=\lim_{t\rightarrow\infty}d(t)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Aunque esta distribución límite no tiene por qué existir necesariamente,
+ si existe, entonces es única.
+ Además, si 
+\begin_inset Formula $d$
+\end_inset
+
+ es una distribución límite, de acuerdo a la definición 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "def:markovEstaci"
+
+\end_inset
+
+ se deduce que es también la distribución estacionaria de la cadena de Markov.
+ Recalcar que 
+\begin_inset Formula $\lim_{t\to\infty}d(t)=\lim_{t\to\infty}d(t-1)$
+\end_inset
+
+.
+ En consecuencia se tiene que:
+\begin_inset Formula 
+\begin{equation}
+d=\lim_{t\to\infty}d(t)=\lim_{t\to\infty}d(t-1)\P=d\P\label{eq:limiting-stationary-distribution}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El siguiente teorema detalla las condiciones para la existencia de 
+\begin_inset Formula $d$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Theorem
+\begin_inset CommandInset label
+LatexCommand label
+name "thm:limitingTeor"
+
+\end_inset
+
+Una cadena de Markov aperiódica, irreducible y homogénea en el tiempo, tiene
+ una distribución límite de estados sí y solo sí la matriz de transición
+ tiene un único autovalor real igual a 1, y ningún autovalor complejo de
+ magnitud igual a 1.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A partir de 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:limiting-stationary-distribution"
+
+\end_inset
+
+ y del teorema 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:limitingTeor"
+
+\end_inset
+
+, se deduce que el vector 
+\begin_inset Formula $d$
+\end_inset
+
+ de distribución límite será el autovector normalizado asociado al autovalor
+ 1 de 
+\begin_inset Formula $\P^{T}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Proceso de decisión de Markov
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Proceso-de-decisión"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Definición 
+\end_layout
+
+\begin_layout Standard
+Los procesos de decisión de Markov (
+\emph on
+Markov Decision Process
+\emph default
+, MDP) pueden entenderse como una extensión de los MP en la cual la probabilidad
+ de transición de estados depende de una variable aleatoria adicional, la
+ acción, y donde cada transición tiene asociada otra variable aleatoria,
+ la recompensa.
+ De manera más formal, un MDP se define como la tupla 
+\begin_inset Formula $\langle\S,\A,\P,\R\rangle$
+\end_inset
+
+ donde 
+\begin_inset Formula $\S$
+\end_inset
+
+ es el conjunto de estados, 
+\begin_inset Formula $\A$
+\end_inset
+
+ es el conjunto de acciones, 
+\begin_inset Formula $\P$
+\end_inset
+
+ es el 
+\emph on
+kernel
+\emph default
+ de probabilidad de transición y 
+\begin_inset Formula $\R$
+\end_inset
+
+ es la función de recompensa.
+ Una vez más, por simplicidad, se asumirá que tanto 
+\begin_inset Formula $\S$
+\end_inset
+
+ como 
+\begin_inset Formula $\A$
+\end_inset
+
+ son finitos y no vacíos.
+\end_layout
+
+\begin_layout Standard
+A diferencia de los MP, el 
+\emph on
+kernel
+\emph default
+ de probabilidad de transición de estados ahora depende de la acción tomada
+ por el agente, y asigna a cada par estado-acción 
+\begin_inset Formula $(s,a)\in\S\times\A$
+\end_inset
+
+ una medida de probabilidad sobre 
+\begin_inset Formula $\S$
+\end_inset
+
+ que será la probabilidad de ir a otro estado 
+\begin_inset Formula $s'\in\S.$
+\end_inset
+
+ Supongamos que 
+\begin_inset Formula $S_{t}$
+\end_inset
+
+ y 
+\begin_inset Formula $A_{t}$
+\end_inset
+
+ hacen referencia al estado y la acción en el instante 
+\begin_inset Formula $t$
+\end_inset
+
+, respectivamente.
+ Dado que estamos asumiendo conjuntos finitos de estados y acciones, el
+ número total de posibles transiciones desde cualquier par estado-acción
+ 
+\begin_inset Formula $(s,a)\in\S\times\A$
+\end_inset
+
+ a cualquier otro estado 
+\begin_inset Formula $s'\in\S$
+\end_inset
+
+ será 
+\begin_inset Formula $|\S|^{2}|\A|$
+\end_inset
+
+.
+ Por tanto, de manera similar a los MP, se podrá expresar el 
+\emph on
+kernel
+\emph default
+ de probabilidad en forma matricial.
+ En concreto, se puede expresar 
+\begin_inset Formula $\P$
+\end_inset
+
+ para un MDP como una matriz de dimensión 
+\begin_inset Formula $|\S||\A|\times|\S|$
+\end_inset
+
+ o como un tensor 
+\begin_inset Formula $|\S|\times|\S|\times|\A|$
+\end_inset
+
+.
+ En cualquier caso, los elementos de cada representación vienen dados por:
+\begin_inset Formula 
+\begin{equation}
+\P_{ss'}^{a}\triangleq\Pr\left(S_{t+1}=s'|S_{t}=s,A_{t}=a\right)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para la representación matricial de 
+\begin_inset Formula $\P$
+\end_inset
+
+, cada una de las filas se refiere a los pares estado acción 
+\begin_inset Formula $(s,a)$
+\end_inset
+
+ y cada columna hace referencia al estado futuro 
+\begin_inset Formula $s'$
+\end_inset
+
+:
+\begin_inset Formula 
+\[
+\P\triangleq\left(\P_{ss'}^{a}\right)_{\left(s,a\right)\in\S\times\A,s'\in\S}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Llámese 
+\begin_inset Formula $R_{t+1}$
+\end_inset
+
+ a la recompensa aleatoria obtenida en el instante 
+\begin_inset Formula $t+1$
+\end_inset
+
+.
+ Entonces se puede definir la función de recompensa 
+\begin_inset Formula $\R:\S\times\A\rightarrow\mathbb{R}$
+\end_inset
+
+ como el valor esperado de la recompensa aleatoria para cualquier transición
+ desde cualquier par estado-acción:
+\begin_inset Formula 
+\begin{equation}
+\R_{s}^{a}\triangleq\R(s,a)\triangleq\E\left[R_{t+1}|S_{t}=s,A_{t}=a\right]\label{eq:expected-reward-state-action-definition}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Abusando ligeramente de la notación, será conveniente definir el vector
+ de recompensas como un vector de longitud 
+\begin_inset Formula $|\S||\A|$
+\end_inset
+
+ que contiene la función recompensa para cada posible par estado-acción:
+\begin_inset Formula 
+\[
+\R\triangleq\left(\R_{s}^{a}\right)_{s\in\S,a\in\mathcal{A}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Como ya se introdujo en el capítulo anterior, el agente toma las acciones
+ siguiendo una política.
+ De manera formal, se define una política 
+\begin_inset Formula $\pi\in\Pi$
+\end_inset
+
+, donde 
+\begin_inset Formula $\Pi$
+\end_inset
+
+ es algún conjunto de distribuciones de probabilidad sobre 
+\begin_inset Formula $\A$
+\end_inset
+
+, como la distribución sobre las acciones dados los estados:
+\begin_inset Formula 
+\begin{equation}
+\pi\left(a|s\right)\triangleq\Pr\left(A_{t}=a|S_{t}=s\right)\label{eq:stationary-policy-distribution}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Cabe destacar que una política define completamente el comportamiento de
+ un agente.
+ Se asumirá que las políticas son estacionarias (es decir, 
+\begin_inset Formula $A_{t}\sim\pi(\cdot|S_{t})$
+\end_inset
+
+, 
+\begin_inset Formula $\forall t>0$
+\end_inset
+
+).
+ De este modo, si el comportamiento del agente cambia a lo largo del tiempo
+ (porque aprende de qué manera controlar el entorno, por ejemplo), consideraremo
+s que es el agente quien cambia su política, en lugar de decir que es la
+ política la que cambia.
+\end_layout
+
+\begin_layout Definition
+Una política determinista es un caso particular de la aplicación 
+\begin_inset Formula $\pi:\S\rightarrow\A$
+\end_inset
+
+, tal que al escribir 
+\begin_inset Formula $\pi\left(s\right)=a$
+\end_inset
+
+ nos referiremos a que 
+\begin_inset Formula $\pi(a|s)=1$
+\end_inset
+
+ (es decir, 
+\begin_inset Formula $\Pr\left(A_{t}=a|S_{t}=s\right)=1$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Tras estos conceptos, podremos definir 
+\begin_inset Formula $\P_{ss'}^{\pi}$
+\end_inset
+
+ y 
+\begin_inset Formula $\R_{s}^{\pi}$
+\end_inset
+
+ como la probabilidad de transición promedio y la función recompensa promedio,
+ respectivamente, cuando las acciones se eligen de acuerdo a la política
+ 
+\begin_inset Formula $\pi$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align}
+\P_{ss\text{'}}^{\pi}= & \sum_{a\in\A}\pi\left(a|s\right)\P_{ss'}^{a}\label{eq:transition-probability-elements-policy}\\
+\R_{s}^{\pi}= & \sum_{a\in\A}\pi\left(a|s\right)\R_{s}^{a}\label{eq:reward-elements-policy}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Resultará conveniente agrupar todos los elementos de 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:transition-probability-elements-policy"
+
+\end_inset
+
+ para todos los pares de transición de estado 
+\begin_inset Formula $\left(s,s\text{'}\right)\in\S\times\S$
+\end_inset
+
+ en una matriz 
+\begin_inset Formula $\P^{\pi}$
+\end_inset
+
+ de dimensión 
+\begin_inset Formula $|\S|\times|\S|$
+\end_inset
+
+, y juntar las recompensas 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:reward-elements-policy"
+
+\end_inset
+
+ para todo 
+\begin_inset Formula $s\in\S$
+\end_inset
+
+ en un vector de recompensas 
+\begin_inset Formula $\R^{\pi}$
+\end_inset
+
+ de longitud 
+\begin_inset Formula $\left|\S\right|$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align}
+\P{}^{\pi} & \triangleq\left(\P_{ss'}^{\pi}\right)_{s,s'\in\S}\label{eq:transition-probablity-matrix-policy}\\
+\R{}^{\pi} & \triangleq\left(\R_{s}^{\pi}\right)_{s\in\S}\label{eq:reward-vector-policy}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En el resto de este documento, siempre que se hable de aprender a predecir
+ o controlar el MDP a partir de muestras, sin conocer 
+\begin_inset Formula $\P$
+\end_inset
+
+ o 
+\begin_inset Formula $\R$
+\end_inset
+
+, se asumirá la siguiente condición:
+\end_layout
+
+\begin_layout Assumption
+\begin_inset CommandInset label
+LatexCommand label
+name "assu:Para-cualquier-MDP"
+
+\end_inset
+
+Para cualquier MDP y cualquier política estacionaria, la cadena de Markov
+ inducida asociada a la transición estado-acción-estado-recompensa satisfará
+ el teorema 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:limitingTeor"
+
+\end_inset
+
+, de manera que tendrá una distribución límite que será la distribución
+ de visita de estados única estacionaria.
+\end_layout
+
+\begin_layout Standard
+De la suposición 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "assu:Para-cualquier-MDP"
+
+\end_inset
+
+ se puede intuir que, teniendo una distribución de visita de estados estacionari
+a y siendo capaces de visitar todos los estados, el agente podrá obtener
+ estimaciones consistentes a partir de las muestras.
+\end_layout
+
+\begin_layout Standard
+Sin embargo, existen muchos problemas que se modelan de manera natural con
+ un estado 
+\emph on
+terminal
+\emph default
+ donde terminan.
+ La probabilidad de quedarse en dicho estado es uno (por este motivo los
+ estados terminales también se conocen como estados 
+\emph on
+absorbentes
+\emph default
+).
+ Estos MDP con estados terminales, típicamente se conocen como episódicos,
+ y la trayectoria desde el estado inicial al terminal recibe el nombre de
+ episodio.
+ Parece claro que la suposición 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "assu:Para-cualquier-MDP"
+
+\end_inset
+
+ no se satisface para este tipo de MDP episódicos.
+ Dado que, con el objetivo de poder aprender a partir de las muestras con
+ los métodos que se propongan en el siguiente capítulo, necesitaremos que
+ el MDP satisfaga la suposición 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "assu:Para-cualquier-MDP"
+
+\end_inset
+
+, será necesario hacer un pequeño cambio en la formulación del problema:
+ cada vez que la trayectoria alcance el estado terminal, reiniciaremos el
+ episodio (se reiniciará a cero la recompensa acumulada, y la trayectoria
+ al estado inicial).
+ Se obtendrán así episodios infinitos, formados por episodios de longitud
+ finita.
+ De este modo, la suposición 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "assu:Para-cualquier-MDP"
+
+\end_inset
+
+ se deberá cumplir para todo MDP en el cual la transición al estado terminal
+ haya sido transformada en el reinicio al estado inicial.
+\end_layout
+
+\begin_layout Subsection
+Funciones valor y ecuaciones de Bellman
+\end_layout
+
+\begin_layout Standard
+El objetivo en un MDP es encontrar la política que maximiza el retorno esperado
+ a largo plazo.
+ De manera formal, se define el 
+\emph on
+retorno
+\emph default
+ obtenido desde el instante 
+\begin_inset Formula $t$
+\end_inset
+
+ como la recompensa acumulada descontada:
+\begin_inset Formula 
+\begin{equation}
+G_{t}\triangleq R_{t+1}+\gamma R_{t+2}+\ldots=\sum_{k=0}^{\infty}\gamma^{k}R_{t+k+1}\label{eq:return-definition}
+\end{equation}
+
+\end_inset
+
+donde 
+\begin_inset Formula $0<\gamma<1$
+\end_inset
+
+ es el llamado factor de 
+\emph on
+descuento
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+Como puede apreciarse en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:return-definition"
+
+\end_inset
+
+, el valor de la recompensa pasados 
+\begin_inset Formula $k+1$
+\end_inset
+
+ instantes sufrirá un factor de escala de reducción de 
+\begin_inset Formula $\gamma^{k}$
+\end_inset
+
+.
+ Esto es así para evitar la divergencia de 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:return-definition"
+
+\end_inset
+
+ (dado que la suma tiene infinitos términos), pero también tiene otro significad
+o, y es el de determinar el valor actual de las recompensas futuras: una
+ recompensa obtenida 
+\begin_inset Formula $k+1$
+\end_inset
+
+ instantes de tiempo más tarde valdrá 
+\begin_inset Formula $\gamma^{k}$
+\end_inset
+
+ veces lo que valdría si la hubiésemos recibido inmediatamente.
+ Cuando 
+\begin_inset Formula $\gamma\approx0$
+\end_inset
+
+, se dice que el retorno es 
+\begin_inset Quotes fld
+\end_inset
+
+miope
+\begin_inset Quotes frd
+\end_inset
+
+, mientras que si 
+\begin_inset Formula $\gamma\approx1$
+\end_inset
+
+, se dirá que es 
+\begin_inset Quotes fld
+\end_inset
+
+hipermétrope
+\begin_inset Quotes frd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Cabe destacar que el retorno 
+\begin_inset Formula $G_{t}$
+\end_inset
+
+ es una variable aleatoria que depende de la trayectoria específica seguida
+ por el agente.
+ Se define a continuación la 
+\emph on
+función valor de estados
+\emph default
+ 
+\begin_inset Formula $v^{\pi}:\S\rightarrow\mathbb{R}$
+\end_inset
+
+ como el retorno esperado sobre todas las posibles trayectorias cuando el
+ agente comienza en un estado y a continuación sigue la política 
+\begin_inset Formula $\pi$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+v^{\pi}\left(s\right)\triangleq\E_{\pi,\P}\left[G_{t}|S_{0}=s,A_{t+k}\sim\pi\right],\quad k=0,\ldots,\infty\label{eq:v-definition}
+\end{equation}
+
+\end_inset
+
+donde 
+\begin_inset Formula $\E_{\pi,\P}[\cdot]$
+\end_inset
+
+ denota el valor esperado sobre la distribución de la política y sobre la
+ distribución de transiciones de estado.
+ También se va a definir la función valor de estados-acciones 
+\begin_inset Formula $q^{\pi}:\S\times\A\rightarrow\mathbb{R}$
+\end_inset
+
+ como el retorno esperado sobre todas las posibles trayectorias cuando el
+ agente comienza en un estado, toma una acción cualquiera y a continuación
+ sigue la política 
+\begin_inset Formula $\pi$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+q^{\pi}\left(s,a\right)\triangleq\E_{\pi,\P}\left[G_{t}|S_{t}=s,A_{t}=a,A_{t+k}\sim\pi\right],\quad k=1,\ldots,\infty\label{eq:q-definition}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Las funciones valor satisfacen una relación recursiva conocida como ecuación
+ de Bellman.
+ Para la función valor de estados, tenemos para 
+\begin_inset Formula $k=0,\ldots,\infty$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align}
+v^{\pi}\left(s\right) & =\E_{\pi,\P}\left[G_{t}|S_{t}=s,A_{t}\sim\pi\right]\nonumber \\
+ & =\E_{\pi,\P}\left[R_{t+1}+\gamma R_{t+2}+\gamma^{2}R_{t+3}+\ldots|S_{t}=s,A_{t+k}\sim\pi\right]\nonumber \\
+ & =\E_{\pi,\P}\left[R_{t+1}+\gamma(R_{t+2}+\gamma R_{t+3}+\ldots)|S_{t}=s,A_{t+k}\sim\pi\right]\nonumber \\
+ & =\E_{\pi,\P}\left[R_{t+1}+\gamma G_{t+1}|S_{t}=s,A_{t+k}\sim\pi\right]\nonumber \\
+ & =\E_{\pi,\P}\left[R_{t+1}+\gamma v^{\pi}\left(S_{t+1}\right)|S_{t}=s,A_{t+k}\sim\pi\right]\label{eq:state-value-bellman-equation}
+\end{align}
+
+\end_inset
+
+De manera similar, para la función valor de estados-acciones se define,
+ para 
+\begin_inset Formula $k=1,\ldots,\infty$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align}
+q^{\pi}\left(s,a\right) & =\E_{\pi,\text{\P}}\left[G_{t}|S_{t}=s,A_{t}=a,A_{t+k}\sim\pi\right]\nonumber \\
+ & =\E_{\pi,\P}\left[R_{t+1}+\gamma R_{t+2}+\gamma^{2}R_{t+3}+\ldots|S_{t}=s,A_{t}=a,A_{t+k}\sim\pi\right]\nonumber \\
+ & =\E_{\pi,\P}\left[R_{t+1}+\gamma G_{t+1}|S_{t}=s,A_{t}=a,A_{t+k}\sim\pi\right]\nonumber \\
+ & =\E_{\pi,\P}\left[R_{t+1}+\gamma q^{\pi}\left(S_{t+1},A_{t+1}\right)|S_{t}=s,A_{t}=a,A_{t+k}\sim\pi\right]\label{eq:state-action-bellman-equation}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En otras palabras, las funciones valor de estados y de estados-acciones
+ se pueden descomponer en la recompensa instantánea más el valor descontado
+ del estado o del par estado-acción sucesor, respectivamente.
+\end_layout
+
+\begin_layout Standard
+La relación existente entre las funciones valor de estados y de estados-acciones
+ es la siguiente:
+\begin_inset Formula 
+\begin{align}
+v^{\pi}\left(s\right) & =\sum_{a\in\text{\A}}\pi\left(a|s\right)q^{\pi}\left(s,a\right)\label{eq:v-from-q-averaging}\\
+q^{\pi}\left(s,a\right) & =\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}v^{\pi}\left(s'\right)\label{eq:q-from-v-averaging}
+\end{align}
+
+\end_inset
+
+donde 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:v-from-q-averaging"
+
+\end_inset
+
+ se obtiene a partir de 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:q-definition"
+
+\end_inset
+
+ al considerar que 
+\begin_inset Formula $A_{t}\sim\pi$
+\end_inset
+
+ (es decir, que la acción actual se escoge de acuerdo a la política 
+\begin_inset Formula $\pi$
+\end_inset
+
+); y 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:q-from-v-averaging"
+
+\end_inset
+
+ se obtiene a partir de 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:state-action-bellman-equation"
+
+\end_inset
+
+ teniendo en cuenta 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:expected-reward-state-action-definition"
+
+\end_inset
+
+ y la siguiente relación para 
+\begin_inset Formula $k=1,\ldots,\infty$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+\E_{\pi,\P}\left[G_{t+1}|S_{t}=s,A_{t}=a,A_{t+k}\sim\pi\right]=\sum_{s'\in\S}\P_{ss'}^{a}v^{\pi}\left(s\text{'}\right)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+De manera visual, estas relaciones se pueden explicar a través del diagrama
+ mostrado en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:backup-diagram-v-q"
+
+\end_inset
+
+.
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap4/v_q.jpeg
+	lyxscale 50
+	scale 40
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Images/Chap4/q_v.jpeg
+	lyxscale 50
+	scale 40
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:backup-diagram-v-q"
+
+\end_inset
+
+Relación existente entre 
+\begin_inset Formula $v_{\pi}\left(s\right)$
+\end_inset
+
+ y 
+\begin_inset Formula $q_{\pi}\left(s,a\right)$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Además, a partir de 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:v-from-q-averaging"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:q-from-v-averaging"
+
+\end_inset
+
+, se llega a:
+\begin_inset Formula 
+\begin{align}
+v^{\pi}\left(s\right) & =\sum_{a\in\text{\ensuremath{\A}}}\pi\left(a|s\right)\left(\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}v^{\pi}\left(s'\right)\right)\label{eq:v-from-v-averaging}\\
+q^{\pi}\left(s,a\right) & =\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}\sum_{a'\in\text{\A}}\pi\left(a'|s'\right)q^{\pi}\left(s',a'\right)\label{eq:q-from-q-averaging}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+De nuevo, se puede obtener una representación visual, mostrada en la figura
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:backup-recursive-value-functions"
+
+\end_inset
+
+.
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap4/recurs_v.jpeg
+	lyxscale 50
+	scale 40
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Images/Chap4/recurs_q.jpeg
+	lyxscale 50
+	scale 40
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:backup-recursive-value-functions"
+
+\end_inset
+
+Ecuaciones recursivas para 
+\begin_inset Formula $v_{\pi}\left(s\right)$
+\end_inset
+
+ y 
+\begin_inset Formula $q_{\pi}\left(s,a\right)$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Resulta interesante notar que las funciones valor para cada estado (o estado
+ acción) forman un sistema lineal de ecuaciones.
+ Por tanto, conocidos 
+\begin_inset Formula $\R$
+\end_inset
+
+ y 
+\begin_inset Formula $\P$
+\end_inset
+
+ se podrá obtener 
+\begin_inset Formula $v^{\pi}$
+\end_inset
+
+ y 
+\begin_inset Formula $q^{\pi}$
+\end_inset
+
+ para cada estado y cada par estado-acción, respectivamente, resolviendo
+ un sistema lineal de ecuaciones.
+ Esto se puede ver de manera más clara reescribiendo las ecuaciones en forma
+ vectorial.
+ Abusando ligeramente de la notación, se definirán los vectores formados
+ por la función valor de estados y estados-acciones para cada estado y cada
+ par estado-acción, respectivamente, de la siguiente manera:
+\begin_inset Formula 
+\begin{align}
+v^{\pi} & \triangleq\left(v^{\pi}(s)\right)_{s\in\S}\\
+q^{\pi} & \triangleq\left(q^{\pi}(s,a)\right)_{s\in\S,a\in\mathcal{A}}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+De manera adicional, se expresará la política 
+\begin_inset Formula $\pi\in\Pi$
+\end_inset
+
+ como la matriz 
+\begin_inset Formula $\mathit{\Pi}$
+\end_inset
+
+ de dimensión 
+\begin_inset Formula $|\S|\times|\S||\A|$
+\end_inset
+
+ (como puede apreciarse, se usará la letra griega 
+\begin_inset Formula $\Pi$
+\end_inset
+
+ mayúscula para referirse al espacio de políticas, y 
+\begin_inset Formula $\mathit{\Pi}$
+\end_inset
+
+ mayúscula y en cursiva para referirse a la política en forma matricial).
+\end_layout
+
+\begin_layout Standard
+Por tanto, teniendo en cuenta 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:transition-probablity-matrix-policy"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:reward-vector-policy"
+
+\end_inset
+
+ se podrá expresar 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:state-value-bellman-equation"
+
+\end_inset
+
+–
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:state-action-bellman-equation"
+
+\end_inset
+
+, para todos los estados y todos los pares estado-acción, en forma vectorial
+ de la siguiente manera:
+\begin_inset Formula 
+\begin{align}
+v^{\pi} & =\R^{\pi}+\gamma\P^{\pi}v^{\pi}\label{eq:state-value-bellman-equation-vector}\\
+q^{\pi} & =\mathcal{\R}+\gamma\mathit{\mathcal{P\mathit{\Pi}}q^{\pi}}\label{eq:state-action-value-bellman-equation-vector}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+haciendo especial hincapié en que 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:state-value-bellman-equation-vector"
+
+\end_inset
+
+ tiene en cuenta el vector de recompensas promedio 
+\begin_inset Formula $\R^{\pi}$
+\end_inset
+
+ y la matriz de transición 
+\begin_inset Formula $\P{}^{\pi}$
+\end_inset
+
+ inducida por 
+\begin_inset Formula $\pi$
+\end_inset
+
+, mientras que 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:state-action-value-bellman-equation-vector"
+
+\end_inset
+
+ considera los términos 
+\begin_inset Formula $\R$
+\end_inset
+
+ y 
+\begin_inset Formula $\P$
+\end_inset
+
+ de manera independiente a la política.
+\end_layout
+
+\begin_layout Standard
+Las ecuaciones 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:state-value-bellman-equation-vector"
+
+\end_inset
+
+–
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:state-action-value-bellman-equation-vector"
+
+\end_inset
+
+ permiten ver de manera clara que las ecuaciones de Bellman forman un sistema
+ lineal de ecuaciones.
+ Además, a partir de esta formulación compacta resulta directo resolver
+ las funciones valor en forma cerrada:
+\begin_inset Formula 
+\begin{align}
+v^{\pi} & =\left(I-\gamma\P^{\pi}\right)^{-1}\R^{\pi}\label{eq:state-value-vector-solution}\\
+\mathit{q^{\pi}} & =\left(I-\gamma\mathit{\mathcal{\mathit{\mathcal{P}}\mathit{\Pi}}}\right)^{-1}\mathcal{\R}\label{eq:state-action-value-vector-solution}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La siguiente proposición manifiesta la existencia de una solución única
+ a estos sistemas de ecuaciones.
+\end_layout
+
+\begin_layout Proposition
+Bajo el cumplimiento de la suposición 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "assu:Para-cualquier-MDP"
+
+\end_inset
+
+, existen soluciones únicas 
+\begin_inset Formula $v^{\pi}$
+\end_inset
+
+ y 
+\begin_inset Formula $q^{\pi}$
+\end_inset
+
+ para 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:state-value-vector-solution"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:state-action-value-vector-solution"
+
+\end_inset
+
+, respectivamente, y son funciones valor que satisfacen 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:v-from-v-averaging"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:q-from-q-averaging"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+De acuerdo a la notación anterior, finalmente podrá expresarse 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:v-from-q-averaging"
+
+\end_inset
+
+–
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:q-from-v-averaging"
+
+\end_inset
+
+ en forma vectorial de la siguiente manera:
+\begin_inset Formula 
+\begin{align}
+v^{\pi} & =\mathit{\Pi q^{\pi}}\label{eq:state-value-vector-from-averaging-q}\\
+\mathit{q^{\pi}} & =\mathcal{\R}+\gamma\mathit{\mathcal{P}}\mathit{v^{\pi}}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Del mismo modo, a partir de la matriz de la política se podrán reformular
+ las ecuaciones 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:transition-probablity-matrix-policy"
+
+\end_inset
+
+–
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:reward-vector-policy"
+
+\end_inset
+
+ de la siguiente manera:
+\begin_inset Formula 
+\begin{align*}
+\P^{\pi} & =\mathit{\Pi}\mathcal{P}\\
+\mathcal{R}^{\pi} & =\mathit{\Pi}\R
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Hasta el momento, únicamente se ha considerado el problema de 
+\emph on
+evaluación de la política
+\emph default
+, es decir, se ha presentado la manera de obtener las funciones valor para
+ una política 
+\begin_inset Formula $\pi$
+\end_inset
+
+ dada.
+ Ahora, se va a pasar a considerar el problema de 
+\emph on
+control
+\emph default
+ en el cual el agente tratará de buscar la política con la que lograr el
+ mejor desempeño posible.
+ Puesto que el desempeño de una política es evaluado a partir de su función
+ valor, se dirá que el agente se comporta de manera óptima –de ahí el nombre
+ de política óptima– cuando consigue la función valor máxima –la función
+ valor óptima–.
+ La política óptima y la función valor óptima se definen como se muestra
+ a continuación.
+\end_layout
+
+\begin_layout Definition
+La función valor de estados óptima 
+\begin_inset Formula $v^{*}$
+\end_inset
+
+ será la función valor de estados máxima sobre todas las políticas posibles:
+\begin_inset Formula 
+\begin{equation}
+v^{*}\left(s\right)\triangleq\max_{\pi\in\Pi}\;\mathit{v^{\pi}}\left(s\right),\quad\forall s\in\S\label{eq:optimal-v-definition}
+\end{equation}
+
+\end_inset
+
+donde 
+\begin_inset Formula $\Pi$
+\end_inset
+
+ denota el conjunto de políticas.
+ La función valor de estados-acciones óptima 
+\begin_inset Formula $q^{*}(s,a)$
+\end_inset
+
+ será la función valor de estados-acciones máxima sobre todas las políticas
+ posibles:
+\begin_inset Formula 
+\begin{equation}
+q^{*}\left(s,a\right)\triangleq\max_{\pi\in\Pi}\;\mathit{q^{\pi}}\left(s,a\right),\quad\forall\left(s,a\right)\in\S\times\A\label{eq:optimal-q-definition}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+De manera intuitiva, se puede definir la política óptima como aquella que
+ lleva a conseguir la función valor óptima.
+ Esta idea se enuncia más formalmente a través del siguiente teorema.
+\end_layout
+
+\begin_layout Theorem
+Definiendo un orden parcial sobre las políticas tal que:
+\begin_inset Formula 
+\begin{equation}
+\pi\geq\pi'\quad\textrm{si}\quad v^{\pi}\left(s\right)\geq v^{\pi'},\forall s
+\end{equation}
+
+\end_inset
+
+Entonces, para cualquier MDP:
+\end_layout
+
+\begin_layout Enumerate
+Existe una política óptima 
+\begin_inset Formula $\pi^{*}$
+\end_inset
+
+ que es mejor o igual que el resto de políticas del espacio de políticas,
+ es decir: 
+\begin_inset Formula $\exists\pi^{*}\in\Pi\;:\;\pi^{*}\geq\pi,\;\forall\pi\in\Pi.$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Toda política óptima logra la función valor de estados y de estados-acciones
+ óptima, es decir: 
+\begin_inset Formula $v^{\pi^{*}}\left(s\right)=v^{*}\left(s\right)$
+\end_inset
+
+ y 
+\begin_inset Formula $q^{\pi^{*}}\left(s,a\right)=q^{*}\left(s,a\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Resulta además que la existencia de una política óptima determinista está
+ garantizada por el siguiente lema.
+\end_layout
+
+\begin_layout Lemma
+Existe siempre una política óptima determinista para cualquier MDP que satisfaga
+ la suposición 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "assu:Para-cualquier-MDP"
+
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Puterman2005"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+La derivación y demostración de este lema se tratará más en detalle en el
+ capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Cap8PrimyDual"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+El enfoque basado en la búsqueda de la política óptima mediante el cálculo
+ de la función valor para toda política posible, y las definiciones 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:optimal-v-definition"
+
+\end_inset
+
+–
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:optimal-q-definition"
+
+\end_inset
+
+ es lo que típicamente se conoce como 
+\emph on
+policy search
+\emph default
+ .
+ Puesto que el número de posibles políticas deterministas crece de manera
+ exponencial con el tamaño de los conjuntos de estados y acciones, parece
+ claro que este método de búsqueda directa puede resultar inviable cuando
+ 
+\begin_inset Formula $\S$
+\end_inset
+
+ y 
+\begin_inset Formula $\A$
+\end_inset
+
+ son muy grandes.
+ Para tratar de solucionar este problema de escalabilidad, en la práctica
+ se emplean algunas aproximaciones que restringen el espacio de búsqueda
+ a espacios de políticas más pequeños.
+\end_layout
+
+\begin_layout Standard
+Otro enfoque consiste en encontrar primero la función valor óptima y después
+ extraer la política óptima a partir de 
+\begin_inset Formula $v^{*}$
+\end_inset
+
+.
+ La teoría que subyace a esta idea se formula en el siguiente lema.
+\end_layout
+
+\begin_layout Lemma
+La política óptima puede ser encontrada mediante la maximización de la acción
+ 
+\begin_inset Formula $a$
+\end_inset
+
+ sobre la función valor 
+\begin_inset Formula $q^{*}\left(s,a\right)$
+\end_inset
+
+ óptima, es decir:
+\begin_inset Formula 
+\begin{equation}
+\pi^{*}\left(a\mid s\right)=\begin{cases}
+1 & \textrm{if}\quad a=\underset{a\in\mathcal{A}}{\arg\max}q^{*}\left(s,a\right)\\
+0 & {\rm resto}
+\end{cases}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En los capítulos 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:solucionEcuBellmanTabu"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:solucionEcuBellmanAprox"
+
+\end_inset
+
+ se presentarán diferentes algoritmos para encontrar 
+\begin_inset Formula $v^{*}$
+\end_inset
+
+ y 
+\begin_inset Formula $q^{*}$
+\end_inset
+
+, y a continuación derivar la política óptima a partir de ellos.
+ Pero antes de pasar a explicarlos introduciremos el concepto de 
+\emph on
+greediness
+\emph default
+ o 
+\begin_inset Quotes fld
+\end_inset
+
+avaricia
+\begin_inset Quotes frd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Definition
+Se dirá que una política es 
+\emph on
+greedy
+\emph default
+ para algún estado 
+\begin_inset Formula $s\in\S$
+\end_inset
+
+ con respecto a alguna función valor 
+\begin_inset Formula $v:\S\rightarrow\mathbb{R}$
+\end_inset
+
+ o 
+\begin_inset Formula $q:\S\times\A\rightarrow\mathbb{R}$
+\end_inset
+
+, si dicha política maximiza la función valor:
+\begin_inset Formula 
+\begin{align}
+\pi\left(s\right) & =\arg\max_{a\in\A}q\left(s,a\right)\nonumber \\
+ & =\arg\max_{a\in\A}\;\left[\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}v\left(s'\right)\right]\label{eq:greedy-policy}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Definition
+Resulta sencillo observar que la política óptima será 
+\emph on
+greedy
+\emph default
+ con respecto a la función valor óptima.
+ Este resultado se recoge de manera formal en el siguiente lema.
+\end_layout
+
+\begin_layout Lemma
+\begin_inset CommandInset label
+LatexCommand label
+name "lem:optimal-policy-is-greedy-for-optimal-value"
+
+\end_inset
+
+La política óptima 
+\begin_inset Formula $\pi^{*}$
+\end_inset
+
+ es greedy para todo 
+\begin_inset Formula $s\in\S$
+\end_inset
+
+ con respecto a la función valor óptima 
+\begin_inset Formula $v^{*}:\S\rightarrow\mathbb{R}$
+\end_inset
+
+ o 
+\begin_inset Formula $q^{*}:\S\times\A\rightarrow\mathbb{R}$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align}
+\pi^{*}\left(s\right) & =\arg\max_{a\in\A}q^{*}\left(s,a\right)\nonumber \\
+ & =\arg\max_{a\in\A}\;\left[\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}v^{*}\left(s'\right)\right]
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Las ecuaciones de Bellman 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:v-from-q-averaging"
+
+\end_inset
+
+–
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:q-from-q-averaging"
+
+\end_inset
+
+, definidas anteriormente para políticas generales, pueden ser particularizadas
+ para políticas óptimas deterministas, dando como resultado las siguientes
+ relaciones:
+\begin_inset Formula 
+\begin{align}
+v^{*}(s) & =\max_{a\in\text{\A}}q^{*}\left(s,a\right)\label{eq:optimal-v-from-optimal-q}\\
+q^{*}\left(s,a\right) & =\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}v^{*}\left(s\text{'}\right)\\
+v^{*}\left(s\right) & =\max_{a\in\text{\A}}\left[\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}v^{*}(s')\right]\label{eq:optimal-v-from-optimal-v}\\
+q^{*}\left(s,a\right) & =\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}\max_{a'\in\A}q^{*}\left(s',a'\right)\label{eq:optimal-q-from-optimal-q}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Las figuras 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:backup-diagram-optimal-value-functions"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Fixed-point-equations-backup-diagram-optimal"
+
+\end_inset
+
+ ilustran, a través de diagramas, estas dependencias.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap4/v_q_opt.jpeg
+	lyxscale 50
+	scale 40
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Images/Chap4/q_v_opt.jpeg
+	lyxscale 50
+	scale 40
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:backup-diagram-optimal-value-functions"
+
+\end_inset
+
+Relación existente entre 
+\begin_inset Formula $v^{*}\left(s\right)$
+\end_inset
+
+ y 
+\begin_inset Formula $q^{*}\left(s,a\right)$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\color black
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+
+\color black
+\begin_inset Graphics
+	filename Images/Chap4/v_q_opt_recur.jpeg
+	lyxscale 50
+	scale 40
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Images/Chap4/q_v_opt_recurs.jpeg
+	lyxscale 50
+	scale 40
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Fixed-point-equations-backup-diagram-optimal"
+
+\end_inset
+
+Ecuaciones de punto fijo para 
+\begin_inset Formula $v^{*}\left(s\right)$
+\end_inset
+
+ y 
+\begin_inset Formula $q^{*}\left(s,a\right)$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\color white
+ds sdd sd ds sdd sd ds sdd sd ds sdd sd ds sdd sd ds sdd sd ds sdd sd ds
+ sdd sd ds sdd sd ds sdd sd ds sdd sd ds sdd sd ds sdd sd ds sdd sd ds sdd
+ sd ds sdd sd ds sdd sd ds sdd sd ds sdd sd ds sdd sd ds sdd sd ds sdd sd
+ ds sdd sd ds sdd sd ds sdd sd ds sdd sd ds sdd sd ds sdd sd ds sdd sd ds
+ sdd sd ds sdd sd ds sdd sd ds sdd sd ds sdd sd ds sdd sd ds sdd sd ds sdd
+ sd ds sdd sd ds sdd sd ds sdd sd ds sdd sd ds sdd sd ds sdd sd ds sdd sd
+ ds sdd sd ds sdd sd ds sdd sd ds
+\color inherit
+ 
+\end_layout
+
+\end_body
+\end_document

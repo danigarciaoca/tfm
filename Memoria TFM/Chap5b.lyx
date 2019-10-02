@@ -1,0 +1,1986 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass book
+\begin_preamble
+\input{spanishPseudoAlgorithmic} % mi archivo de traducción
+
+\AtBeginDocument{
+  \def\labelitemii{\ding{71}}
+  \def\labelitemiii{\ding{111}}
+  \def\labelitemiv{\(\vartriangleright\)}
+}
+
+
+
+\usepackage{babel}
+\addto\shorthandsspanish{\spanishdeactivate{~<>}}
+\end_preamble
+\use_default_options false
+\begin_modules
+theorems-ams-bytype
+theorems-chap-bytype
+theorems-ams-extended-bytype
+\end_modules
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding iso8859-15
+\fontencoding T1
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing double
+\use_hyperref true
+\pdf_bookmarks false
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref section
+\pdf_pdfusetitle false
+\papersize a4paper
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 2
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.5in
+\topmargin 1.6in
+\rightmargin 1.2in
+\bottommargin 1.6in
+\headheight 1.5in
+\headsep 0.3in
+\footskip 0.8in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle plain
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset FormulaMacro
+\renewcommand{\X}{\mathcal{X}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Xf}{\mathbb{X}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\T}{\mathcal{\top}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\S}{\mathcal{S}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\A}{\mathcal{A}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\R}{\mathcal{R}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\P}{\mathcal{P}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Pr}{\mathbb{P}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Sa}{\mathbb{S}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Ba}{\mathbb{B}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Na}{\mathbb{N}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Pr}{\mathbb{P}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\E}{\mathbb{E}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\1}{\mathbb{1}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Resolución de las ecuaciones de Bellman en problemas de gran escala
+\begin_inset CommandInset label
+LatexCommand label
+name "chap:solucionEcuBellmanAprox"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+chaptermark{RESOLUCIÓN DE PROBLEMAS DE GRAN ESCALA}
+\end_layout
+
+\end_inset
+
+En este capítulo se va a abordar la resolución de las ecuaciones de Bellman
+ cuando el problema adquiere mayor dimensionalidad y se desconoce el modelo
+ del entorno.
+\end_layout
+
+\begin_layout Standard
+En el capítulo anterior, se ha considerado un modelo muy conveniente en
+ el cual los espacios de políticas y acciones eran de un tamaño moderado
+ y discretos.
+ En tal escenario, las funciones valor podían ser representadas a través
+ de tablas donde cada estado tenía una entrada 
+\begin_inset Formula $v(s)$
+\end_inset
+
+ o cada par estado-acción tenía una entrada 
+\begin_inset Formula $q(s,a)$
+\end_inset
+
+.
+ Esta asunción simplifica las cuestiones de implementación pero no es muy
+ realista en muchos problemas reales.
+ Un ejemplo típico donde es impracticable este enfoque es el Backgammon,
+ un juego que presenta 
+\begin_inset Formula $10^{20}$
+\end_inset
+
+ estados.
+ Otro ejemplo podría ser el control de un helicóptero: el espacio de estados
+ es continuo.
+\end_layout
+
+\begin_layout Standard
+Para que el aprendizaje por refuerzo sea capaz de solucionar este tipo de
+ problemas, será necesario hacer algún tipo de aproximación puesto que la
+ solución exacta, en general no podrá ser calculada.
+ De este modo, los algoritmos presentados en el capítulo anterior no podrán
+ ser aplicados en su forma original y habrá que derivar una versión basada
+ en aproximaciones que funcione para el caso en que desconocemos el modelo
+ del entorno.
+ Entrando más en detalles, se va a considerar que más que tener acceso al
+ estado del entorno, el agente tiene acceso a un conjunto de características
+ (
+\emph on
+features
+\emph default
+) del estado.
+\end_layout
+
+\begin_layout Standard
+En este capítulo únicamente abordaremos aproximaciones lineales, donde la
+ función valor para algún estado será aproximada como una combinación lineal
+ del vector de características para dicho estado.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap5/arquitecturas_FA.jpeg
+	lyxscale 40
+	scale 30
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Tipos de aproximaciones de las funciones valor.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Supongamos que 
+\begin_inset Formula $\theta$
+\end_inset
+
+ y 
+\begin_inset Formula $\omega$
+\end_inset
+
+ hacen referencia a los vectores de parámetros para las aproximaciones de
+ las funciones valor de estados y de estados-acciones respectivamente, de
+ manera que se tiene:
+\begin_inset Formula 
+\begin{align}
+v^{\pi}\left(s\right) & \approx v^{\pi}\left(s,\omega\right)\\
+q^{\pi}\left(s,a\right) & \approx q^{\pi}\left(s,a,\theta\right)
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Ahora el problema de hacer predicciones (es decir, de estimar el vector
+ de funciones valor 
+\begin_inset Formula $v^{\pi}$
+\end_inset
+
+) resulta equivalente a buscar el vector de parámetros 
+\begin_inset Formula $\omega^{\star}$
+\end_inset
+
+ o 
+\begin_inset Formula $\theta^{\star}$
+\end_inset
+
+ que es óptimo en cierto sentido.
+\end_layout
+
+\begin_layout Standard
+Definamos 
+\begin_inset Formula $\bar{\phi}:\S\rightarrow\mathbb{R}^{N}$
+\end_inset
+
+ como una aplicación de los estados a las características, tal que 
+\begin_inset Formula $\bar{\phi}(s)$
+\end_inset
+
+ proporciona el vector de características de longitud 
+\begin_inset Formula $N$
+\end_inset
+
+ que representa el estado 
+\begin_inset Formula $s$
+\end_inset
+
+.
+ Las componentes de este vector estarán dadas por un conjunto de funciones
+ base, 
+\begin_inset Formula $\phi_{1},\ldots,\phi_{N}:\S\rightarrow\mathbb{R}$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+\bar{\phi}\left(s\right)=\left[\begin{array}{c}
+\bar{\phi}_{1}\left(s\right)\\
+\vdots\\
+\bar{\phi}_{N}\left(s\right)
+\end{array}\right]\label{eq:vect_basis}
+\end{equation}
+
+\end_inset
+
+De entre muchos tipos de parametrizaciones, la aproximación lineal de la
+ forma:
+\begin_inset Formula 
+\begin{equation}
+v^{\pi}\left(s,\omega\right)=\bar{\phi}(s)^{T}\omega\label{eq:linear-approximation}
+\end{equation}
+
+\end_inset
+
+ha sido extensamente estudiada en la literatura y es prometedora, principalmente
+ porque permite obtener soluciones con un bajo coste computacional.
+ Además, si se es capaz de escoger la aplicación de las características
+ de manera cuidadosa, tal que estas capturen correctamente la estructura
+ de las recompensas y de las transiciones de estados, entonces el modelo
+ de aproximación lineal dará, en general, buenos resultados.
+\end_layout
+
+\begin_layout Standard
+Asumamos un conjunto finito de acciones por el momento: 
+\begin_inset Formula $\A\triangleq\left\{ a_{1},\cdots,a_{A}\right\} $
+\end_inset
+
+.
+ Para la aproximación de la función valor de estados-acciones, las funciones
+ base serán denotadas por 
+\begin_inset Formula $\phi_{1},\phi_{2},\cdots,\phi_{M}:\mathcal{S\times A}\rightarrow\Re$
+\end_inset
+
+, las cuales se agrupan en el vector de características de estados-acciones
+ de la siguiente manera:
+\begin_inset Formula 
+\begin{equation}
+\phi\left(s,a\right)=\left[\begin{array}{c}
+\phi_{1}\left(s,a\right)\\
+\vdots\\
+\phi_{M}\left(s,a\right)
+\end{array}\right]
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Resulta estándar obtener 
+\begin_inset Formula $\phi(s,a)$
+\end_inset
+
+ a partir de 
+\begin_inset Formula $\bar{\phi}(s)$
+\end_inset
+
+ empleando 
+\begin_inset Formula $N$
+\end_inset
+
+ características para cada posible acción, de manera que 
+\begin_inset Formula $M=NA$
+\end_inset
+
+; estableciendo las 
+\begin_inset Formula $N$
+\end_inset
+
+ características correspondientes a la acción 
+\begin_inset Formula $a$
+\end_inset
+
+ igual a 
+\begin_inset Formula $\bar{\phi}(s)$
+\end_inset
+
+; y las otras 
+\begin_inset Formula $(N-1)A$
+\end_inset
+
+ características, que se corresponden con las acciones no elegidas, igual
+ a cero:
+\begin_inset Formula 
+\begin{equation}
+\phi\left(s,a_{m}\right)^{T}=\left[\underset{a_{1}}{\underbrace{0,\ldots,0}},\ldots,\underset{a_{m}}{\underbrace{\bar{\phi}_{1}\left(s\right),\ldots,\bar{\phi}_{N}\left(s\right)}},\ldots,\underset{a_{A}}{\underbrace{0,\ldots,0}}\right]\label{eq:state-action-features}
+\end{equation}
+
+\end_inset
+
+De esta manera, la función 
+\begin_inset Formula $q(s,a)$
+\end_inset
+
+ puede ser linealmente aproximada por el vector de parámetros 
+\begin_inset Formula $\theta\in\mathbb{R}^{M}$
+\end_inset
+
+ como:
+\begin_inset Formula 
+\begin{equation}
+q\left(s,a_{m},\theta\right)=\phi\left(s,a_{m}\right)^{T}\theta
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Familias de funciones base
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:FamiliasFunBase"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Las funciones base empleadas para representar el espacio pueden ser arbitrariame
+nte complejas, incluso cuando la aproximación paramétrica es tan simple
+ como la aproximación lineal.
+ A continuación se presentarán los esquemas de funciones base más comunes:
+ agregación de estados o discretización, base polinómica y funciones base
+ radiales.
+ Resulta importante destacar que escoger el conjunto de funciones base correcto
+ puede ser crítico a la hora de alcanzar buenas aproximaciones.
+\end_layout
+
+\begin_layout Subsection
+Agregación de estados o discretización
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:discretizacionBASE"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para la agregación de estados, el espacio de estados se particiona en 
+\begin_inset Formula $N$
+\end_inset
+
+ subconjuntos separados, siendo 
+\begin_inset Formula $\S_{n}$
+\end_inset
+
+ el subconjunto 
+\begin_inset Formula $n$
+\end_inset
+
+-ésimo de dicha partición, para 
+\begin_inset Formula $n=1,\cdots,N$
+\end_inset
+
+.
+ Para una acción dada, la aproximación asigna el mismo valor de 
+\begin_inset Formula $v(s)$
+\end_inset
+
+ para todos los estados en 
+\begin_inset Formula $\S_{n}$
+\end_inset
+
+.
+ Esto se corresponde con un vector de características dependiente del estado,
+ que toma valores binarios (
+\begin_inset Formula $0$
+\end_inset
+
+ o 
+\begin_inset Formula $1$
+\end_inset
+
+):
+\begin_inset Formula 
+\begin{equation}
+\bar{\phi}_{n}\left(s\right)=\begin{cases}
+\begin{array}{c}
+1\\
+0
+\end{array} & \begin{array}{c}
+\textrm{si}\;s\in\mathcal{S}_{n}\\
+\textrm{resto}
+\end{array}\end{cases}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En este caso, el vector de características de estados-acciones 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:state-action-features"
+
+\end_inset
+
+ puede ser escrito de manera compacta:
+\begin_inset Formula 
+\begin{equation}
+\phi_{n}\left(s,a_{j}\right)=\begin{cases}
+\begin{array}{c}
+1\\
+0
+\end{array} & \begin{array}{c}
+\textrm{si}\;s\in\mathcal{S}_{n}\;\textrm{y}\;a=a_{j}\\
+\textrm{resto}
+\end{array}\end{cases}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El problema principal de este enfoque es que 
+\begin_inset Formula $(1)$
+\end_inset
+
+ el número de estados agregados crece de manera exponencial con la dimensión
+ del conjunto de estados, 
+\begin_inset Formula $\S$
+\end_inset
+
+, y 
+\begin_inset Formula $(2)$
+\end_inset
+
+ la variación entre dos estados consecutivos podría ser muy abrupta.
+\end_layout
+
+\begin_layout Subsection
+Base polinómica
+\end_layout
+
+\begin_layout Standard
+Consideremos ahora que el espacio de estados es continuo, de manera que
+ cada estado es descrito por un vector de 
+\begin_inset Formula $S$
+\end_inset
+
+ variables de estado: 
+\begin_inset Formula $s=\left(s_{i}\right)_{i=1}^{S}$
+\end_inset
+
+.
+ La base polinómica de orden 
+\begin_inset Formula $j$
+\end_inset
+
+ vendrá dada por:
+\begin_inset Formula 
+\begin{equation}
+\bar{\phi}_{n}\left(s\right)=\prod_{i=1}^{j}s_{i}^{c_{n,i}}
+\end{equation}
+
+\end_inset
+
+donde 
+\begin_inset Formula $c_{n,i}$
+\end_inset
+
+ es un entero entre 
+\begin_inset Formula $0$
+\end_inset
+
+ y 
+\begin_inset Formula $j$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Funciones base radiales Gaussianas (RBFs)
+\end_layout
+
+\begin_layout Standard
+De nuevo, considérese que el espacio de estados es continuo y que el vector
+ de estado está compuesto por 
+\begin_inset Formula $S$
+\end_inset
+
+ variables de estado.
+ Una función base radial (
+\emph on
+Radial Basis Function
+\emph default
+, RBF) es una función que toma valores reales, cuyo valor depende únicamente
+ en la distancia entre la variable de estado y algún punto de referencia
+ 
+\begin_inset Formula $c_{n}$
+\end_inset
+
+.
+ Por simplicidad, se considerarán RBF de tipo Gaussiano, las cuales se definen
+ de la siguiente manera:
+\begin_inset Formula 
+\begin{equation}
+\bar{\phi}_{n}\left(s\right)=\frac{1}{\sqrt{\left(2\pi\right)^{S}|B_{n}|}}e^{-\frac{1}{2}\left(s-c_{n}\right)^{T}B_{n}^{-1}\left(s-c_{n}\right)}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+donde 
+\begin_inset Formula $c_{n}$
+\end_inset
+
+ y 
+\begin_inset Formula $B_{n}$
+\end_inset
+
+ son la media y la covarianza de la 
+\begin_inset Formula $n$
+\end_inset
+
+-ésima función base, respectivamente.
+ La figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:RBFs"
+
+\end_inset
+
+ ilustra esta idea.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap5/idea_approx.jpeg
+	lyxscale 50
+	scale 45
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:RBFs"
+
+\end_inset
+
+Aproximación de funciones empleando RBFs.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Ecuación de Bellman proyectada 
+\end_layout
+
+\begin_layout Standard
+Supongamos que se tiene la matriz 
+\begin_inset Formula $\Phi$
+\end_inset
+
+ de dimensión 
+\begin_inset Formula $S\times N$
+\end_inset
+
+, cuyas columnas son los vectores 
+\begin_inset Formula $\bar{\phi}{}_{n}$
+\end_inset
+
+ de funciones base:
+\begin_inset Formula 
+\begin{equation}
+\overline{\Phi}\triangleq\left[\begin{array}{c}
+\bar{\phi}(1){}^{T}\\
+\vdots\\
+\bar{\phi}(S){}^{T}
+\end{array}\right]=\left[\begin{array}{ccc}
+\bar{\phi}_{1}(1) & \cdots & \bar{\phi}_{N}(1)\\
+\vdots & \cdots & \vdots\\
+\bar{\phi}_{1}(S) & \cdots & \bar{\phi}_{N}(S)
+\end{array}\right]\label{eq:matriz_basis}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Entonces, la aproximación lineal 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:linear-approximation"
+
+\end_inset
+
+ se puede expresar de manera vectorial, más compacta, como:
+\begin_inset Formula 
+\begin{equation}
+v^{\pi}=\overline{\Phi}\omega\label{eq:linear-approx-matrix-form}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+De cara a resolver para 
+\begin_inset Formula $\omega$
+\end_inset
+
+, se puede remplazar 
+\begin_inset Formula $v^{\pi}$
+\end_inset
+
+ por su aproximación 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:linear-approx-matrix-form"
+
+\end_inset
+
+ en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:state-value-bellman-equation-vector"
+
+\end_inset
+
+, de manera que se obtiene un sistema lineal de ecuaciones conocido como
+ ecuación de Bellman aproximada:
+\begin_inset Formula 
+\begin{equation}
+\overline{\Phi}\omega=\R^{\pi}+\gamma\P^{\pi}\overline{\Phi}\omega\label{eq:approximate-bellman-state}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Siguiendo el mismo procedimiento para las funciones valor de estados-acciones,
+ se define 
+\begin_inset Formula $\Phi$
+\end_inset
+
+ como la siguiente matriz de dimensión 
+\begin_inset Formula $SA\times M$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+\Phi\triangleq\left[\begin{array}{c}
+\phi(1,1){}^{T}\\
+\vdots\\
+\phi(1,A){}^{T}\\
+\vdots\\
+\phi(S,1){}^{T}\\
+\vdots\\
+\phi(S,A){}^{T}
+\end{array}\right]=\left[\begin{array}{ccc}
+\phi_{1}(1,1) & \cdots & \phi_{M}(1,1)\\
+\vdots & \cdots & \vdots\\
+\phi_{1}(1,A){}^{\T} & \cdots & \phi_{M}(1,1)\\
+\vdots & \cdots & \vdots\\
+\phi_{1}(S,1){}^{\T} & \cdots & \phi_{M}(S,1){}^{\T}\\
+\vdots & \cdots & \vdots\\
+\phi_{1}(S,A){}^{\T} & \cdots & \phi_{M}(S,A){}^{\T}
+\end{array}\right]
+\end{equation}
+
+\end_inset
+
+y se aproxima la ecuación de Bellman para estados-acciones 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:state-action-value-bellman-equation-vector"
+
+\end_inset
+
+ como:
+\begin_inset Formula 
+\begin{equation}
+\Phi\theta=\R+\gamma\mathcal{P\mathit{\Pi}}\Phi\theta\label{eq:approximate-bellman-sate-action}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Se supondrá que las características constituyen un conjunto de funciones
+ base linealmente independientes que representan de manera efectiva los
+ estados, y que 
+\begin_inset Formula $\overline{\Phi}$
+\end_inset
+
+ y 
+\begin_inset Formula $\Phi$
+\end_inset
+
+ son de rango completo por construcción.
+ Sin embargo, las ecuaciones de punto fijo 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:approximate-bellman-state"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:approximate-bellman-sate-action"
+
+\end_inset
+
+ podrían no tener una solución 
+\begin_inset Formula $\omega$
+\end_inset
+
+ o 
+\begin_inset Formula $\theta$
+\end_inset
+
+ ya que el lado derecho no tiene por qué caer en el rango de 
+\begin_inset Formula $\overline{\Phi}$
+\end_inset
+
+ y 
+\begin_inset Formula $\Phi$
+\end_inset
+
+ respectivamente.
+ De cara a solucionar este problema, se va a proyectar el lado derecho de
+ 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:approximate-bellman-state"
+
+\end_inset
+
+–
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:approximate-bellman-sate-action"
+
+\end_inset
+
+ (es decir, el operador de Bellman) sobre el rango de la correspondiente
+ matriz de características
+\end_layout
+
+\begin_layout Standard
+Suponiendo que 
+\begin_inset Formula $\overline{\Xf}$
+\end_inset
+
+ y 
+\begin_inset Formula $\Xf$
+\end_inset
+
+ denotan el espacio del rango de las matrices de características 
+\begin_inset Formula $\overline{\Phi}$
+\end_inset
+
+ y 
+\begin_inset Formula $\Phi$
+\end_inset
+
+, se define el operador proyección con respecto a una métrica 
+\begin_inset Formula $\|\cdot\|_{D}$
+\end_inset
+
+ como:
+\begin_inset Formula 
+\begin{align}
+\overline{\Xi}v & \triangleq\arg\min_{x'\in\overline{\Xf}}\|v-x'\|_{\overline{D}}^{2}\\
+\Xi q & \triangleq\arg\min_{x'\in\Xf}\|q-x'\|_{D}^{2}
+\end{align}
+
+\end_inset
+
+donde 
+\begin_inset Formula $\overline{\Xi}$
+\end_inset
+
+ y 
+\begin_inset Formula $\Xi$
+\end_inset
+
+ son los operadores proyección en 
+\begin_inset Formula $\overline{\Xf}$
+\end_inset
+
+ y 
+\begin_inset Formula $\Xf$
+\end_inset
+
+ respectivamente.
+ Supondremos que 
+\begin_inset Formula $\overline{D}$
+\end_inset
+
+ y 
+\begin_inset Formula $D$
+\end_inset
+
+ son matrices diagonales que contienen la probabilidad estacionaria límite
+ de visita de estados y de estados acciones asociada a los estados y estados-acc
+iones de la cadena de Markov; es decir, 
+\begin_inset Formula $\overline{D}={\rm diag}\left[d^{\pi}\right]$
+\end_inset
+
+ donde 
+\begin_inset Formula $d^{\pi}$
+\end_inset
+
+ viene dada por 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:limiting-stationary-distribution"
+
+\end_inset
+
+.
+ Por tanto, las matrices 
+\begin_inset Formula $\overline{\Xi}$
+\end_inset
+
+ y 
+\begin_inset Formula $\Xi$
+\end_inset
+
+ vendrán dadas por:
+\begin_inset Formula 
+\begin{align}
+\overline{\Xi} & =\overline{\Phi}\left(\overline{\Phi}^{\T}\overline{D}\overline{\Phi}\right)^{-1}\overline{\Phi}^{T}\overline{D}\label{eq:projector-state}\\
+\Xi & =\Phi\left(\Phi^{\T}D\Phi\right)^{-1}\Phi^{T}D\label{eq:projector-state-action}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En consecuencia, se definirá la ecuación de Bellman proyectada (
+\emph on
+projected Bellman equation
+\emph default
+, PBE) para las funciones valor de estados y estados-acciones de la siguiente
+ manera:
+\begin_inset Formula 
+\begin{align}
+\overline{\Phi}\omega & =\overline{\Xi}\left(\R^{\pi}+\gamma\P^{\pi}\overline{\Phi}\omega\right)=\overline{\Xi}T\left(\overline{\Phi}\omega\right)\\
+\Phi\theta & \Xi\left(\R+\gamma\mathit{\mathcal{P\mathit{\Pi}}}\Phi\theta\right)=\Xi T\left(\Phi\theta\right)\label{eq:pbe-bellman-operator-state-action}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Predicción
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:predicción_linearAprox"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El problema de predicción consiste ahora en evaluar la política aproximada
+ de una determinada política.
+ Dado que la matriz de características o funciones base es dada por el entorno
+ y es por tanto parte de la descripción de nuestro problema, la evaluación
+ de la política consistirá en encontrar el parámetro 
+\begin_inset Formula $\omega$
+\end_inset
+
+ o 
+\begin_inset Formula $\theta$
+\end_inset
+
+ óptimo que resuelve la PBE.
+ Se expone a continuación la manera de resolver este problema para el caso
+ de la función valor de estados-acciones 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:pbe-bellman-operator-state-action"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Desarrollando 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:projector-state-action"
+
+\end_inset
+
+ en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:pbe-bellman-operator-state-action"
+
+\end_inset
+
+, se obtiene:
+\begin_inset Formula 
+\begin{equation}
+\Phi\theta=\Phi\left(\Phi^{T}D\Phi\right)^{-1}\Phi^{T}D\left(\R+\gamma\mathcal{P\mathit{\Pi}}\Phi\theta\right)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Multiplicando a ambos lados por 
+\begin_inset Formula $\left(\Phi^{T}D\Phi\right)^{-1}\Phi^{T}D$
+\end_inset
+
+ y reorganizando el resultado, se llega a que el parámetro óptimo será:
+\begin_inset Formula 
+\begin{equation}
+\theta^{*}=\left(\Phi^{T}D\Phi-\gamma\Phi^{T}D\mathcal{P\mathit{\Pi}}\Phi\right)^{-1}\Phi^{T}D\R\label{eq:optimal-state-action-parameter-for-linear-approx}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Si se definen los siguientes términos:
+\begin_inset Formula 
+\begin{align}
+\Gamma & \triangleq\Phi^{T}D\Phi\label{eq:linear-approx-cov}\\
+\Lambda & \triangleq\Phi^{T}D\mathcal{P\mathit{\Pi}}\Phi\label{eq:linear-approx-transition-cross-cov}\\
+z & \triangleq\Phi^{T}D\R\label{eq:linear-feature-reward-cov}
+\end{align}
+
+\end_inset
+
+se podrá reescribir 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:optimal-state-action-parameter-for-linear-approx"
+
+\end_inset
+
+ de la siguiente manera:
+\begin_inset Formula 
+\begin{equation}
+\theta^{*}=\left(\Gamma-\gamma\Lambda\right)^{-1}z\label{eq:optimal-linear-state-action-param}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Cuando conozcamos el modelo del sistema, esta expresión nos permitirá obtener
+ el parámetro óptimo de forma exacta.
+ No obstante, cuando no conozcamos el modelo, habrá que aproximar los términos
+ 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:linear-approx-cov"
+
+\end_inset
+
+–
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:linear-feature-reward-cov"
+
+\end_inset
+
+ a partir de muestras y finalmente resolver 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:optimal-linear-state-action-param"
+
+\end_inset
+
+ con los términos aproximados.
+ Un método que implementa esta solución basada en muestras es 
+\emph on
+Least-Squares Temporal-Difference
+\emph default
+ (LSTD), descrito en el algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:LSTD-q"
+
+\end_inset
+
+.
+ Este algoritmo, primero estima los términos 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:linear-approx-cov"
+
+\end_inset
+
+–
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:linear-feature-reward-cov"
+
+\end_inset
+
+, y cuando tiene una estimación sólida (pasadas 
+\begin_inset Formula $n$
+\end_inset
+
+ muestras), calcula 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:optimal-linear-state-action-param"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{algorithmic}[1] 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Require {$
+\backslash
+pi$, la política a ser evaluada.
+ Funciones base $
+\backslash
+phi$}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Ensure {$
+\backslash
+theta$, el parámetro estimado para la aproximación lineal de $q^
+\backslash
+pi$.}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State Inicializar $
+\backslash
+Gamma = 0_{M
+\backslash
+times M}$, $
+\backslash
+Lambda = 0_{M
+\backslash
+times M}$, $z=0_M$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Repeat (para cada episodio)
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State Inicializar $s,a$ y observar $
+\backslash
+phi(s,a)$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+Repeat (para cada paso en el episodio)
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State Tomar la acción $a$ y observar $r,s',
+\backslash
+phi(s')$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State Escoger la acción $a'	
+\backslash
+sim	
+\backslash
+pi (
+\backslash
+cdot|s)$ y construir $
+\backslash
+phi(s',a')$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $
+\backslash
+Gamma 	
+\backslash
+gets 	
+\backslash
+Gamma + 
+\backslash
+phi(s,a) 
+\backslash
+phi(s,a)^
+\backslash
+T$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $
+\backslash
+Lambda 	
+\backslash
+gets 	
+\backslash
+Lambda + 
+\backslash
+phi(s,a) 
+\backslash
+phi(s',a')^
+\backslash
+T$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $z	
+\backslash
+gets 	z + 
+\backslash
+phi(s,a) r$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $s 
+\backslash
+gets s'$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $a 
+\backslash
+gets a'$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+Until{$s$ sea terminal}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Until{no podamos correr más episodios} 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State Calcular: $
+\backslash
+theta = 
+\backslash
+left(
+\backslash
+Gamma - 
+\backslash
+gamma
+\backslash
+Lambda
+\backslash
+right)^{-1}  z$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State 
+\backslash
+Return{$
+\backslash
+hat{q}_
+\backslash
+theta = 
+\backslash
+Phi 
+\backslash
+theta$}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:LSTD-q"
+
+\end_inset
+
+Algoritmo LSTD para la evaluación de la política sobre las funciones valor
+ de estados-acciones.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Control
+\end_layout
+
+\begin_layout Standard
+Para la etapa de control, se seguirá un enfoque similar al de 
+\emph on
+policy iteration
+\emph default
+ (PI), que como se vio en el capítulo anterior consiste en 
+\begin_inset Formula $(1)$
+\end_inset
+
+ evaluar la política actual y 
+\begin_inset Formula $(2)$
+\end_inset
+
+ mejorar la política.
+ Esta manera de resolver el problema de control recibe el nombre de 
+\emph on
+Least-Squares Policy Iteration
+\emph default
+ (LSPI).
+\end_layout
+
+\begin_layout Standard
+Para la evaluación de la política, LSPI emplea LSTD de manera que se obtiene
+ 
+\begin_inset Formula $\theta^{*}$
+\end_inset
+
+ través de 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:optimal-linear-state-action-param"
+
+\end_inset
+
+.
+ A continuación mejora la política evaluada mediante la elección de la acción
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Se está asumiendo un conjunto de acciones finito, de manera que la maximización
+ sobre el conjunto de acciones puede llevarse a cabo de manera relativamente
+ eficiente.
+\end_layout
+
+\end_inset
+
+ 
+\emph on
+greedy
+\emph default
+ que maximiza la función valor de estados-acciones que se aproximó linealmente:
+\begin_inset Formula 
+\begin{equation}
+\pi\left(s\right)\in\arg\max_{a\in\A}\phi\left(s,a\right)^{\T}\theta^{*},\quad\forall s\in\S
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El conjunto de muestras 
+\begin_inset Formula $\left(\phi(s_{t},a_{t}),r_{t+1},\phi(s_{t+1},a_{t+1})\right)$
+\end_inset
+
+ que se empleen para el aprendizaje será actualizado entre cada iteración.
+ Con el objetivo de garantizar un compromiso aceptable de exploración vs.
+ explotación, se usará una política 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+-greedy para tomar estas muestras:
+\begin_inset Formula 
+\begin{equation}
+\pi_{\epsilon}\left(a\mid s\right)\triangleq\begin{cases}
+1-\epsilon+\epsilon/|\A| & {\rm si}\;a=\arg\max_{a'\in\A}\;\phi\left(s,a'\right)^{\T}\theta\\
+\epsilon/|\A| & {\rm a\in\A}
+\end{cases}\label{eq:epsilon-greedy-policy-linear-approx}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Por último, para asegurar que LSPI aprende rápido, la mejora de la política
+ podrá realizarse una vez cada pocas transiciones de la fase de evaluación
+ de la política, antes de tener una evaluación muy precisa de la política
+ actual.
+ Este número de transiciones entre actualizaciones de la política será 
+\begin_inset Formula $K$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+
+\color black
+El pseudocódigo de LSPI se muestra en el algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:LSPI-online"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+
+\color white
+dddddddddddsdsds d ds ds dsd ddddddddddddddddddd sd dddddddddddsdsds d ds
+ ds dsd ddddddddddddddddddd sd dddddddddddsdsds d ds ds dsd ddddddddddddddddddd
+ sd dddddddddddsdsds d ds ds dsd ddddddddddddddddddd sd dddddddddddsdsds
+ d ds ds dsd ddddddddddddddddddd sd dddddddddddsdsds d ds ds dsd ddddddddddddddd
+dddd sd dddddddddddsdsds d ds ds dsd ddddddddddddddddddd sd dddddddddddsdsds
+ d ds ds dsd ddddddddddddddddddd sd dddddddddddsdsds d ds ds dsd ddddddddddddddd
+dddd sd dddddddddddsdsds d ds ds dsd ddddddddddddddddddd sd dddddddddddsdsds
+ d ds ds dsd ddddddddddddddddddd sd dddddddddddsdsds d ds ds dsd ddddddddddddddd
+dddd sd dddddddddddsdsds d ds ds dsd ddddddddddddddddddd sd dddddddddddsdsds
+ d ds ds dsd ddddddddddddddddddd sd dddddddddddsdsds d ds ds dsd ddddddddddddddd
+dddd sd dddddddddddsdsdssddsdsds d ds ds dsd ddddddddddddddddddd sd ddddddddddds
+dsds d ds ds dsd ddddddddddddddddddd sd dddddddddddsdsdssdddddddddddsdsds
+ d ds ds dsd ddddddddddddddddddd sd dddddddddddsdsds d ds ds dsd ddddddddddddddd
+dddd sd dddddddddddsdsds d ds ds dsd ddddddddddddddddddd sd dddddddddddsdsds
+ d ds ds dsd ddddddddddddddddddd sd dddddddddddsdsds d ds ds dsd ddddddddddddddd
+dddd sd dddddddddddsdsds d ds ds dsd ddddddddddddddddddd sd dddddddddddsdsds
+ d ds ds dsd dds dsds
+\end_layout
+
+\begin_layout Standard
+
+\color black
+\begin_inset Float algorithm
+placement t
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\color black
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{algorithmic}[1] 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Require {Parámetro de exploración $
+\backslash
+epsilon$.}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Ensure {$
+\backslash
+pi$, la política óptima $
+\backslash
+pi^{
+\backslash
+star}$ aproximada.}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State Inicializar $
+\backslash
+Gamma = 0_{M
+\backslash
+times M}$, $
+\backslash
+Lambda = 0_{M
+\backslash
+times M}$, $z=0_M$, $t=0$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State Inicializar $
+\backslash
+theta$ aleatoriamente
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Repeat (para cada episodio)
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State Inicializar $s,a$ y determinar $
+\backslash
+phi(s,a)$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+Repeat (para cada paso en el episodio)
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State Tomar la acción $a 
+\backslash
+sim	
+\backslash
+pi_{
+\backslash
+epsilon} (
+\backslash
+cdot|s)$ empleando 
+\backslash
+eqref{eq:epsilon-greedy-policy-linear-approx} y observar $r$, $s'$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State Escoger la acción $a'	
+\backslash
+sim	
+\backslash
+pi_{
+\backslash
+epsilon} (
+\backslash
+cdot|s')$ empleando 
+\backslash
+eqref{eq:epsilon-greedy-policy-linear-approx} y determinar $
+\backslash
+phi(s',a')$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $
+\backslash
+Gamma 	
+\backslash
+gets 	
+\backslash
+Gamma + 
+\backslash
+phi(s,a) 
+\backslash
+phi(s,a)^
+\backslash
+T$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $
+\backslash
+Lambda 	
+\backslash
+gets 	
+\backslash
+Lambda + 
+\backslash
+phi(s,a) 
+\backslash
+phi(s',a')^
+\backslash
+T$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $z	
+\backslash
+gets 	z + 
+\backslash
+phi(s,a) r$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $s 
+\backslash
+gets s'$, $a 
+\backslash
+gets a'$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $t 
+\backslash
+gets t +1$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+If{ $
+\backslash
+left( ( {
+\backslash
+rm mod}(t,K ) == 0 
+\backslash
+right)$ } (mejora de la política implícita)
+\end_layout
+
+\begin_layout Plain Layout
+
+				
+\backslash
+State Calcular: $
+\backslash
+theta = 
+\backslash
+left(
+\backslash
+Gamma - 
+\backslash
+gamma
+\backslash
+Lambda
+\backslash
+right)^{-1} z$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+EndIf
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+Until{$s$ sea terminal}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Until{no podamos correr más episodios} 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State Calcular: $
+\backslash
+theta = 
+\backslash
+left(
+\backslash
+Gamma - 
+\backslash
+gamma
+\backslash
+Lambda
+\backslash
+right)^{-1} z$	
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+For{todo $s 
+\backslash
+in 
+\backslash
+S$} 
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State $
+\backslash
+pi(s) 
+\backslash
+gets 
+\backslash
+arg
+\backslash
+max_{a 
+\backslash
+in
+\backslash
+A} 
+\backslash
+: 
+\backslash
+phi(s,a)^
+\backslash
+T 
+\backslash
+theta$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+EndFor
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State 
+\backslash
+Return{$
+\backslash
+pi$}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\color black
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:LSPI-online"
+
+\end_inset
+
+LSPI.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

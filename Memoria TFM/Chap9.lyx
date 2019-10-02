@@ -1,0 +1,9334 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass book
+\begin_preamble
+\usepackage{optidef}
+\usepackage[bottom]{footmisc}
+\input{spanishPseudoAlgorithmic} % mi archivo de traducción
+\renewcommand\spanishtablename{Tabla}
+
+\usepackage{mathtools}
+
+\AtBeginDocument{
+  \def\labelitemii{\ding{71}}
+  \def\labelitemiii{\ding{111}}
+  \def\labelitemiv{\(\vartriangleright\)}
+}
+
+
+\usepackage{babel}
+\addto\shorthandsspanish{\spanishdeactivate{~<>}}
+\end_preamble
+\use_default_options false
+\begin_modules
+theorems-ams-bytype
+theorems-chap-bytype
+theorems-ams-extended-bytype
+\end_modules
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding iso8859-15
+\fontencoding T1
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing double
+\use_hyperref true
+\pdf_bookmarks false
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref section
+\pdf_pdfusetitle false
+\papersize a4paper
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 2
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.5in
+\topmargin 1.6in
+\rightmargin 1.2in
+\bottommargin 1.6in
+\headheight 1.5in
+\headsep 0.3in
+\footskip 0.8in
+\secnumdepth 2
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle plain
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset FormulaMacro
+\renewcommand{\T}{\mathcal{\top}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\S}{\mathcal{S}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\A}{\mathcal{A}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\R}{\mathcal{R}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\P}{\mathcal{P}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Pr}{\mathbb{P}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Sa}{\mathbb{S}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Ba}{\mathbb{B}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Na}{\mathbb{N}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Desarrollo de un algoritmo primal-dual novel
+\begin_inset CommandInset label
+LatexCommand label
+name "chap:cap10BDAMF"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En el capítulo anterior se ha estudiado un enfoque primal-dual del problema
+ de control óptimo a resolver, enfoque poco explorado hasta el momento en
+ la literatura relativa al aprendizaje por refuerzo.
+ Se demostró cómo a partir de la variable dual 
+\begin_inset Formula $d(s,a)$
+\end_inset
+
+ del problema dual asociado se puede extraer una política de comportamiento
+ óptima, y se llegó a la conclusión de que resolver el problema dual equivalía
+ a resolver el problema de control planteado.
+ Para resolver el problema dual, se presentaron diferentes alternativas
+ de entre las cuales se eligió el método de ascenso dual, al cual se le
+ hicieron algunas modificaciones en la etapa de actualización de la variable
+ primal para adaptarlo a la casuística de nuestro problema.
+ A esta versión modificada del método de ascenso dual se le dio el nombre
+ de Bellman-ascenso dual, de manera que pudiéramos diferenciarla de la técnica
+ de ascenso dual original.
+\end_layout
+
+\begin_layout Standard
+En este capítulo, se va a formalizar un algoritmo que nos permita resolver
+ el problema de control óptimo a través del método Bellman-ascenso dual
+ desarrollado, cuando el conjunto de estados y acciones es pequeño y discreto.
+ Se derivará una versión en la cual se conoce el modelo del entorno de nuestro
+ problema, o 
+\emph on
+basada en modelo
+\emph default
+ y otra en la que carecemos de él, o 
+\emph on
+libre de modelo
+\emph default
+.
+ Para la aplicación en problemas de aprendizaje por refuerzo, será esta
+ última versión la que nos resulte de mayor interés, pues permitirá incorporar
+ las muestras de experiencia generadas al interactuar con el entorno a lo
+ largo del tiempo.
+\end_layout
+
+\begin_layout Standard
+A continuación, se pondrá a prueba el algoritmo planteado, demostrando de
+ manera empírica la convergencia de cada etapa del método Bellman-ascenso
+ dual.
+ Para ello, se usará como problema de estudio un MDP relativamente sencillo,
+ conocido en el mundo del aprendizaje por refuerzo como 
+\emph on
+random walk
+\emph default
+.
+ Por último, tras haber validado el algoritmo, se evaluará y comparará con
+ el estado del arte para el problema anteriormente citado y otro de mayor
+ dificultad: el problema del paseo por el acantilado.
+ 
+\end_layout
+
+\begin_layout Section
+Algoritmo Bellman-ascenso dual
+\end_layout
+
+\begin_layout Standard
+El método Bellman-ascenso dual va a permitir hacer una clara distinción
+ de los dos sub-problemas típicos que se plantean a la hora de resolver
+ problemas de aprendizaje por refuerzo: predicción y control.
+ Más concretamente, se va a hacer la siguiente interpretación:
+\end_layout
+
+\begin_layout Enumerate
+La actualización de la variable primal 
+\begin_inset Formula $v$
+\end_inset
+
+ se puede entender como una etapa de 
+\emph on
+predicción
+\emph default
+ en la cual se obtiene la función valor para una política dada por 
+\begin_inset Formula $d_{k}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+La actualización de la variable dual 
+\begin_inset Formula $d$
+\end_inset
+
+ se puede entender como una etapa de 
+\emph on
+control
+\emph default
+ en la cual se aprende una política que mejora la función valor 
+\begin_inset Formula $v^{\pi_{d_{k}}}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Para mayor comodidad y comprensión lectora, se recuerda a continuación el
+ método Bellman-ascenso dual desarrollado en el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Cap8PrimyDual"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}v_{k+1}\coloneqq\; & v^{\pi_{d_{k}}}\in\mathcal{F}^{PR}\\
+d_{k+1}\coloneqq\; & \left[d_{k}+\alpha\left(\R+\gamma\P v_{k+1}-\Xi^{T}v_{k+1}\right)\right]_{+}
+\end{aligned}
+\label{eq:BDA}
+\end{equation}
+
+\end_inset
+
+donde 
+\begin_inset Formula $\mathcal{F}^{PR}$
+\end_inset
+
+ es la región factible del problema primal, y para obtener un vector 
+\begin_inset Formula $v$
+\end_inset
+
+ que cumpla estas condiciones se propone resolver la ecuación de Bellman
+ siguiendo la política 
+\begin_inset Formula $\pi_{d_{k}}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Bajo el enfoque de predicción y control, típico de aprendizaje por refuerzo,
+ se van a analizar a continuación ambas etapas de actualización de 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:BDA"
+
+\end_inset
+
+ y a presentar diferentes formas de abordarlas en función de si se conoce
+ el modelo del entorno o no.
+ Tras este análisis, se formularán dos versiones del algoritmo Bellman-ascenso
+ dual: una basada en modelo y otra libre de modelo.
+\end_layout
+
+\begin_layout Subsection
+Predicción
+\end_layout
+
+\begin_layout Standard
+Tal y como se detalló en el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Cap8PrimyDual"
+
+\end_inset
+
+, la actualización de la variable primal (o etapa de predicción) va a consistir
+ en la resolución de la ecuación de Bellman de la función valor de estados,
+ cuando se sigue la política 
+\begin_inset Formula $\pi_{d_{k}}$
+\end_inset
+
+.
+ Como se vio en el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:solucionEcuBellmanTabu"
+
+\end_inset
+
+, la ecuación de Bellman se podrá resolver de manera exacta, lo que llamaremos
+ predicción basada en modelo, o de forma aproximada a través de la interacción
+ con el entorno, a lo que nos referiremos como predicción libre de modelo.
+ De nuevo, será el método basado en la interacción con el entorno el que
+ nos interese de cara a formular un algoritmo competente de aprendizaje
+ por refuerzo.
+\end_layout
+
+\begin_layout Subsubsection
+Predicción basada en modelo
+\end_layout
+
+\begin_layout Standard
+Cuando se conoce el modelo del entorno de nuestro problema, se puede llevar
+ a cabo la actualización de la variable primal de dos formas principalmente:
+ resolviendo la ecuación de Bellman a través de su solución en forma cerrada
+ 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:state-value-vector-solution"
+
+\end_inset
+
+–
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:state-action-value-vector-solution"
+
+\end_inset
+
+, o mediante programación dinámica (ver sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Metodos-de-DP"
+
+\end_inset
+
+), iterando hasta asegurar un cierto grado de convergencia 
+\begin_inset Formula $\delta_{v}$
+\end_inset
+
+ de la función valor.
+ Dado que las dos técnicas van a derivar en la solución exacta de la ecuación
+ de Bellman, será indistinto
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Será indistinto usar una técnica u otra en lo que al resultado final se
+ refiere.
+ Si se evaluase el coste computacional, una técnica sería más eficiente
+ que la otra debido a la inversión de matrices.
+ No obstante, dado que esa métrica se escapa del alcance de este trabajo,
+ no será tenida en cuenta.
+\end_layout
+
+\end_inset
+
+ usar una u otra.
+ Por ello, en lo que sigue del documento se trabajará con la solución basada
+ en DP, mostrada en el algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:DP_sol_cap9"
+
+\end_inset
+
+.
+ 
+\begin_inset Float algorithm
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{algorithmic}[1] 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Require {$
+\backslash
+pi_{d_{k}}$, la política a evaluar.}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Ensure {$v_{k+1}$, la función valor de estados para la política $
+\backslash
+pi_{d_{k}}$.}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State Inicializar $v(s)$ arbitrariamente (e.g., $v(s)=0$), para todo $s
+\backslash
+in
+\backslash
+S$.
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Repeat
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State	$
+\backslash
+Delta	
+\backslash
+leftarrow	0$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+For{todo $s
+\backslash
+in
+\backslash
+S$}
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $v_{antigua} 
+\backslash
+leftarrow	v(s)$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $v(s)		
+\backslash
+leftarrow	
+\backslash
+sum_{a 
+\backslash
+in 
+\backslash
+A} 
+\backslash
+pi_{d_{k}}(a|s) 
+\backslash
+left( 
+\backslash
+R_{s}^a  + 
+\backslash
+gamma 
+\backslash
+sum_{s' 
+\backslash
+in 
+\backslash
+S} 
+\backslash
+P_{ss'}^a  v(s') 
+\backslash
+right)$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $
+\backslash
+Delta	
+\backslash
+leftarrow	
+\backslash
+max 
+\backslash
+left[
+\backslash
+Delta, |v(s) - v_{antigua}| 
+\backslash
+right]$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+EndFor
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Until{$
+\backslash
+Delta < 
+\backslash
+delta_v$} 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State $v_{k+1}	
+\backslash
+leftarrow	v$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State 
+\backslash
+Return{$v_{k+1}$}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:DP_sol_cap9"
+
+\end_inset
+
+Predicción basada en modelo: actualización mediante la resolución de la
+ ecuación de Bellman a través de programación dinámica.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Predicción libre de modelo
+\end_layout
+
+\begin_layout Standard
+Cuando no se conozca el modelo del entorno de nuestro problema, a través
+ de la interacción con dicho entorno se podrá estimar la solución de la
+ ecuación de Bellman de varias maneras.
+ De entre todas ellas, se va a considerar la presentada en la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Diferencias-temporales_TD"
+
+\end_inset
+
+, TD.
+ Por limitaciones de tiempo no fue posible probar otras alternativas como
+ el método de Monte-Carlo o TD
+\begin_inset Formula $(\lambda)$
+\end_inset
+
+; no obstante, en un futuro se estudiarán las ventajas e inconvenientes
+ que puedan suponer estas dos técnicas.
+ El pseudocódigo de esta etapa de predicción se muestra en el algoritmo
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:pred-MF"
+
+\end_inset
+
+.
+\begin_inset Float algorithm
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{algorithmic}[1] 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Require {$
+\backslash
+pi_{d_{k}}$, la política a evaluar.
+ $
+\backslash
+alpha_{_{TD}}$, la tasa de aprendizaje.}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Ensure {$v_{k+1}$, la estimación de la función valor de estados $v^{
+\backslash
+pi_{d_{k}}}$.}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State Inicializar $v(s)$ arbitrariamente (e.g., $v(s)=0$), para todo $s
+\backslash
+in
+\backslash
+S$.
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Repeat (para cada episodio)
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State	$
+\backslash
+Delta	
+\backslash
+leftarrow	0$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State Inicializar $s$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+Repeat (para cada paso en el episodio)
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $v_{antigua} 
+\backslash
+leftarrow	v(s)$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State Escoger la acción $a	
+\backslash
+sim	
+\backslash
+pi_{d_{k}} (
+\backslash
+cdot|s)$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State Tomar la acción $a$ y observar $r, s'$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $v(s)	    
+\backslash
+gets		v(s) + 
+\backslash
+alpha_{_{TD}} ( r + 
+\backslash
+gamma v(s') - v(s) ) $
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $
+\backslash
+Delta	
+\backslash
+leftarrow	
+\backslash
+max 
+\backslash
+left[
+\backslash
+Delta, |v(s) - v_{antigua}| 
+\backslash
+right]$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $s 
+\backslash
+gets s'$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+Until{$s$ sea terminal}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Until{no podamos correr más episodios o $
+\backslash
+Delta < 
+\backslash
+delta_v$} 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State $v_{k+1}	
+\backslash
+leftarrow	v$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State 
+\backslash
+Return{$v_{k+1}$}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:pred-MF"
+
+\end_inset
+
+Predicción libre de modelo: actualización mediante la estimación de la solución
+ a la ecuación de Bellman a través de TD.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Como puede apreciarse, ahora la solución a la ecuación de Bellman se obtiene
+ a través de la experiencia generada, de manera que se podrá estimar tan
+ bien como número de episodios experimentados (o simulados) haya disponibles.
+ Resulta conveniente recordar que por muchas muestras de experiencia de
+ que se dispongan, TD siempre va a introducir un ligero sesgo tal y como
+ se vio en la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Diferencias-temporales_TD"
+
+\end_inset
+
+, de manera que nunca se llegará a converger al valor óptimo de la función
+ valor.
+ Además, también existirá un cierto nivel de ruido proporcional a la tasa
+ de aprendizaje 
+\begin_inset Formula $\alpha$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+La actualización de 
+\begin_inset Formula $v$
+\end_inset
+
+ mediante la aproximación por TD se realizará tantas veces como nos permita
+ el numero de episodios disponibles, o hasta asegurar un determinado grado
+ de convergencia 
+\begin_inset Formula $\delta_{v}$
+\end_inset
+
+ de la función valor, lo que ocurra antes.
+\end_layout
+
+\begin_layout Subsection
+Control
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Control_BDA"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La actualización de la variable dual (o etapa de control), consistirá en
+ la maximización en 
+\begin_inset Formula $d$
+\end_inset
+
+ del Lagrangiano 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:lagrangianBellman"
+
+\end_inset
+
+ para una determinada variable primal 
+\begin_inset Formula $v$
+\end_inset
+
+, mediante ascenso por gradiente.
+ Como se vio en el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Cap8PrimyDual"
+
+\end_inset
+
+, esta maximización se traducirá en aprender una política que mejore la
+ función valor 
+\begin_inset Formula $v^{\pi_{d_{k}}}$
+\end_inset
+
+ previamente obtenida en la etapa de predicción.
+\end_layout
+
+\begin_layout Standard
+Del mismo modo que en el caso anterior, se van a presentar dos formas de
+ llevar a cabo esta fase en función de si se conoce el modelo del entorno
+ o no.
+\end_layout
+
+\begin_layout Subsubsection
+Control basado en modelo
+\end_layout
+
+\begin_layout Standard
+Cuando se conoce el modelo del entorno de nuestro problema, se puede actualizar
+ 
+\begin_inset Formula $d$
+\end_inset
+
+ iterando según lo establecido en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:BDA"
+
+\end_inset
+
+.
+ Esto da lugar al algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:Control_MB"
+
+\end_inset
+
+.
+\begin_inset Float algorithm
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{algorithmic}[1] 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Require {$v_{k+1}$, la función valor de estados nueva obtenida en la etapa
+ de predicción.
+ $d_{k}$, la variable dual actual que se quiere mejorar.
+ $
+\backslash
+alpha_{_{D}}$, la tasa de aprendizaje.}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Ensure {$d_{k+1}$, la variable dual mejorada.}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State  $d(s,a)	
+\backslash
+leftarrow	d_{k}(s,a)$.
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+For{todo $(s,a) 
+\backslash
+in 
+\backslash
+{
+\backslash
+S
+\backslash
+times
+\backslash
+A
+\backslash
+}$
+\backslash
+;}
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $d(s,a)	    
+\backslash
+gets		d(s,a) + 
+\backslash
+alpha_{_{D}} ( 
+\backslash
+R_{s}^a + 
+\backslash
+gamma
+\backslash
+sum_{s'
+\backslash
+in
+\backslash
+S}
+\backslash
+P_{ss'}^{a}v_{k+1}(s') - v_{k+1}(s) ) $
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $d(s,a)	    
+\backslash
+gets		
+\backslash
+max
+\backslash
+left(0,d(s,a)
+\backslash
+right)$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+EndFor
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State $d_{k+1}	
+\backslash
+leftarrow	d$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State 
+\backslash
+Return{$d_{k+1}$}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:Control_MB"
+
+\end_inset
+
+Control basado en modelo: actualización mediante ascenso por gradiente exacto
+ en la variable dual 
+\begin_inset Formula $d$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Control libre de modelo
+\end_layout
+
+\begin_layout Standard
+En este punto es donde cobra gran importancia la idea de emplear métodos
+ basados en gradiente para la resolución del problema dual.
+ Cuando se desconoce el modelo del entorno de nuestro problema, no se puede
+ conocer el gradiente del Lagrangiano en la variable dual, es decir, la
+ actualización:
+\begin_inset Formula 
+\[
+d_{k+1}\coloneqq\;\left[d_{k}+\alpha\nabla_{d}\mathcal{L}(v_{k+1},d)\right]_{+}=\left[d_{k}+\alpha\left(\R+\gamma\P v_{k+1}-\Xi^{T}v_{k+1}\right)\right]_{+}
+\]
+
+\end_inset
+
+ya no se podrá realizar.
+ O no de manera exacta.
+\end_layout
+
+\begin_layout Standard
+Lo que a continuación se propone es usar una aproximación estocástica del
+ gradiente, 
+\begin_inset Formula $\widehat{\nabla_{d}\mathcal{L}}(v_{k+1},d)$
+\end_inset
+
+, obtenida a partir de las muestras de experiencia recogidas de la interacción
+ con el entorno, de manera que la actualización de 
+\begin_inset Formula $d$
+\end_inset
+
+ se realice a través de un ascenso por gradiente estocástico:
+\begin_inset Formula 
+\[
+\widehat{d}_{k+1}\coloneqq\;\left[\widehat{d}_{k}+\alpha\widehat{\nabla_{d}\mathcal{L}}(v_{k+1},d)\right]_{+}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para deducir la aproximación estocástica del gradiente que se empleará,
+ será necesario partir de la derivada parcial del Lagrangiano respecto a
+ 
+\begin_inset Formula $d(s,a)$
+\end_inset
+
+:
+\begin_inset Formula 
+\[
+\begin{aligned}\frac{\partial\mathcal{L}(v,d)}{\partial d(s,a)}= & \;\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}v\left(s'\right)-v(s)\end{aligned}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+De este modo, lo que se va a hacer es:
+\end_layout
+
+\begin_layout Enumerate
+Aproximar el valor esperado de la recompensa, 
+\begin_inset Formula $\R_{s}^{a}$
+\end_inset
+
+ definida en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:expected-reward-state-action-definition"
+
+\end_inset
+
+, por la recompensa instantánea obtenida en el instante actual, 
+\begin_inset Formula $r$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Aproximar el valor esperado de la función valor del siguiente estado, 
+\begin_inset Formula $\sum_{s'\in\S}\P_{ss'}^{a}v\left(s'\right)$
+\end_inset
+
+, por la estimación instantánea de la función valor en el siguiente estado,
+ 
+\begin_inset Formula $v(s')$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Teniendo en cuenta estas aproximaciones, se llega a la siguiente expresión
+ para el gradiente:
+\begin_inset Formula 
+\[
+\frac{\widehat{\partial\mathcal{L}}(v,d)}{\partial d(s,a)}=r+\gamma v(s')-v(s)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Por tanto, la actualización de 
+\begin_inset Formula $d$
+\end_inset
+
+ a través de ascenso por gradiente estocástico se puede expresar finalmente
+ como:
+\begin_inset Formula 
+\begin{equation}
+\begin{aligned}\widehat{d}_{k+1}(s,a)\coloneqq & \;\left[\widehat{d}_{k}(s,a)+\alpha\frac{\widehat{\partial\mathcal{L}}(v_{k+1},d)}{\partial d(s,a)}\right]_{+}\\
+= & \;\left[\widehat{d}_{k}(s,a)+\alpha\left(r+\gamma v(s')-v(s)\right)\right]_{+}
+\end{aligned}
+\label{eq:estima_grad}
+\end{equation}
+
+\end_inset
+
+siendo 
+\begin_inset Formula $s$
+\end_inset
+
+ el estado actual, 
+\begin_inset Formula $s'$
+\end_inset
+
+ el estado al que se transita y 
+\begin_inset Formula $r$
+\end_inset
+
+ la recompensa instantánea obtenida en la transición de 
+\begin_inset Formula $s$
+\end_inset
+
+ a 
+\begin_inset Formula $s'$
+\end_inset
+
+.
+ Si bien es cierto que existen más alternativas para la formulación del
+ ascenso por gradiente estocástico, en este trabajo se ha escogido la implementa
+ción mostrada en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:estima_grad"
+
+\end_inset
+
+.
+ No obstante, en el futuro se probarán otras opciones tales como momentum,
+ AdaGrad o RMSProp entre otras, y se estudiarán las ventajas e inconvenientes
+ de emplear dichos métodos.
+\end_layout
+
+\begin_layout Standard
+Como puede observarse, mediante esta actualización de la variable dual va
+ a ser posible tener en cuenta las muestras de experiencia obtenidas en
+ cada paso de cada episodio, acercándonos así al enfoque de aprendizaje
+ por refuerzo que se estaba buscando.
+\end_layout
+
+\begin_layout Standard
+Resulta de interés resaltar que, a diferencia del caso en que sí se disponía
+ del modelo del entorno, en el cual se podía actualizar 
+\begin_inset Formula $d$
+\end_inset
+
+ en una sola iteración ya que se conocía la expresión exacta del gradiente,
+ ahora nuestra estimación del gradiente se va a parecer tanto más a la original
+ en función de cuantas muestras de experiencia dispongamos.
+ Es por ello que será necesario actualizar 
+\begin_inset Formula $d$
+\end_inset
+
+ con las muestras obtenidas de correr varios episodios, pues así se conseguirá
+ una aproximación más exacta del gradiente, y por consiguiente, una mejor
+ estimación de la actualización de 
+\begin_inset Formula $d$
+\end_inset
+
+.
+ De este modo, la actualización de 
+\begin_inset Formula $d$
+\end_inset
+
+ se refinará de manera iterativa, bien hasta que no se disponga de más episodios
+ que correr, o bien hasta asegurar un cierto grado de convergencia 
+\begin_inset Formula $\delta_{\pi_{d}}$
+\end_inset
+
+ de la política que vayamos extrayendo en cada iteración
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Tal y como se detalló en la observación 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "rem:convergenciaPolitica"
+
+\end_inset
+
+, la garantía de convergencia no la tendremos en la variable dual, sino
+ en la política extraída de la variable dual.
+ Como consecuencia, habrá que medir el nivel de convergencia a partir de
+ la política 
+\begin_inset Formula $\pi_{d}$
+\end_inset
+
+ que vayamos extrayendo en cada iteración.
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+El algoritmo de control resultante de usar el método de actualización descrito
+ se muestra en el algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:algo_control_MF"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{algorithmic}[1] 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Require {$v_{k+1}$, la función valor de estados nueva obtenida en la etapa
+ de predicción.
+ $d_{k}$, la variable dual actual que se quiere mejorar.
+ $
+\backslash
+alpha_{_{D}}$, la tasa de aprendizaje.}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Ensure {$d_{k+1}$, la variable dual mejorada.}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State  $d(s,a)	
+\backslash
+leftarrow	d_{k}(s,a)$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Repeat (para cada episodio)
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State	$
+\backslash
+Delta	
+\backslash
+leftarrow	0$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State Inicializar $s$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+Repeat (para cada paso en el episodio)
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State Escoger la acción $a	
+\backslash
+sim	
+\backslash
+pi_{d_{k}} (
+\backslash
+cdot|s)$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $d_{antigua} 
+\backslash
+leftarrow	d(s,a)$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State Tomar la acción $a$ y observar $r, s'$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $d(s,a)	    
+\backslash
+gets		d(s,a) + 
+\backslash
+alpha_{_{D}} ( r + 
+\backslash
+gamma v_{k+1}(s') - v_{k+1}(s) ) $
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $d(s,a)	    
+\backslash
+gets		
+\backslash
+max
+\backslash
+left(0,d(s,a)
+\backslash
+right)$			
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $
+\backslash
+Delta	
+\backslash
+leftarrow	
+\backslash
+max 
+\backslash
+left[
+\backslash
+Delta, |
+\backslash
+pi_{d}
+\backslash
+left(a
+\backslash
+mid s
+\backslash
+right) - 
+\backslash
+pi_{d_{antigua}}
+\backslash
+left(a
+\backslash
+mid s
+\backslash
+right)| 
+\backslash
+right]$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $s 
+\backslash
+gets s'$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+Until{$s$ sea terminal}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Until{no podamos correr más episodios o $
+\backslash
+Delta < 
+\backslash
+delta_{
+\backslash
+pi_{d}}$} 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State $d_{k+1}	
+\backslash
+leftarrow	d$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State 
+\backslash
+Return{$d_{k+1}$}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:algo_control_MF"
+
+\end_inset
+
+Control libre de modelo: actualización mediante ascenso por gradiente estocástic
+o en la variable dual 
+\begin_inset Formula $d$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Al igual que ocurría en la predicción libre de modelo, de nuevo, podremos
+ estimar tan bien como número de episodios experimentados (o simulados)
+ haya disponibles.
+ No obstante, los métodos de gradiente estocástico presentan dos problemas
+ adicionales: (1) cuentan con un cierto ruido debido a la aproximación,
+ y (2) aparece un sesgo proporcional a la tasa de aprendizaje 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ que impide converger al valor óptimo deseado del parámetro que se quiere
+ estimar 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Sayed2014"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Estos dos últimos problemas en principio no afectarán al algoritmo ya que,
+ tal y como se remarcó en la observación 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "rem:convergenciaPolitica"
+
+\end_inset
+
+, no se buscará la convergencia de la variable dual a su valor óptimo, sino
+ la obtención de una política óptima determinista, y esta última se puede
+ conseguir sin necesidad de que 
+\begin_inset Formula $d$
+\end_inset
+
+ tome su valor exacto esperado.
+\end_layout
+
+\begin_layout Standard
+Una vez analizada cada etapa del método Bellman-ascenso dual en sus dos
+ versiones según si se conoce el modelo o no, se puede pasar a formular
+ el algoritmo propiamente dicho.
+\end_layout
+
+\begin_layout Subsection
+Algoritmo Bellman-ascenso dual basado en modelo (BDA-MB)
+\end_layout
+
+\begin_layout Standard
+El algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:BDA-MB"
+
+\end_inset
+
+ muestra la implementación para el caso en que se conoce el modelo del entorno
+ del problema.
+ Para la etapa de predicción se ha escogido emplear la actualización de
+ la variable primal por medio de programación dinámica.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{algorithmic}[1] 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Require {$
+\backslash
+alpha_{_{D}}$, la tasa de aprendizaje de la etapa de control.}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Ensure {$
+\backslash
+pi^*$, la política óptima.}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State Inicializar $v(s)$ arbitrariamente (e.g., $v(s)=0$), para todo $s
+\backslash
+in
+\backslash
+S$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State Inicializar $d(s,a)$ con cualquier valor positivo, para todo $(s,a)
+ 
+\backslash
+in 
+\backslash
+{
+\backslash
+S
+\backslash
+times
+\backslash
+A
+\backslash
+}$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State  $d_{k}	
+\backslash
+leftarrow	d$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State  $v_{k}	
+\backslash
+leftarrow	v$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Repeat 
+\backslash
+Comment{Bucle principal de Bellman-ascenso dual}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+Repeat 
+\backslash
+Comment{Etapa de predicción: evaluación de la política}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State	$
+\backslash
+Delta	
+\backslash
+leftarrow	0$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+For{todo $s
+\backslash
+in
+\backslash
+S$}
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $v_{antigua} 
+\backslash
+leftarrow	v(s)$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $v(s)		
+\backslash
+leftarrow	
+\backslash
+sum_{a 
+\backslash
+in 
+\backslash
+A} 
+\backslash
+pi_{d_{k}}(a|s) 
+\backslash
+left( 
+\backslash
+R_{s}^a  + 
+\backslash
+gamma 
+\backslash
+sum_{s' 
+\backslash
+in 
+\backslash
+S} 
+\backslash
+P_{ss'}^a  v(s') 
+\backslash
+right)$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $
+\backslash
+Delta	
+\backslash
+leftarrow	
+\backslash
+max 
+\backslash
+left[
+\backslash
+Delta, |v(s) - v_{antigua}| 
+\backslash
+right]$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+EndFor
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Until{$
+\backslash
+Delta < 
+\backslash
+delta_v$} 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State $v_{k+1}	
+\backslash
+leftarrow	v$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+For{todo $(s,a) 
+\backslash
+in 
+\backslash
+{
+\backslash
+S
+\backslash
+times
+\backslash
+A
+\backslash
+}$
+\backslash
+;} 
+\backslash
+Comment{Etapa de control: mejora de la política}
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $d(s,a)	    
+\backslash
+gets		d(s,a) + 
+\backslash
+alpha_{_{D}} ( 
+\backslash
+R_{s}^a + 
+\backslash
+gamma
+\backslash
+sum_{s'
+\backslash
+in
+\backslash
+S}
+\backslash
+P_{ss'}^{a}v_{k+1}(s') - v_{k+1}(s) ) $
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $d(s,a)	    
+\backslash
+gets		
+\backslash
+max
+\backslash
+left(0,d(s,a)
+\backslash
+right)$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+EndFor
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State $
+\backslash
+xi=
+\backslash
+left
+\backslash
+Vert v_{k+1}-v_{k}
+\backslash
+right
+\backslash
+Vert _{2}^2$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State  $d_{k}	
+\backslash
+leftarrow	d$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State  $v_{k}	
+\backslash
+leftarrow	v_{k+1}$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Until{$
+\backslash
+xi < 
+\backslash
+delta$} 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State $
+\backslash
+pi^*	
+\backslash
+leftarrow	
+\backslash
+pi_{d_{k}}$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State 
+\backslash
+Return{$
+\backslash
+pi^*$}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:BDA-MB"
+
+\end_inset
+
+Algoritmo Bellman-ascenso dual basado en modelo.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+De aquí en adelante, será común referirnos al algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:BDA-MB"
+
+\end_inset
+
+ por las siglas BDA-MB, derivadas de su nombre en inglés 
+\emph on
+(Bellman-Dual Ascent - Model Based
+\emph default
+).
+\end_layout
+
+\begin_layout Subsection
+Algoritmo Bellman-ascenso dual libre de modelo (BDA-MF)
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:BDA-MF_presentacion"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para la implementación de este algoritmo se hará uso de los dos esquemas
+ presentados para predicción y control cuando no se conoce el modelo del
+ entorno, pero con una ligera modificación en el criterio de convergencia.
+ 
+\end_layout
+
+\begin_layout Standard
+Como se puede ver en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:BDA"
+
+\end_inset
+
+, el método Bellman-ascenso dual consiste en dos procesos que interactúan
+ entre sí, uno haciendo la función valor consistente con la política actual
+ (actualización de la variable primal) y el otro mejorando la política respecto
+ a la función valor actual (actualización de la variable dual).
+ En el algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:BDA-MB"
+
+\end_inset
+
+ Bellman-ascenso dual basado en modelo, estas dos etapas se alternan, llegando
+ cada una a la convergencia antes de que comience la otra.
+ Esta misma idea pretende reflejarse en las etapas de predicción y control
+ libre de modelo presentadas en los algoritmos 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:pred-MF"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:algo_control_MF"
+
+\end_inset
+
+ cuando se dice que el bucle principal sólo se detendrá cuando no podamos
+ correr más episodios o se haya alcanzado un cierto nivel de convergencia
+ 
+\begin_inset Formula $\delta$
+\end_inset
+
+, lo que ocurra antes.
+ No obstante, y al igual que ocurre con el método GPI (ver subsección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Control_GPI"
+
+\end_inset
+
+), asegurar la convergencia (o en su defecto agotar todos los episodios
+ que vamos a ser capaces de correr intentando buscarla) no será necesario.
+ Dado que en el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Cap8PrimyDual"
+
+\end_inset
+
+ se demostró que las dos etapas de actualización avanzan siempre en la dirección
+ de los valores óptimos, bastará con actualizar ambas variables a partir
+ de la experiencia generada con un número 
+\begin_inset Formula $N_{epi}$
+\end_inset
+
+ reducido de episodios.
+ De esta manera, y siguiendo el mismo principio subyacente a GPI, se conseguirá
+ alcanzar tanto la política óptima 
+\begin_inset Formula $\pi_{d^{*}}$
+\end_inset
+
+ como la función valor óptima 
+\begin_inset Formula $v^{*}$
+\end_inset
+
+ mediante un proceso iterativo y alterno de mejora.
+ La idea que se ha pretendido transmitir queda mejor reflejada en la figura
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Generalized-policy-iteration"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Relacionado con estas cuestiones de convergencia, no deberá perderse de
+ vista que se trata de un algoritmo que basa su comportamiento en las muestras
+ que obtiene al interactuar con el medio.
+ Por tanto, cuanto mejor sea el muestreo del entorno, más acertado será
+ el modelo que aprenda del mismo y por tanto se podrá descubrir la política
+ óptima.
+ Con este objetivo en mente, será necesario asegurar un compromiso entre
+ el grado de exploración y de explotación del agente.
+ Una manera de conseguirlo será seguir una política 
+\begin_inset Formula $\epsilon-\pi_{d_{k}}$
+\end_inset
+
+, la cual consistirá en usar la siguiente regla de decisión para escoger
+ la acción 
+\begin_inset Formula $a$
+\end_inset
+
+ cuando el entorno se encuentre en el estado 
+\begin_inset Formula $s$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+a=\begin{cases}
+a\sim\pi_{d_{k}}(\cdot|s) & \text{con probabilidad }1-\epsilon\\
+\text{\text{acción escogida de manera uniforme en \ensuremath{\A}}} & \text{con probabilidad }\epsilon
+\end{cases}\label{eq:epsilon_pi_d}
+\end{equation}
+
+\end_inset
+
+donde 
+\begin_inset Formula $\epsilon\in\left(0,1\right)$
+\end_inset
+
+ es el parámetro de exploración.
+ Como se puede deducir, cuanto mayor sea 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+, mayor será la exploración del entorno y cuanto menor sea, mayor será la
+ explotación de la información disponible.
+\end_layout
+
+\begin_layout Standard
+Antes de pasar a presentar el algoritmo, será necesario resaltar otro matiz.
+ Observando detenidamente los algoritmos 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:pred-MF"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:algo_control_MF"
+
+\end_inset
+
+, se puede notar que las dos etapas actualizan sus respectivas variables
+ con muestras de experiencia generada tras seguir la política 
+\begin_inset Formula $\pi_{d_{k}}$
+\end_inset
+
+, con lo cual, parece sensato emplear las mismas muestras de experiencia
+ en las dos etapas.
+ De este modo, se consigue reducir el número de episodios necesarios para
+ aprender, sin alterar el funcionamiento del algoritmo.
+ Para que esto sea posible se introducirá el concepto de 
+\emph on
+memoria de repetición
+\emph default
+.
+ Esta memoria almacenará en un conjunto de datos 
+\begin_inset Formula $\Sa=\left\{ e_{t}\right\} _{t=1}^{T}$
+\end_inset
+
+, muestras 
+\begin_inset Formula $e_{t}$
+\end_inset
+
+ de la experiencia recabada por el agente al interactuar con el medio a
+ lo largo de varios episodios.
+ La muestra 
+\begin_inset Formula $e_{t}$
+\end_inset
+
+ que se almacenará será la tupla 
+\begin_inset Formula $e_{t}=s_{t},a_{t},r_{t+1},s_{t+1}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Teniendo en cuenta todas estas consideraciones, el algoritmo Bellman-ascenso
+ dual libre de modelo desarrollado será el mostrado en el algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:BDA-MF"
+
+\end_inset
+
+.
+ De aquí en adelante, será común referirnos a él por las siglas BDA-MF,
+ derivadas de su nombre en inglés 
+\emph on
+(Bellman-Dual Ascent - Model Free
+\emph default
+).
+\begin_inset Float algorithm
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{algorithmic}[1]  	
+\backslash
+Require {$
+\backslash
+alpha_{_{TD}}$, la tasa de aprendizaje de la etapa de predicción.
+ $
+\backslash
+alpha_{_{D}}$, la tasa de aprendizaje de la etapa de control.
+ $
+\backslash
+epsilon$, el parámetro de exploración.} 	
+\backslash
+Ensure {$
+\backslash
+pi$, la política óptima $
+\backslash
+pi^*$ aproximada.} 	
+\backslash
+State Inicializar $v(s)$ arbitrariamente (e.g., $v(s)=0$), para todo $s
+\backslash
+in
+\backslash
+S$ 	
+\backslash
+State Inicializar $d(s,a)$ con cualquier valor positivo, para todo $(s,a)
+ 
+\backslash
+in 
+\backslash
+{
+\backslash
+S
+\backslash
+times
+\backslash
+A
+\backslash
+}$ 	
+\backslash
+State  $d_{k}	
+\backslash
+leftarrow	d$ 	
+\backslash
+State  $v_{k}	
+\backslash
+leftarrow	v$ 	
+\backslash
+Repeat 
+\backslash
+Comment{Bucle principal de Bellman-ascenso dual} 	
+\backslash
+State	$
+\backslash
+xi	
+\backslash
+leftarrow	0$ 	
+\backslash
+State Inicializar la memoria de repetición $
+\backslash
+Sa =
+\backslash
+{
+\backslash
+}$ vacía 		
+\backslash
+Repeat (para cada episodio) 
+\backslash
+Comment{Etapa de predicción: evaluación de la política} 			
+\backslash
+State Inicializar $s$ 			
+\backslash
+Repeat (para cada paso en el episodio) 				
+\backslash
+State Escoger la acción $a	
+\backslash
+sim	
+\backslash
+epsilon-
+\backslash
+pi_{d_{k}} (
+\backslash
+cdot|s)$ 				
+\backslash
+State Tomar la acción $a$ y observar $r, s'$ 				
+\backslash
+State Aumentar la memoria de repetición $
+\backslash
+Sa$ con la muestra actual $(s$, $a$, $r$, $s')$ 				
+\backslash
+State $v(s)	    
+\backslash
+gets		v(s) + 
+\backslash
+alpha_{_{TD}} ( r + 
+\backslash
+gamma v(s') - v(s) ) $ 				
+\backslash
+State $
+\backslash
+xi	
+\backslash
+leftarrow	
+\backslash
+max 
+\backslash
+left[
+\backslash
+xi, 
+\backslash
+left
+\backslash
+Vert v(s)-v_{k}(s)
+\backslash
+right
+\backslash
+Vert _{2}^{2} 
+\backslash
+right]$ 				
+\backslash
+State $s 
+\backslash
+gets s'$ 			
+\backslash
+Until{$s$ sea terminal} 		
+\backslash
+Until{se hayan corrido $N_{epi}$ episodios}  		
+\backslash
+State $v_{k+1}	
+\backslash
+leftarrow	v$ 	
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+For {para cada muestra de $
+\backslash
+Sa$} 
+\backslash
+Comment{Etapa de control: mejora de la política} 			
+\backslash
+State Recuperar $(s$, $a$, $r$, $s')$ 			
+\backslash
+State $d(s,a)	    
+\backslash
+gets		d(s,a) + 
+\backslash
+alpha_{_{D}} ( r + 
+\backslash
+gamma v_{k+1}(s') - v_{k+1}(s) ) $ 			
+\backslash
+State $d(s,a)	    
+\backslash
+gets		
+\backslash
+max
+\backslash
+left(0,d(s,a)
+\backslash
+right)$ 		
+\backslash
+EndFor 		
+\backslash
+State  $d_{k}	
+\backslash
+leftarrow	d$ 		
+\backslash
+State  $v_{k}	
+\backslash
+leftarrow	v_{k+1}$ 	
+\backslash
+Until{no se puedan correr más episodios o $
+\backslash
+xi < 
+\backslash
+delta$}  	
+\backslash
+State $
+\backslash
+pi	
+\backslash
+leftarrow	
+\backslash
+pi_{d_{k}}$ 	
+\backslash
+State 
+\backslash
+Return{$
+\backslash
+pi$} 
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:BDA-MF"
+
+\end_inset
+
+Algoritmo Bellman-ascenso dual libre de modelo.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Destacar que los 
+\begin_inset Formula $N_{epi}$
+\end_inset
+
+ episodios que se corren en cada iteración del bucle principal, son diferentes
+ de una iteración a otra.
+ Otra alternativa sería iterar varias veces sobre los mismos 
+\begin_inset Formula $N_{epi}$
+\end_inset
+
+ episodios hasta converger en ambas etapas, técnica que se conoce como 
+\emph on
+entrenamiento por lotes
+\emph default
+.
+ No obstante, esta versión no se implementó, aunque se plantea la evaluación
+ de su comportamiento en el futuro.
+\end_layout
+
+\begin_layout Standard
+Así concluye la presentación del algoritmo Bellman-ascenso dual novel.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Como se puede apreciar, desde el punto de vista de la problemática de aprendizaj
+e por refuerzo, la implementación que será de mayor interés será la última
+ que se detalló, Bellman-ascenso dual libre de modelo, ya que va a permitir
+ aprender a partir de la interacción con el entorno.
+ Esta interpretación primal-dual para el desarrollo de algoritmos de aprendizaje
+ por refuerzo no ha sido prácticamente explotada aún a día de hoy.
+ Por tanto, el algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:BDA-MF"
+
+\end_inset
+
+, que será el foco de atención en lo que resta de documento, supondrá una
+ aportación teórica muy interesante a la comunidad de aprendizaje por refuerzo.
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+sectionmark{VALIDACIÓN DEL ALGORITMO BDA-MF}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Validación-del-algoritmo"
+
+\end_inset
+
+Validación del algoritmo Bellman-ascenso dual libre de modelo
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+sectionmark{VALIDACIÓN DEL ALGORITMO BDA-MF}
+\end_layout
+
+\end_inset
+
+Ya con el algoritmo BDA-MF formalizado, la siguiente tarea consistirá en
+ verificar la validez del modelo.
+ Para ello, se probará cada etapa por separado y, una vez tengamos garantías
+ de que funcionan, se hará una prueba funcional del algoritmo completo.
+ Más concretamente, las pruebas que se van a realizar son las siguientes:
+\end_layout
+
+\begin_layout Enumerate
+Prueba de convergencia de BDA-MB: lo primero de todo será comprobar si el
+ algoritmo funciona cuando conocemos el modelo del entorno de nuestro problema.
+\end_layout
+
+\begin_layout Enumerate
+Prueba de convergencia de la etapa de predicción libre de modelo: una vez
+ comprobado que el algoritmo basado en modelo es capaz de resolver el problema,
+ se harán varias pruebas para determinar si la etapa de predicción cuando
+ se desconoce el modelo converge.
+ Para ello se fijarán tres políticas conocidas y se estimará la función
+ valor obtenida de seguir dichas políticas.
+ Si se obtiene el valor esperado, se dará por superada esta prueba y se
+ podrá afirmar que la etapa de predicción converge.
+\end_layout
+
+\begin_layout Enumerate
+Prueba de convergencia de BDA-MF: llegados a esta fase, si las dos pruebas
+ anteriores se han completado de manera satisfactoria, podremos extrapolar
+ que si combinamos la etapa de predicción sin conocimiento del modelo con
+ la de control supuesto conocido el modelo, podremos resolver nuestro problema
+ con éxito.
+ Por tanto, el siguiente paso natural será probar el algoritmo BDA-MF completo.
+ En función de los resultados que se obtengan en esta fase se podrá justificar
+ o no la validez del algoritmo.
+\end_layout
+
+\begin_layout Standard
+Para esta primera fase de validación, las pruebas se realizarán sobre un
+ problema típico en aprendizaje por refuerzo: 
+\emph on
+random walk
+\emph default
+.
+ El MDP que modela este problema se muestra en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MDP-RW"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+El problema tendrá 
+\begin_inset Formula $\left|\S\right|=13$
+\end_inset
+
+ estados, de los cuales 2 serán estados terminales, 
+\begin_inset Formula $T1$
+\end_inset
+
+ y 
+\begin_inset Formula $T2$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+El estado inicial será el central, 
+\begin_inset Formula $s=6$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+El conjunto 
+\begin_inset Formula $\A$
+\end_inset
+
+ estará formado por dos acciones: 
+\begin_inset Formula $a_{1}=izquierda$
+\end_inset
+
+, 
+\begin_inset Formula $a_{2}=derecha$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Habrá 7 estados con recompensa.
+ De entre esos estados, la recompensa del estado 
+\begin_inset Formula $T2$
+\end_inset
+
+ será la mayor de todas.
+ El vector de recompensas sobre los estados será el siguiente:
+\begin_inset Formula 
+\[
+\R=\left[2,\,\,0,\,\,1,\,\,2,\,\,0,\,\,0,\,\,0,\,\,0,\,\,2,\,\,0,\,\,1,\,\,1,\,\,150\right]^{T}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+La política óptima será ir siempre a la derecha de manera que acabemos en
+ el estado 
+\begin_inset Formula $T2$
+\end_inset
+
+, consiguiendo la mayor recompensa total acumulada.
+\end_layout
+
+\begin_layout Enumerate
+La matriz de transición que modele el entorno del problema será estocástica.
+ Más concretamente, la probabilidad de tomar la acción escogida será 0.8,
+ y la probabilidad de que se lleve a cabo la contraria será 0.2.
+ Es decir, de acuerdo a la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MDP-RW"
+
+\end_inset
+
+, suponiendo que estamos en el estado 
+\begin_inset Formula $s=6$
+\end_inset
+
+ y que escogemos la acción 
+\begin_inset Formula $a_{2}=derecha$
+\end_inset
+
+ tendremos:
+\begin_inset Formula 
+\begin{equation}
+\begin{array}{c}
+p(s'=7\mid s=6,a=a_{2})=0.8\\
+p(s'=5\mid s=6,a=a_{2})=0.2
+\end{array}\label{eq:ejemploProb}
+\end{equation}
+
+\end_inset
+
+Puesto que el problema tiene 
+\begin_inset Formula $\left|\S\right|=13$
+\end_inset
+
+ estados y 
+\begin_inset Formula $\left|\A\right|=2$
+\end_inset
+
+ acciones, la matriz de transiciones 
+\begin_inset Formula $\P$
+\end_inset
+
+ será de dimensión 
+\begin_inset Formula $26\times13$
+\end_inset
+
+.
+ Dado que no aportaría información nueva sobre el problema más allá de la
+ que se ha ejemplificado en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:ejemploProb"
+
+\end_inset
+
+, no se mostrará su representación.
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap9/RW_MDP.png
+	lyxscale 50
+	width 95text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:MDP-RW"
+
+\end_inset
+
+MDP que modela el problema 
+\emph on
+random walk
+\emph default
+ que se usará en las pruebas de validación del algoritmo BDA-MF.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Presentado ya el problema, se pueden comenzar las pruebas.
+\end_layout
+
+\begin_layout Subsection
+Convergencia del algoritmo Bellman-ascenso dual basado en modelo
+\end_layout
+
+\begin_layout Standard
+Para la primera de las pruebas, se implementó el algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:BDA-MB"
+
+\end_inset
+
+: BDA-MB.
+ Bajo este esquema, y conocido el vector de recompensas 
+\begin_inset Formula $\R$
+\end_inset
+
+ y la matriz de transición 
+\begin_inset Formula $\P$
+\end_inset
+
+ se llevaron a cabo varias ejecuciones para diferentes valores de la tasa
+ de aprendizaje de la etapa de control, es decir, 
+\begin_inset Formula $\alpha_{D}$
+\end_inset
+
+.
+ Puesto que en este problema sencillo conocemos la política óptima, se evaluó
+ directamente la convergencia del algoritmo a través del error cuadrático
+ entre la política extraída de la variable dual y la política óptima, promediand
+o los resultados de 50 experimentos independientes
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap9/BDA-MB.svg
+	lyxscale 50
+	width 65text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:BDA-MB_pruebasAlpha"
+
+\end_inset
+
+Error cuadrático medio de la política obtenida al resolver el problema 
+\emph on
+random walk
+\emph default
+ a través del algoritmo BDA-MB, para distintos valores de 
+\begin_inset Formula $\alpha_{D}$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Tal y como se puede ver en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:BDA-MB_pruebasAlpha"
+
+\end_inset
+
+, en todos los casos se consiguió converger a la política óptima en un número
+ pequeño de iteraciones.
+ Además, a partir de valores de 
+\begin_inset Formula $\alpha_{D}$
+\end_inset
+
+ mayores que 0.5 la velocidad de convergencia no mejora.
+ Se encuentra que el mínimo número de iteraciones necesarias para alcanzar
+ la política óptima es 4.
+\end_layout
+
+\begin_layout Subsection
+Convergencia de la etapa de predicción libre de modelo
+\end_layout
+
+\begin_layout Standard
+Comprobado que el algoritmo funciona en su versión basada en modelo, se
+ pasa ahora a probar la etapa de predicción con TD, la cual se corresponde
+ con el algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:pred-MF"
+
+\end_inset
+
+.
+ Como cabe esperar, la velocidad de convergencia de TD dependerá de 
+\begin_inset Formula $\alpha_{_{TD}}$
+\end_inset
+
+.
+ Por tanto, se estudiará la convergencia para distintos valores de 
+\begin_inset Formula $\alpha_{_{TD}}$
+\end_inset
+
+.
+ Para realizar esta prueba, se estimó la función valor para tres políticas
+ (parámetros de entrada del algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:pred-MF"
+
+\end_inset
+
+) diferentes:
+\end_layout
+
+\begin_layout Enumerate
+La política óptima, 
+\begin_inset Formula $\pi^{*}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Una política epsilon-óptima, 
+\begin_inset Formula $\epsilon-\pi^{*}$
+\end_inset
+
+, con 
+\begin_inset Formula $\epsilon=0.2$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Una política generada aleatoriamente.
+\end_layout
+
+\begin_layout Standard
+El motivo de haber escogido estas políticas es que nos permitirán modelar
+ el comportamiento del algoritmo BDA-MF conforme vaya aprendiendo: al principio
+ se inicializará con una política aleatoria que será altamente exploratoria.
+ A continuación, irá convergiendo hacia la política óptima, comportándose
+ de manera similar a una 
+\begin_inset Formula $\epsilon-\pi^{*}$
+\end_inset
+
+ con un parámetro de exploración aun relativamente alto, y finalmente, converger
+á a la política óptima.
+\end_layout
+
+\begin_layout Standard
+Para esta prueba, a diferencia del caso anterior, ya se podrá medir la convergen
+cia a partir del error cuadrático medio en la política, pues esta es ahora
+ un parámetro de entrada.
+ Por tanto, habrá que utilizar un criterio basado en el valor que va tomando
+ la función valor.
+ La medida que eligió fue la siguiente:
+\begin_inset Formula 
+\begin{align*}
+\Delta=\max\left[\Delta,\frac{\left\Vert v_{k+1}(s)-v_{k}(s)\right\Vert _{2}}{\left\Vert v_{k+1}(s)\right\Vert _{2}}\right]
+\end{align*}
+
+\end_inset
+
+es decir, el error entre cada iteración de TD expresado de manera relativa
+ a la función valor del estado actual (en el mismo estado), de manera que
+ se detectase convergencia cuando 
+\begin_inset Formula $\Delta<\delta_{v}$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Tras escoger el criterio de convergencia, se hicieron una serie de pruebas
+ para diferentes valores de 
+\begin_inset Formula $\alpha_{_{TD}}$
+\end_inset
+
+, promediando los resultados de 50 experimentos independientes.
+ La figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:convergTD"
+
+\end_inset
+
+ muestra dos gráficas con los resultados de mayor interés: una en la que
+ se representa el número de episodios necesarios para garantizar la convergencia
+ en 
+\begin_inset Formula $v$
+\end_inset
+
+, en función del valor que tome 
+\begin_inset Formula $\alpha_{_{TD}}$
+\end_inset
+
+, y otra que representa para cada valor de 
+\begin_inset Formula $\alpha_{_{TD}}$
+\end_inset
+
+, la cantidad 
+\begin_inset Formula $\frac{\left\Vert v_{k+1}(s)-v_{k}(s)\right\Vert _{2}}{\left\Vert v_{k+1}(s)\right\Vert _{2}}$
+\end_inset
+
+ que ha provocado la convergencia, que de alguna manera representa el porcentaje
+ de variación de la iteración actual a la anterior, y por tanto cuán buena
+ ha sido la convergencia.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap9/TD-epi_until_convergence.svg
+	lyxscale 50
+	width 50col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap9/TD-delta_when_convergence.svg
+	lyxscale 50
+	width 50col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:convergTD"
+
+\end_inset
+
+Resultados de convergencia de la etapa de predicción libre de modelo mediante
+ TD.
+ La figura 
+\begin_inset Formula $(a)$
+\end_inset
+
+ representa el número de episodios necesarios para garantizar la convergencia
+ en 
+\begin_inset Formula $v$
+\end_inset
+
+, en función de 
+\begin_inset Formula $\alpha_{_{TD}}$
+\end_inset
+
+.
+ La figura 
+\begin_inset Formula $(b)$
+\end_inset
+
+ representa el error relativo entre la iteración actual y la anterior en
+ el momento de convergencia, en función de 
+\begin_inset Formula $\alpha_{_{TD}}$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Lo primero que llama la atención al ver estas gráficas es que ninguna de
+ las tres curvas empieza y acaba en el mismo punto.
+ El hecho de que unas empiecen antes o después se debe a que con determinados
+ valores de 
+\begin_inset Formula $\alpha_{_{TD}}$
+\end_inset
+
+, y en función de la política evaluada, no se alcanzaba la convergencia
+ con el número de episodios simulados, 5000, el cual consideramos más que
+ suficiente para el tipo de problema evaluado.
+ De manera similar, el hecho de que unas curvas acaben antes o después es
+ debido a que a partir de un valor 
+\begin_inset Formula $\alpha_{_{TD}}$
+\end_inset
+
+ concreto, la estimación de 
+\begin_inset Formula $v$
+\end_inset
+
+ diverge y no se alcanza nunca el valor esperado.
+\end_layout
+
+\begin_layout Standard
+Lo segundo que vemos es que el rango de valores de 
+\begin_inset Formula $\alpha_{_{TD}}$
+\end_inset
+
+ válido cuando la política es aleatoria es considerablemente pequeño en
+ comparación con los otros dos casos.
+ Como quedará demostrado en los resultados que aparecerán en este capítulo,
+ ese rango no es realmente significativo ya que para esta prueba no se está
+ teniendo en cuenta que la política mejore.
+ Dado que cuando usemos el algoritmo BDA-MF se alternarán las etapas de
+ predicción y control cada 
+\begin_inset Formula $N_{epi}$
+\end_inset
+
+ episodios, realmente nunca se va a tener un caso similar al mostrado en
+ la curva amarilla de la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:convergTD"
+
+\end_inset
+
+, pues rápidamente se mejorará la política y dejará de ser aleatoria.
+\end_layout
+
+\begin_layout Standard
+Para concluir, y de acuerdo a lo resultados de la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:convergTD"
+
+\end_inset
+
+, podemos garantizar la convergencia de la etapa de predicción mediante
+ TD, y por tanto pasar a la prueba del algoritmo BDA-MF completo.
+\end_layout
+
+\begin_layout Subsection
+Convergencia del algoritmo Bellman-ascenso dual libre de modelo
+\end_layout
+
+\begin_layout Standard
+Por último, pasamos a probar el algoritmo BDA-MF completo, según la implementaci
+ón mostrada en el algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:BDA-MF"
+
+\end_inset
+
+.
+ Ahora, la velocidad de convergencia dependerá de los siguientes parámetros:
+ 
+\begin_inset Formula $N_{epi}$
+\end_inset
+
+, 
+\begin_inset Formula $\alpha_{D}$
+\end_inset
+
+, 
+\begin_inset Formula $\alpha_{_{TD}}$
+\end_inset
+
+ y 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+.
+ Con el objetivo de estudiar la influencia de cada parámetro en la convergencia
+ global del algoritmo, se llevaron a cabo diferentes pruebas variando cada
+ uno de ellos, y promediando los resultados de 50 experimentos independientes.
+ De nuevo, dado que conocemos la política óptima a la que deberemos converger
+ retomaremos el criterio de convergencia que se empleó en la primera prueba,
+ basado en el error cuadrático medio de la política obtenida respecto de
+ la óptima esperada.
+ Los resultados que se obtuvieron fueron los mostrados en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Resultados_RW_BDA-MF"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/Chap9/RW_prueba_convergencia_BDA-MF/N_epi.svg
+	lyxscale 50
+	width 50col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Variación del número de episodios.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/Chap9/RW_prueba_convergencia_BDA-MF/epsilon.svg
+	lyxscale 50
+	width 50col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Variación del parámetro de exploración.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/Chap9/RW_prueba_convergencia_BDA-MF/alfa_TD.svg
+	lyxscale 50
+	width 50col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Variación de 
+\begin_inset Formula $\alpha_{TD}$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/Chap9/RW_prueba_convergencia_BDA-MF/alfa_D.svg
+	lyxscale 50
+	width 50col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Variación de 
+\begin_inset Formula $\alpha_{D}$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Resultados_RW_BDA-MF"
+
+\end_inset
+
+Error en la política al variar los parámetros característicos del algoritmo
+ BDA-MF
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Como comentario general en vista de los resultados, de nuevo podemos garantizar
+ la convergencia a la política óptima.
+\end_layout
+
+\begin_layout Standard
+Entrando en los detalles particulares de cada gráfica, vemos en la figura
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Resultados_RW_BDA-MF"
+
+\end_inset
+
+ 
+\begin_inset Formula $(a)$
+\end_inset
+
+, que parece haber un punto de inflexión de mayor velocidad de convergencia
+ cuando se simulan 
+\begin_inset Formula $N_{epi}=50$
+\end_inset
+
+ episodios en cada etapa del algoritmo.
+ El hecho de que con 60 episodios el comportamiento sea peor, puede ser
+ debido a que, como la etapa de predicción y de control están altamente
+ acopladas, a partir de 50 episodios la aproximación del gradiente comienza
+ a ser demasiado ruidosa.
+ En consecuencia, este error se propaga a la estimación de 
+\begin_inset Formula $d$
+\end_inset
+
+ y la política derivada de la variable dual empieza a empeorar.
+\end_layout
+
+\begin_layout Standard
+En base a los resultados mostrados en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Resultados_RW_BDA-MF"
+
+\end_inset
+
+ 
+\begin_inset Formula $(b)$
+\end_inset
+
+, se deduce que el algoritmo funciona adecuadamente para valores de 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+ altos, comprendidos entre 0.3 y 0.7.
+ Es decir, este algoritmo funciona bien con mucha exploración, nunca llegando
+ al extremo en que todo es exploración 
+\begin_inset Formula $(\epsilon=1)$
+\end_inset
+
+, caso en el cual, como se puede apreciar, empeora la convergencia.
+ Como cabía esperar, se observa también que cuando únicamente se explota
+ la información disponible 
+\begin_inset Formula $(\epsilon=0)$
+\end_inset
+
+, no es capaz de encontrar la política óptima, pues no hay manera de aprender
+ el modelo del entorno.
+ De alguna manera, este último caso equivale a re-aprender lo que ya se
+ conoce, sin posibilidad de aumentar el conocimiento sobre el entorno del
+ problema.
+\end_layout
+
+\begin_layout Standard
+En la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Resultados_RW_BDA-MF"
+
+\end_inset
+
+ 
+\begin_inset Formula $(c)$
+\end_inset
+
+ se aprecia un comportamiento similar al que ocurría en la figura 
+\begin_inset Formula $(a)$
+\end_inset
+
+: parece haber un punto de inflexión cuando 
+\begin_inset Formula $\alpha_{_{TD}}=0.4$
+\end_inset
+
+.
+ Una vez más, se piensa que esto sea debido al fuerte acoplo entre las etapas
+ de predicción y control, ya que si aumentamos 
+\begin_inset Formula $\alpha_{_{TD}}$
+\end_inset
+
+, aumentará también el ruido en las estimación de 
+\begin_inset Formula $v$
+\end_inset
+
+.
+ Puesto que la etapa de predicción empleará esa estimación de 
+\begin_inset Formula $v$
+\end_inset
+
+ para iterar sobre 
+\begin_inset Formula $d$
+\end_inset
+
+, se puede dar la situación de que para valores de 
+\begin_inset Formula $\alpha_{_{TD}}$
+\end_inset
+
+ grandes (en este caso mayores que 0.4), el ruido que presenta 
+\begin_inset Formula $v$
+\end_inset
+
+ sea tal que empeore la aproximación del gradiente, y en consecuencia la
+ estimación de 
+\begin_inset Formula $d$
+\end_inset
+
+ y la política derivada de ella.
+ 
+\end_layout
+
+\begin_layout Standard
+Finalmente, de la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Resultados_RW_BDA-MF"
+
+\end_inset
+
+ 
+\begin_inset Formula $(d)$
+\end_inset
+
+ se concluye que cuanto menor es 
+\begin_inset Formula $\alpha_{D}$
+\end_inset
+
+, más rápida es la convergencia.
+ En principio, esta idea puede parecer contraintuitiva, pues en los métodos
+ de gradiente, cuanto menor es el paso de aprendizaje, más lenta es la convergen
+cia.
+ Se cree que este efecto pueda estar causado por el acoplo entre las etapas
+ de predicción y control por el siguiente motivo: en la situación inicial,
+ la estima que se tiene de 
+\begin_inset Formula $v$
+\end_inset
+
+ dista mucho de ser buena.
+ Con una mala estimación de 
+\begin_inset Formula $v$
+\end_inset
+
+, si se ejecuta la fase de control con un paso 
+\begin_inset Formula $\alpha_{D}$
+\end_inset
+
+ alto, se determinará una política mala muy rápido.
+ De este modo, el algoritmo deberá reajustarse desde una configuración peor
+ hasta lograr alcanzar la óptima.
+ Sin embargo, si 
+\begin_inset Formula $\alpha_{D}$
+\end_inset
+
+ se escoge pequeño, aun partiendo de una mala estimación de 
+\begin_inset Formula $v$
+\end_inset
+
+, la política convergerá de manera progresiva hacia la política óptima.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+De este modo, se da por comprobada la validez del algoritmo Bellman-ascenso
+ dual libre del modelo desarrollado para resolver problemas de aprendizaje
+ por refuerzo.
+ Además de validar el algoritmo, se ha podido conocer también el proceso
+ típico de calibración, y de qué manera influye cada variable en el comportamien
+to global.
+ Todas estas nociones serán tenidas en cuenta en lo que resta del capítulo,
+ de cara a evaluar el algoritmo con otros problemas típicos de aprendizaje
+ por refuerzo.
+\end_layout
+
+\begin_layout Section
+Evaluación del algoritmo
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:EvalAlgExac"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para concluir el capítulo, se va a evaluar el algoritmo primal-dual novel
+ desarrollado a través de la ejecución en dos problemas tipo, cada uno de
+ ellos con dos versiones: una en la que la matriz de transición es determinista
+ y otra en la que se le añade cierto carácter aleatorio.
+ Para cada problema que se estudie, enfrentaremos los resultados obtenidos
+ con aquellos alcanzados mediante dos soluciones ampliamente extendidas
+ en la actualidad: SARSA y Q-learning.
+ De este modo, se pretende comparar el algoritmo BDA-MF con el estado del
+ arte.
+\end_layout
+
+\begin_layout Standard
+Con el objetivo de situar al lector en el contexto de cada problema, antes
+ de mostrar los resultados de cada ejecución se presentará el problema a
+ resolver al igual que se hizo en el caso del MDP 
+\emph on
+random walk
+\emph default
+ empleado durante la fase de validación del algoritmo.
+\end_layout
+
+\begin_layout Subsection
+Metodología de evaluación
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Metodología-de-evaluación"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Cuando se trabaja con problemas reales, no conocemos cuál va a ser la política
+ óptima de antemano.
+ De hecho, precisamente por este motivo nace la necesidad de desarrollar
+ métodos de que permitan aprender el comportamiento óptimo.
+ Por ello, la métrica que se empleó en las pruebas de validación anteriores,
+ 
+\begin_inset Formula $\left\Vert \pi_{d_{k}}-\pi^{*}\right\Vert _{2}^{2}$
+\end_inset
+
+, no podrá ser usada ahora para evaluar cuán buena es la convergencia de
+ nuestro algoritmo.
+\end_layout
+
+\begin_layout Standard
+Tal y como se comentó en los primeros capítulos, el objetivo del aprendizaje
+ será maximizar la recompensa total acumulada que se recibe del entorno
+ a largo plazo.
+ Por tanto, de cara a evaluar cómo de bien se comporta un algoritmo de aprendiza
+je por refuerzo, el indicador que más se suele emplear es el retorno 
+\begin_inset Formula $G$
+\end_inset
+
+ 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:return-definition"
+
+\end_inset
+
+
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Para poder comparar diferentes valores de retorno en una mismo problema,
+ todas las ejecuciones deberán comenzar en el mismo estado inicial.
+ Si esto no se hiciera así, las conclusiones extraídas de la 
+\begin_inset Formula $G$
+\end_inset
+
+ obtenida en dos pruebas diferentes, empezando en estados distintos, no
+ tendría sentido.
+\end_layout
+
+\end_inset
+
+.
+ Se puede intuir fácilmente que cuanto mayor sea el retorno, mejor será
+ la política obtenida, y que cuando dicho retorno se estabilice y deje de
+ aumentar a medida que se simulan episodios, significará que se ha encontrado
+ una política estable, candidata de ser la óptima.
+ Cambiando el enfoque del problema, el retorno representa las ganancias
+ que recibimos, de este modo, parece claro notar que siempre querremos maximizar
+ nuestro beneficio en el menor tiempo (episodios) posible.
+\end_layout
+
+\begin_layout Standard
+Otra observación importante antes de comenzar a mostrar resultados será
+ la distinción entre la fase de aprendizaje y la fase de explotación o ejecución.
+\end_layout
+
+\begin_layout Enumerate
+Durante la fase de aprendizaje, se utiliza una política con un cierto carácter
+ exploratorio.
+ Es decir, se aprenderá por medio de una política 
+\begin_inset Formula $\epsilon-\pi_{d}$
+\end_inset
+
+ que dé pie a muestrear el entorno y aprender a comportarse en estados no
+ visitados hasta el momento, y que podrían llevar a mejorar la política
+ actual disponible.
+\end_layout
+
+\begin_layout Enumerate
+Una vez se ha aprendido, el algoritmo interactuará con el entorno siguiendo
+ la política real 
+\begin_inset Formula $\pi_{d}$
+\end_inset
+
+, o lo que es lo mismo, eliminando el carácter exploratorio.
+ Esta fase será de explotación del conocimiento disponible.
+\end_layout
+
+\begin_layout Standard
+Para ejemplificar la importancia de estas dos fases, consideremos un ejemplo
+ en que se quiere enseñar a conducir a un coche 
+\begin_inset Quotes fld
+\end_inset
+
+inteligente
+\begin_inset Quotes frd
+\end_inset
+
+.
+ Antes de que el coche autónomo pueda ser utilizado por personas, será necesario
+ enseñarle a conducir; es decir, las consecuencias de cada acción que decida
+ tomar.
+ Para ello, se emplean entornos virtuales de simulación de manera que puede
+ aprender qué acciones son correctas y cuales no sin causar daños.
+ Durante esta fase de aprendizaje, se da pie a que el coche pruebe nuevas
+ acciones y aprenda si le van a suponer una mejora o no.
+ Un ejemplo podría ser que en una curva hacia la izquierda, el coche decidiese
+ girar a la derecha.
+ El resultado en la vida real sería catastrófico, pero durante la simulación
+ supone un refinamiento del modelo estimado, pues se aprende qué acciones
+ no deben ser tomadas según el estado en que nos encontremos.
+ Una vez hemos entrenado nuestro sistema de conducción, permitiendo ese
+ ligero carácter exploratorio, ya podría hacerse una primera prueba real
+ (aunque de nuevo por seguridad en un entorno virtual).
+ Para ello, se deshabilitaría la exploración 
+\begin_inset Formula $(\epsilon=0)$
+\end_inset
+
+ y únicamente se explotaría el conocimiento aprendido.
+ Esta fase sería la de ejecución o explotación.
+ El objetivo de esta fase es evaluar cómo de buena es la política que se
+ ha alcanzado gracias a la fase de aprendizaje con exploración de manera
+ que, si el retorno obtenido en esta etapa no es satisfactorio, se volvería
+ de nuevo a la fase de aprendizaje hasta alcanzar el objetivo fijado.
+ Una vez alcanzado el objetivo deseado, podría hacerse una primera prueba
+ en un entorno real.
+\end_layout
+
+\begin_layout Standard
+En base a estas dos fases, para la calibración de los parámetros 
+\begin_inset Formula $N_{epi}$
+\end_inset
+
+, 
+\begin_inset Formula $\alpha_{D}$
+\end_inset
+
+, 
+\begin_inset Formula $\alpha_{_{TD}}$
+\end_inset
+
+ y 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+ del algoritmo BDA-MF deberemos fijarnos en dos curvas:
+\end_layout
+
+\begin_layout Enumerate
+La curva de aprendizaje: representará la evolución del retorno a lo largo
+ de los episodios simulados durante la fase de aprendizaje.
+ Con esta curva, podremos hacernos una idea del número de episodios necesario
+ para asegurar que 
+\begin_inset Formula $G$
+\end_inset
+
+ se estabiliza, o lo que es lo mismo, en cuántos episodios se consigue aprender
+ una política estable, y por la naturaleza del algoritmo, óptima.
+ Es decir, esta gráfica estará orientada a medir y comparar velocidades
+ de convergencia.
+\end_layout
+
+\begin_layout Enumerate
+La curva de explotación tras convergencia: representará el retorno conseguido
+ al evaluar
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Para generar esta curva únicamente se simularán episodios que siguen la
+ política a evaluar, sin aprendizaje alguno.
+\end_layout
+
+\end_inset
+
+ la política estable obtenida durante el aprendizaje.
+ Es decir, con esta curva podremos medir y comparar al final de cada experimento
+ (esto es, cuando ya se ha estabilizado 
+\begin_inset Formula $G$
+\end_inset
+
+), el beneficio obtenido con la política que se ha conseguido.
+ En principio, si se sigue una política concreta sin exploración ni aprendizaje,
+ el valor de 
+\begin_inset Formula $G$
+\end_inset
+
+ obtenido debería ser constante para todos los episodios simulados.
+ No obstante, puede darse el caso de que (1) el ruido de estimación del
+ gradiente sea muy alto y la política extraída de la variable dual no llegue
+ a ser nunca determinista, aunque sí muy cercana, o (2) la matriz de transición
+ del problema evaluado tenga cierto carácter estocástico como el que se
+ ejemplificó en el problema 
+\emph on
+random walk
+\emph default
+ de validación del algoritmo.
+ En cualquier caso, la curva de explotación siempre deberá ser una gráfica
+ constante, o constante pero ligeramente ruidosa.
+ Por este motivo, y para facilitar la lectura de los resultados, en lugar
+ de enseñar una gráfica de esta naturaleza, se hará el promedio de los valores
+ de 
+\begin_inset Formula $G$
+\end_inset
+
+ obtenidos en cada episodio del experimento de evaluación simulado y se
+ mostrará en una tabla.
+\end_layout
+
+\begin_layout Standard
+De cara a decidir qué parámetros son mejores o peores se premiará, primero
+ a aquellos que alcancen el valor más alto de 
+\begin_inset Formula $G$
+\end_inset
+
+ en la curva de explotación tras convergencia, y a continuación los que
+ aseguren una convergencia más rápida en la gráfica de aprendizaje.
+ En resumen, tal y como se dijo al comienzo de la sección, se buscará maximizar
+ nuestro beneficio en el menor tiempo (episodios) posible.
+ Para dejar claro este enfoque, supongamos que disponemos de una plataforma
+ virtual de e-Trading en la que queremos implementar una solución de aprendizaje
+ por refuerzo para que maximice nuestras ganancias monetarias.
+ De poco sirve tener un algoritmo que consiga hacernos ricos en 100 años,
+ si hay otro que nos consigue ganancias considerablemente razonables en
+ un plazo de 2 años.
+\end_layout
+
+\begin_layout Standard
+Conocida ya la metodología y los criterios a seguir para evaluar nuestro
+ algoritmo y poder compararlo con SARSA y Q-learning, pasamos a presentar
+ los problemas y los resultados obtenidos.
+\end_layout
+
+\begin_layout Subsection
+Problema bajo estudio 1: random walk (transiciones deterministas)
+\end_layout
+
+\begin_layout Subsubsection*
+Presentación del problema
+\end_layout
+
+\begin_layout Standard
+El MDP que modela este problema se muestra en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MDP-RW"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+El problema tendrá 
+\begin_inset Formula $\left|\S\right|=13$
+\end_inset
+
+ estados, de los cuales 2 serán estados terminales, 
+\begin_inset Formula $T1$
+\end_inset
+
+ y 
+\begin_inset Formula $T2$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+El estado inicial será el primero no terminal a la izquierda, 
+\begin_inset Formula $s=1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+El conjunto 
+\begin_inset Formula $\A$
+\end_inset
+
+ estará formado por dos acciones: 
+\begin_inset Formula $a_{1}=izquierda$
+\end_inset
+
+, 
+\begin_inset Formula $a_{2}=derecha$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Habrá 7 estados con recompensa.
+ De entre esos estados, la recompensa del estado 
+\begin_inset Formula $T2$
+\end_inset
+
+ será la mayor de todas.
+ El vector de recompensas sobre los estados será el siguiente:
+\begin_inset Formula 
+\[
+\R=\left[0,\,\,0,\,\,0,\,\,0,\,\,0,\,\,0,\,\,0,\,\,0,\,\,0,\,\,0,\,\,0,\,\,0,\,\,1\right]^{T}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+La política óptima será ir siempre a la derecha de manera que acabemos en
+ el estado 
+\begin_inset Formula $T2$
+\end_inset
+
+, consiguiendo el mayor retorno posible.
+\end_layout
+
+\begin_layout Enumerate
+La matriz de transición que modele el entorno del problema será determinista.
+ Es decir, de acuerdo a la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MDP-RW"
+
+\end_inset
+
+, suponiendo que estamos en el estado 
+\begin_inset Formula $s=6$
+\end_inset
+
+ y que escogemos la acción 
+\begin_inset Formula $a_{2}=derecha$
+\end_inset
+
+ tendremos:
+\begin_inset Formula 
+\begin{equation}
+\begin{array}{c}
+p(s'=7\mid s=6,a=a_{2})=1\\
+p(s'=5\mid s=6,a=a_{2})=0
+\end{array}\label{eq:RW_det_definicion}
+\end{equation}
+
+\end_inset
+
+Puesto que el problema tiene 
+\begin_inset Formula $\left|\S\right|=13$
+\end_inset
+
+ estados y 
+\begin_inset Formula $\left|\A\right|=2$
+\end_inset
+
+ acciones, la matriz de transiciones 
+\begin_inset Formula $\P$
+\end_inset
+
+ será de dimensión 
+\begin_inset Formula $26\times13$
+\end_inset
+
+.
+ Dado que no aportaría información nueva sobre el problema más allá de la
+ que se ha ejemplificado en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:RW_det_definicion"
+
+\end_inset
+
+, no se mostrará su representación.
+\end_layout
+
+\begin_layout Standard
+Como puede haberse notado, ahora el estado desde el cual se comenzará será
+ 
+\begin_inset Formula $s=1$
+\end_inset
+
+.
+ El motivo de empezar en este estado será porque nos permitirá estudiar
+ el tiempo que tarda en propagarse la función valor de extremo a extremo
+ del MDP.
+\end_layout
+
+\begin_layout Standard
+Por último, decir que el factor de descuento 
+\begin_inset Formula $\gamma$
+\end_inset
+
+ escogido para el cálculo del retorno fue 
+\begin_inset Formula $\gamma=0.9$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection*
+Calibración de parámetros
+\end_layout
+
+\begin_layout Standard
+Para la calibración de los parámetros 
+\begin_inset Formula $N_{epi}$
+\end_inset
+
+, 
+\begin_inset Formula $\alpha_{D}$
+\end_inset
+
+, 
+\begin_inset Formula $\alpha_{_{TD}}$
+\end_inset
+
+ y 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+ de BDA-MF, se tuvieron en cuenta las siguientes consideraciones respecto
+ al algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:BDA-MF"
+
+\end_inset
+
+ planteado:
+\end_layout
+
+\begin_layout Enumerate
+En lugar de detener la ejecución en función de la convergencia de la función
+ valor, tal y como se detalló en el algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:BDA-MF"
+
+\end_inset
+
+, ahora fijaremos un número máximo de iteraciones posibles 
+\begin_inset Formula $N_{iter}$
+\end_inset
+
+, de manera que si el algoritmo nunca llegase a converger por el motivo
+ que fuera, no se quedase ejecutando de manera infinita.
+ De este modo, el número total de episodios que se simulen será conocido
+ e igual a 
+\begin_inset Formula $N_{epi}^{TOT}=N_{iter}N_{epi}$
+\end_inset
+
+, y lo podremos controlar.
+ En concreto, para todas las pruebas de calibración se escogió 
+\begin_inset Formula $N_{iter}=500$
+\end_inset
+
+, cantidad que como veremos está sobredimensionada con el objetivo de observar
+ claramente la convergencia en las gráficas de resultados.
+\end_layout
+
+\begin_layout Enumerate
+Se repitieron 50 experimentos independientes y se promediaron los resultados
+ obtenidos en cada uno de ellos
+\end_layout
+
+\begin_layout Standard
+Las gráficas de calibración obtenidas para cada parámetro fueron las mostradas
+ en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Resultados_RW_BDA-MF-1"
+
+\end_inset
+
+.
+ En vista de los resultados se deduce que:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/Chap9/Resultados RW_determinista/N_epi.svg
+	lyxscale 50
+	width 50col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Variación del número de episodios.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/Chap9/Resultados RW_determinista/epsilon.svg
+	lyxscale 50
+	width 50col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Variación del parámetro de exploración.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/Chap9/Resultados RW_determinista/alfa_TD.svg
+	lyxscale 50
+	width 50col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Variación de 
+\begin_inset Formula $\alpha_{TD}$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Daniel/Desktop/Memoria TFM/Images/Chap9/Resultados RW_determinista/alfa_D.svg
+	lyxscale 50
+	width 50col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Variación de 
+\begin_inset Formula $\alpha_{D}$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Resultados_RW_BDA-MF-1"
+
+\end_inset
+
+Calibración de los parámetros característicos del algoritmo BDA-MF para
+ el problema 
+\emph on
+random walk
+\emph default
+ con matriz de transición determinista: evolución del retorno a lo largo
+ de los episodios simulados.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Cuanto menor es el número de episodios 
+\begin_inset Formula $N_{epi}$
+\end_inset
+
+, más frecuentemente se actualizan los valores de 
+\begin_inset Formula $v$
+\end_inset
+
+ y 
+\begin_inset Formula $d$
+\end_inset
+
+, de manera que antes se alcanza un valor de 
+\begin_inset Formula $G$
+\end_inset
+
+ estable; es decir, convergemos antes a la política óptima, tal y como se
+ puede ver en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Resultados_RW_BDA-MF-1"
+
+\end_inset
+
+
+\begin_inset Formula $(a)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Cuanto menor es 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+, menor es la exploración y por tanto menor es la varianza del retorno obtenido.
+ No obstante, dado que se explora menos, se tarda más en converger.
+ Esto queda reflejado si comparamos los casos 
+\begin_inset Formula $\epsilon=0.001$
+\end_inset
+
+ y 
+\begin_inset Formula $\epsilon=0.3$
+\end_inset
+
+, por ejemplo, de la gráfica 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Resultados_RW_BDA-MF-1"
+
+\end_inset
+
+
+\begin_inset Formula $(b)$
+\end_inset
+
+: cuando 
+\begin_inset Formula $\epsilon=0.3$
+\end_inset
+
+, 
+\begin_inset Formula $G$
+\end_inset
+
+ se estabiliza en un número menor de episodios que cuando 
+\begin_inset Formula $\epsilon=0.001$
+\end_inset
+
+.
+ En contraparte, su varianza es mucho mayor.
+\end_layout
+
+\begin_layout Enumerate
+Cuanto menor es 
+\begin_inset Formula $\alpha_{_{TD}}$
+\end_inset
+
+, antes se converge a un valor de 
+\begin_inset Formula $G$
+\end_inset
+
+ estable, tal y como se puede ver en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Resultados_RW_BDA-MF-1"
+
+\end_inset
+
+
+\begin_inset Formula $(c)$
+\end_inset
+
+.
+ De nuevo, esta idea puede parecer contraintuitiva pues en los métodos de
+ gradiente, cuanto menor es el paso de aprendizaje, más lenta es la convergencia.
+ Al igual que se comentó en la misma prueba pero con el problema de validación,
+ se cree que esto pueda ser debido al acoplo que presentan las etapas de
+ predicción y control: valores altos de 
+\begin_inset Formula $\alpha_{_{TD}}$
+\end_inset
+
+ provocarán que el ruido que presente la estimación de 
+\begin_inset Formula $v$
+\end_inset
+
+ sea tal que empeore la estimación de 
+\begin_inset Formula $d$
+\end_inset
+
+ y la política derivada de ella.
+ Como resultado, se conseguiría una convergencia más lenta a la máxima recompens
+a total acumulada.
+ En este caso, se cree que no aparece el punto de inflexión que se mencionó
+ en el problema de validación porque para valores más pequeños de 
+\begin_inset Formula $\alpha_{_{TD}}$
+\end_inset
+
+, la lentitud de convergencia pasa a predominar sobre la mejora que suponga
+ en la disminución del ruido de estimación.
+\end_layout
+
+\begin_layout Enumerate
+Cuanto mayor es 
+\begin_inset Formula $\alpha_{D}$
+\end_inset
+
+, antes se converge a un valor de 
+\begin_inset Formula $G$
+\end_inset
+
+ estable, tal y como se puede ver en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Resultados_RW_BDA-MF-1"
+
+\end_inset
+
+
+\begin_inset Formula $(d)$
+\end_inset
+
+.
+ Esta conclusión puede parecer a priori contradictoria al caso de las pruebas
+ de validación, donde se concluyó justamente lo contrario para un problema
+ similar, pero no es así.
+ Como vemos, 
+\begin_inset Formula $\alpha_{D}$
+\end_inset
+
+ multiplica a un término dependiente de la función valor 
+\begin_inset Formula $v(s)$
+\end_inset
+
+, y esta depende de la recompensa.
+ En el caso del problema de validación, la recompensa del estado terminal
+ deseado era 150; en este caso, la recompensa es 1.
+ Parece claro que el 
+\begin_inset Formula $\alpha_{D}$
+\end_inset
+
+ se encargará de escalar la aproximación del gradiente con intención de
+ que esta tenga un orden de magnitud similar a la variable que se desea
+ actualizar, en este caso 
+\begin_inset Formula $d$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Se muestra a continuación una tabla resumen con los resultados de explotación
+ tras la convergencia, para los mismos parámetros que se usaron en las pruebas
+ de la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Resultados_RW_BDA-MF-1"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="11" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Variación 
+\begin_inset Formula $N_{epi}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $G$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $N_{epi}=10$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $N_{epi}=20$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $N_{epi}=25$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $N_{epi}=30$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $N_{epi}=35$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $N_{epi}=40$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $N_{epi}=45$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $N_{epi}=50$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $N_{epi}=55$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $N_{epi}=60$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="11" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Variación 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $G$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\epsilon=0.001$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\epsilon=0.05$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\epsilon=0.1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\epsilon=0.15$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\epsilon=0.2$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\epsilon=0.3$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\epsilon=0.4$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\epsilon=0.5$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\epsilon=0.7$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\epsilon=1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="10" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Variación 
+\begin_inset Formula $\alpha_{TD}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $G$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{TD}=1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{TD}=0.8$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{TD}=0.6$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{TD}=0.5$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{TD}=0.4$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{TD}=0.2$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{TD}=0.1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{TD}=0.08$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{TD}=0.05$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="10" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Variación 
+\begin_inset Formula $\alpha_{D}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $G$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{TD}=1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{TD}=0.8$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{TD}=0.6$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{TD}=0.5$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{TD}=0.4$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{TD}=0.2$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{TD}=0.1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{TD}=0.08$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{TD}=0.05$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Calibración de los parámetros característicos del algoritmo BDA-MF para
+ el problema 
+\emph on
+random walk
+\emph default
+ con matriz de transición determinista: retorno obtenido al evaluar la política
+ estable obtenida durante el aprendizaje.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Como vemos, en todos los casos se converge al mismo valor.
+ Para justificar el valor del retorno obtenido para las diferentes políticas
+ que se hayan derivado en cada prueba, resultará conveniente acudir a la
+ definición de 
+\begin_inset Formula $G$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+G_{t}\triangleq R_{t+1}+\gamma R_{t+2}+\ldots=\sum_{k=0}^{\infty}\gamma^{k}R_{t+k+1}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En base a su expresión se deduce que el valor teórico esperado si se siguiese
+ la política óptima (ir hacia la derecha siempre) sería, empezando desde
+ el estado 
+\begin_inset Formula $s=1$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+G=\gamma^{10}1=0.9^{10}=0.3487\label{eq:GesperadoRWdet}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+siendo 10 el mínimo número de transiciones hacia la derecha necesarias para
+ llegar a 
+\begin_inset Formula $T2$
+\end_inset
+
+.
+ De ello se deduce que todas las pruebas han sido capaces de encontrar la
+ política óptima en más o menos episodios.
+\end_layout
+
+\begin_layout Subsubsection*
+Presentación de resultados óptimos y comparación con SARSA y Q-learning
+\end_layout
+
+\begin_layout Standard
+A partir de los resultados anteriores, se llegó a la conclusión de que los
+ parámetros óptimos para el problema que se está tratando son:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $N_{epi}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{D}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{_{TD}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\epsilon$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $10$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.8$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.05$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.5$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Parámetros óptimos del algoritmo BDA-MF, para el problema 
+\emph on
+random walk
+\emph default
+ con matriz de transición determinista.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Dado que el objetivo de este trabajo es el de desarrollar un nuevo algoritmo
+ de aprendizaje por refuerzo que sea competitivo frente a los ya existentes,
+ se realizó una comparación con dos de los algoritmos de uso más extendido
+ a día de hoy: SARSA y Q-learning.
+ Al igual que para nuestro algoritmo, se llevó a cabo un proceso de calibración
+ de los parámetros de estos dos métodos con el objetivo de poder comparar
+ la versión óptima de cada algoritmo aplicado al problema 
+\emph on
+random walk
+\emph default
+ bajo estudio.
+\end_layout
+
+\begin_layout Standard
+Como hemos podido ver en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Resultados_RW_BDA-MF-1"
+
+\end_inset
+
+
+\begin_inset Formula $(b)$
+\end_inset
+
+, el punto al que converge 
+\begin_inset Formula $G$
+\end_inset
+
+ dependerá fuertemente del parámetro 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+ de aprendizaje.
+ Esto va a suponer un problema de cara a comparar los distintos algoritmos,
+ pues cada uno alcanzará su comportamiento óptimo para diferentes valores
+ de 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+; es decir, el problema que surge es que no habrá manera de comparar el
+ número de episodios en el que converge cada algoritmo porque cada uno converger
+á a un valor diferente.
+\end_layout
+
+\begin_layout Standard
+A efectos de resolver este problema y poder comparar cómo de buena es la
+ convergencia de 
+\begin_inset Formula $G$
+\end_inset
+
+ en cada algoritmo de manera independiente al parámetro 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+ con el que se aprende, será necesario definir una nueva métrica: la curva
+ de explotación durante el aprendizaje.
+ Esta curva permitirá ver la evolución del algoritmo a medida que vamos
+ aprendiendo, pero quitando el efecto exploratorio y realizando únicamente
+ la explotación del conocimiento disponible al final de cada episodio
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Al igual que se definió para la curva de explotación tras convergencia,
+ en este proceso únicamente se evalúa la política, sin aprender nada nuevo.
+\end_layout
+
+\end_inset
+
+.
+ En otras palabras, al final de cada episodio se correrá el algoritmo con
+ la política disponible 
+\begin_inset Formula $\pi_{d_{k}}$
+\end_inset
+
+ y 
+\begin_inset Formula $\epsilon=0$
+\end_inset
+
+.
+ Para comprobar la utilidad de esta nueva gráfica a la hora de analizar
+ los resultados, se muestran en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:comparativaRWdet"
+
+\end_inset
+
+ los resultados óptimos de la curva de aprendizaje y la curva de explotación
+ durante el aprendizaje, para cada algoritmo.
+ De nuevo, se realizaron 50 experimentos independientes y se promediaron
+ los resultados.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap9/Resultados RW_determinista/aprendizaje_optimo.svg
+	lyxscale 50
+	width 75text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Evolución durante el aprendizaje.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap9/Resultados RW_determinista/explot_optima.svg
+	lyxscale 50
+	width 75text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Evaluación del aprendizaje tras cada episodio.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:comparativaRWdet"
+
+\end_inset
+
+Comparativa de los algoritmos BDA-MF, SARSA y Q-learning para el problema
+ 
+\emph on
+random walk
+\emph default
+ con matriz de transición determinista.
+ En 
+\begin_inset Formula $(a)$
+\end_inset
+
+ se muestra la curva de aprendizaje y en 
+\begin_inset Formula $(b)$
+\end_inset
+
+ la curva de explotación del aprendizaje realizado en cada episodio, ambas
+ con los parámetros óptimos de cada algoritmo.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+De acuerdo a la gráfica 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:comparativaRWdet"
+
+\end_inset
+
+ 
+\begin_inset Formula $(b)$
+\end_inset
+
+, ahora sí va a resultar posible decir qué algoritmo converge más rápido.
+ La tabla 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:ResumenRWdet"
+
+\end_inset
+
+ recoge, a modo resumen, el episodio en que converge cada algoritmo y el
+ valor de 
+\begin_inset Formula $G$
+\end_inset
+
+ al que se converge cuando dejamos de explorar y se sigue la política que
+ ha provocado la convergencia.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Episodios hasta convergencia
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $G$
+\end_inset
+
+ tras convergencia 
+\begin_inset Formula $(\epsilon=0)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+SARSA
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $35$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3417$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Q-learning
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $20$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BDA-MF
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $75$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:ResumenRWdet"
+
+\end_inset
+
+Número de episodios necesarios hasta converger a una solución estable (columna
+ central), y retorno obtenido de la explotación de la política aprendida
+ tras la convergencia (columna derecha), para el problema 
+\emph on
+random walk
+\emph default
+ con matriz de transición determinista.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Comparando la columna 
+\begin_inset Formula $G$
+\end_inset
+
+ con su valor óptimo esperado, 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:GesperadoRWdet"
+
+\end_inset
+
+, podemos apreciar que se ha conseguido llegar a la política óptima con
+ los tres algoritmos.
+\end_layout
+
+\begin_layout Standard
+En base a estos resultados, se concluye que nuestro algoritmo no consigue
+ llegar a ser tan bueno como SARSA y Q-learning en este problema.
+\end_layout
+
+\begin_layout Standard
+Antes de pasar al siguiente caso de estudio, se aclarará un hecho que puede
+ haber llamado la atención en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:comparativaRWdet"
+
+\end_inset
+
+: como se vio en la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:controlSARSAQlearning"
+
+\end_inset
+
+, la política objetivo en SARSA es 
+\begin_inset Formula $\epsilon-greedy$
+\end_inset
+
+.
+ Es por ello que su curva de explotación durante el aprendizaje, mostrada
+ en rojo en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:comparativaRWdet"
+
+\end_inset
+
+ 
+\begin_inset Formula $(b)$
+\end_inset
+
+, nunca llega a converger al valor exacto sino que mantiene pequeñas fluctuacion
+es.
+\end_layout
+
+\begin_layout Subsection
+Problema bajo estudio 2: random walk (transiciones aleatorias)
+\end_layout
+
+\begin_layout Subsubsection*
+Presentación del problema
+\end_layout
+
+\begin_layout Standard
+El problema que ahora se va a evaluar es el mismo que se empleó en las pruebas
+ de validación de BDA-MF, de manera que se dará por presentado.
+\end_layout
+
+\begin_layout Subsubsection*
+Calibración de parámetros
+\end_layout
+
+\begin_layout Standard
+El proceso a seguir en la calibración es el mismo que se siguió en la sección
+ anterior, pero adaptado al nuevo problema.
+ En consecuencia, mostrar estas gráficas otra vez no aportaría información
+ nueva más allá de lo ya explicado sobre las figuras 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Resultados_RW_BDA-MF"
+
+\end_inset
+
+ o 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Resultados_RW_BDA-MF-1"
+
+\end_inset
+
+, 
+\end_layout
+
+\begin_layout Standard
+Por este motivo, de aquí a lo que queda de capítulo no se mostrarán más
+ gráficas del proceso de calibración, y se pasará directamente a mostrar
+ los resultados óptimos.
+\end_layout
+
+\begin_layout Subsubsection*
+Presentación de resultados óptimos y comparación con SARSA y Q-learning
+\end_layout
+
+\begin_layout Standard
+Los parámetros óptimos del algoritmo BDA-MF para el problema que se está
+ tratando son:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $N_{epi}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{D}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{_{TD}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\epsilon$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $30$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.4$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.2$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.4$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Parámetros óptimos del algoritmo BDA-MF, para el problema 
+\emph on
+random walk
+\emph default
+ con matriz de transición aleatoria.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Los resultados óptimos de la curva de aprendizaje y la curva de explotación
+ durante el aprendizaje para SARSA, Q-learning y BDA-MF se muestran en la
+ figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:comparativaRWaleat"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Antes de continuar, resaltar que el hecho de que se eligiese 
+\begin_inset Formula $\epsilon=0.4$
+\end_inset
+
+ en los tres algoritmos se debe a que coincidió ser el valor óptimo para
+ los tres.
+\end_layout
+
+\begin_layout Standard
+Comparando las gráficas 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:comparativaRWdet"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:comparativaRWaleat"
+
+\end_inset
+
+, podemos notar que en esta última los resultados son más ruidosos.
+ Esto se debe a que ahora la matriz de transición del problema provocará
+ que no siempre se lleve a cabo la acción deseada, tengamos exploración
+ o no.
+ Por tanto, si iniciamos el episodio en el estado 
+\begin_inset Formula $s=1$
+\end_inset
+
+, aunque conozcamos la política óptima de ir siempre a la derecha, algunas
+ veces iremos a la izquierda acabando el episodio con un retorno 
+\begin_inset Formula $G=r(s=T1)=2$
+\end_inset
+
+.
+ Dado que estas gráficas son el resultado de un promedio de 50 experimentos
+ independientes, en el mismo episodio de diferentes experimentos podremos
+ acabar con la recompensa del estado terminal 
+\begin_inset Formula $T1$
+\end_inset
+
+ o con la recompensa obtenida de acabar correctamente en 
+\begin_inset Formula $T2$
+\end_inset
+
+, teniendo por tanto el comportamiento fluctuante observado en la figura
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:comparativaRWaleat"
+
+\end_inset
+
+ 
+\begin_inset Formula $(b)$
+\end_inset
+
+ una vez se ha convergido.
+\end_layout
+
+\begin_layout Standard
+La tabla 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:ResumenRWaleat"
+
+\end_inset
+
+ recoge, a modo resumen, el episodio en que converge cada algoritmo y el
+ valor de 
+\begin_inset Formula $G$
+\end_inset
+
+ al que se converge cuando explotamos la política aprendida.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Episodios hasta convergencia
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $G$
+\end_inset
+
+ tras convergencia 
+\begin_inset Formula $(\epsilon=0)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+SARSA
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $770$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $40.4532$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Q-learning
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $820$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $41.1833$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BDA-MF
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $200$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $41.1163$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:ResumenRWaleat"
+
+\end_inset
+
+Número de episodios necesarios hasta converger a una solución estable (columna
+ central), y retorno obtenido de la explotación de la política aprendida
+ tras la convergencia (columna derecha), para el problema 
+\emph on
+random walk
+\emph default
+ con matriz de transición aleatoria.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Como vemos, la situación ha cambiado sustancialmente respecto al caso en
+ el que la matriz de transición era determinista: ahora el algoritmo BDA-MF
+ desarrollado converge más rápido que los ya conocidos SARSA y Q-learning.
+ Por tanto, parece que nuestro algoritmo será capaz de enfrentarse mejor
+ que los otros a entornos que presentan cierta 
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap9/Resultados RW_aleatorio/aprendizaje_optimo.svg
+	lyxscale 50
+	width 75text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Evolución durante el aprendizaje.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap9/Resultados RW_aleatorio/explot_optima.svg
+	lyxscale 50
+	width 75text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Evaluación del aprendizaje tras cada episodio.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:comparativaRWaleat"
+
+\end_inset
+
+Comparativa de los algoritmos BDA-MF, SARSA y Q-learning para el problema
+ 
+\emph on
+random walk
+\emph default
+ con matriz de transición aleatoria.
+ En 
+\begin_inset Formula $(a)$
+\end_inset
+
+ se muestra la curva de aprendizaje y en 
+\begin_inset Formula $(b)$
+\end_inset
+
+ la curva de explotación del aprendizaje realizado en cada episodio, ambas
+ con los parámetros óptimos de cada algoritmo.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+\noindent
+incertidumbre en las transiciones.
+\end_layout
+
+\begin_layout Standard
+Con el objetivo de poder sacar conclusiones más sólidas, a continuación
+ se estudiará otro problema distinto al 
+\emph on
+random walk
+\emph default
+.
+\end_layout
+
+\begin_layout Subsection
+Problema bajo estudio 3: paseo por el acantilado (transiciones deterministas)
+\end_layout
+
+\begin_layout Subsubsection*
+Presentación del problema
+\end_layout
+
+\begin_layout Standard
+Ahora vamos a trabajar con otro problema muy común en el aprendizaje por
+ refuerzo: el paseo por el acantilado (
+\emph on
+cliff walking problem
+\emph default
+).
+ Se trata de una tarea episódica que cuenta con un estado inicial y un estado
+ absorbente final que será nuestro objetivo.
+ Para moverse de un estado a otro contiguo, el agente puede elegir de entre
+ cuatro posibles acciones: arriba, abajo, izquierda y derecha.
+ La recompensa es -1 en todas las transiciones excepto en aquellas que hacen
+ que nos caigamos al acantilado o que alcancemos el estado final objetivo.
+ Caer en la región del acantilado supone una recompensa de -100 puntos y
+ volver de vuelta al estado inicial.
+ Llegar al estado final objetivo, por convención, tiene una recompensa asociada
+ de 0 puntos.
+ Cuando este estado final se alcanza, el agente es también mandado de vuelta
+ al estado inicial.
+\end_layout
+
+\begin_layout Standard
+Si la acción que tomamos implica chocarse contra una pared, nos quedaremos
+ en el mismo estado y se obtendrá la recompensa típica de haber realizado
+ una transición, es decir, -1.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap9/cliff_problem_grid.png
+	lyxscale 50
+	width 95text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:MDP-cliff"
+
+\end_inset
+
+Tablero que modela el problema del paseo por el acantilado 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Sutton98a"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MDP-cliff"
+
+\end_inset
+
+, vemos que el problema puede ser representado mediante una malla de 
+\begin_inset Formula $4\times12$
+\end_inset
+
+ casillas, lo que hace un total de 
+\begin_inset Formula $\left|\S\right|=48$
+\end_inset
+
+ estados.
+ De estos 48 estados, 11 serán terminales, siendo uno de ellos, el estado
+ final objetivo y los otros 10 la región del acantilado.
+ Resulta sencillo observar que, de nuevo, podremos modelar el problema como
+ un MDP, sólo que ahora el conjunto de acciones será 
+\begin_inset Formula $\left|\A\right|=4$
+\end_inset
+
+, 
+\begin_inset Formula $\A=\{a_{1},a_{2},a_{3},a_{4}\}=\{\text{izquierda, arriba, derecha, abajo}\}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Como consideraciones adicionales, añadir que la matriz de transición que
+ modele el entorno del problema será determinista y que el estado inicial
+ en todas las pruebas será la esquina inferior izquierda, que se corresponde
+ con el estado marcado con una I (inicio) en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MDP-cliff"
+
+\end_inset
+
+.
+ Del mismo modo, el estado final objetivo será siempre la esquina inferior
+ derecha, marcada con la letra F (final).
+\end_layout
+
+\begin_layout Standard
+Por último, decir que el factor de descuento 
+\begin_inset Formula $\gamma$
+\end_inset
+
+ escogido para el cálculo del retorno fue 
+\begin_inset Formula $\gamma=0.99$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection*
+Presentación de resultados óptimos y comparación con SARSA y Q-learning
+\end_layout
+
+\begin_layout Standard
+Los parámetros óptimos del algoritmo BDA-MF para el problema que se está
+ tratando son:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $N_{epi}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{D}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{_{TD}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\epsilon$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $20$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.08$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Parámetros óptimos del algoritmo BDA-MF, para el problema 
+\emph on
+paseo por el acantilado
+\emph default
+ con matriz de transición determinista.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Los resultados óptimos de la curva de aprendizaje y la curva de explotación
+ durante el aprendizaje para SARSA, Q-learning y BDA-MF se muestran en la
+ figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:comparativaCliffDet"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+La tabla 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:ResumenCliffdet"
+
+\end_inset
+
+ recoge, a modo resumen, el episodio en que converge cada algoritmo y el
+ valor de 
+\begin_inset Formula $G$
+\end_inset
+
+ al que se converge cuando explotamos la política aprendida.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Episodios hasta convergencia
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $G$
+\end_inset
+
+ tras convergencia 
+\begin_inset Formula $(\epsilon=0)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+SARSA
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $130$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-12.2352$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Q-learning
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $50$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-11.3615$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BDA-MF
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $275$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-15.119$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:ResumenCliffdet"
+
+\end_inset
+
+Número de episodios necesarios hasta converger a una solución estable (columna
+ central), y recompensa total acumulada obtenida de la explotación de la
+ política aprendida tras la convergencia (columna derecha), para el problema
+ 
+\emph on
+paseo por el acantilado
+\emph default
+ con matriz de transición determinista.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Antes de pasar a analizar los resultados de convergencia, se va a calcular
+ el valor del retorno que esperamos obtener.
+ En el problema del paseo por el acantilado, típicamente se distinguen 3
+ soluciones, y para cada una de ellas habrá un retorno asociado:
+\end_layout
+
+\begin_layout Enumerate
+Camino óptimo: en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MDP-cliff"
+
+\end_inset
+
+ se puede apreciar que el camino óptimo es aquel que va pegado al acantilado,
+ pues el que maximiza la recompensa.
+ Para llegar desde el estado inicial al final por este camino, habrá que
+ realizar 13 transiciones de las cuales 12 tienen una recompensa asociada
+ de -1 puntos, y una, la última, tiene una 
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename C:/Users/Daniel/Desktop/Memoria TFM/Images/Chap9/Resultados Cliff_determinista/aprendizaje_optimo.svg
+	lyxscale 50
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Evolución durante el aprendizaje.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap9/Resultados Cliff_determinista/explotacion_optima.svg
+	lyxscale 50
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Evaluación del aprendizaje tras cada episodio.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:comparativaCliffDet"
+
+\end_inset
+
+Comparativa de los algoritmos BDA-MF, SARSA y Q-learning para el problema
+ 
+\emph on
+paseo por el acantilado
+\emph default
+ con matriz de transición determinista.
+ En 
+\begin_inset Formula $(a)$
+\end_inset
+
+ se muestra la curva de aprendizaje y en 
+\begin_inset Formula $(b)$
+\end_inset
+
+ la curva de explotación del aprendizaje realizado en cada episodio, ambas
+ con los parámetros óptimos de cada algoritmo.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ recompensa asociada de 0 puntos.
+ De este modo, definiendo los vectores:
+\begin_inset Formula 
+\[
+\begin{array}{c}
+\Gamma=[\gamma^{0},\:\gamma^{1},\:\gamma^{2},\:\gamma^{3},\:\gamma^{4},\:\gamma^{5},\:\gamma^{6},\:\gamma^{7},\:\gamma^{8},\:\gamma^{9},\:\gamma^{10},\:\gamma^{11},\:\gamma^{12},\:\gamma^{13}]^{T}\\
+R_{camino\,ópt}=\left[-1,\,-1,\,-1,\,-1,\,-1,\,-1,\,-1,\,-1,\,-1,\,-1,\,-1,\,-1,\,0\right]^{T}
+\end{array}
+\]
+
+\end_inset
+
+podemos expresar 
+\begin_inset Formula $G$
+\end_inset
+
+ como:
+\begin_inset Formula 
+\[
+G^{ópt}=\Gamma^{T}R_{camino\,ópt}=-11.3615
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Camino seguro: en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MDP-cliff"
+
+\end_inset
+
+ se puede apreciar que el camino seguro es aquel que va lo más alejado posible
+ del acantilado, bordeando el tablero.
+ Este camino será el que presente menor riesgo de caer al acantilad.
+ Para llegar desde el estado inicial al final por este camino, habrá que
+ realizar 17 transiciones de las cuales 16 tienen una recompensa asociada
+ de -1 puntos, y una, la última, tiene una recompensa asociada de 0 puntos.
+ Siguiendo el mismo proceso que en el caso anterior, se llega a:
+\begin_inset Formula 
+\[
+G^{seguro}=\Gamma^{T}R_{camino\,seguro}=-14.8542
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Camino conservador: en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MDP-cliff"
+
+\end_inset
+
+, el camino conservador sería el del medio, pues no arriesga tanto como
+ el óptimo ni genera tan poco beneficio como el seguro.
+ Es decir, se trata de un compromiso entre las dos opciones anteriores.
+ Para llegar desde el estado inicial al final por este camino, habrá que
+ realizar 15 transiciones de las cuales 14 tienen una recompensa asociada
+ de -1 puntos, y una, la última, tiene una recompensa asociada de 0 puntos.
+ De nuevo, la recompensa total acumulada esperada si se sigue este camino
+ se podrá calcular como:
+\begin_inset Formula 
+\[
+G^{compromiso}=\Gamma^{T}R_{camino\,compromiso}=-13.1254
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Con estos valores y la tabla 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:ResumenCliffdet"
+
+\end_inset
+
+, parece claro sacar una relación entre cada algoritmo y cada camino existente
+ hasta el estado final objetivo.
+ Como vemos, Q-learning aprenderá sin problemas la política óptima, obteniéndose
+ un retorno de 
+\begin_inset Formula $-11.3615$
+\end_inset
+
+.
+ SARSA sin embargo aprenderá, en unos experimentos la política óptima y
+ en otros la conservadora.
+ De este modo, al hacer el promedio de los 50 experimentos simulados se
+ obtiene un valor intermedio: 
+\begin_inset Formula $-12.2352$
+\end_inset
+
+.
+ Esto se debe a que su política objetivo es 
+\begin_inset Formula $\epsilon-greedy$
+\end_inset
+
+, de manera que la política final es ligeramente oscilante, aunque tendiendo
+ más a la óptima tal y como se pudo ver al analizar la variable que acumula
+ los valores de 
+\begin_inset Formula $G$
+\end_inset
+
+ tras cada experimento.
+ Por último, BDA-MF aprenderá la política que lleva por el camino seguro,
+ e incluso a veces una peor.
+ De ahí que el valor de 
+\begin_inset Formula $G$
+\end_inset
+
+ obtenido sea ligeramente más negativo que 
+\begin_inset Formula $G^{seguro}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+En base a los resultados de la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:comparativaCliffDet"
+
+\end_inset
+
+ y de la tabla 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:ResumenCliffdet"
+
+\end_inset
+
+, se concluye al igual que se hizo en el problema bajo estudio 1 que para
+ este nuevo problema, el algoritmo BDA-MF desarrollado funcionará peor que
+ SARSA y que Q-learning, tanto en términos de velocidad de convergencia
+ como de la recompensa total acumulada obtenida.
+\end_layout
+
+\begin_layout Subsection
+Problema bajo estudio 4: paseo por el acantilado (transiciones aleatorias)
+\end_layout
+
+\begin_layout Subsubsection*
+Presentación del problema
+\end_layout
+
+\begin_layout Standard
+Por último, se pasará a probar el problema del paseo del acantilado pero
+ cuando la matriz de transición tiene cierto carácter aleatorio.
+ Más concretamente, la probabilidad de tomar la acción escogida ahora será
+ de 0.7, y la probabilidad de que se lleve a cabo otra de las tres acciones
+ contrarias será de 0.1 cada una.
+ Es decir, si escogemos ir hacia arriba, finalmente iremos hacia arriba
+ con probabilidad 0.7, a la derecha con probabilidad 0.1, a la izquierda con
+ probabilidad 0.1 y abajo con probabilidad 0.1, sumando un total de 1.
+\end_layout
+
+\begin_layout Standard
+Con este grado de incertidumbre en la toma de acciones, la nueva política
+ óptima pasa a ser el camino del medio de la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MDP-cliff"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection*
+Presentación de resultados óptimos y comparación con SARSA y Q-learning
+\end_layout
+
+\begin_layout Standard
+Los parámetros óptimos del algoritmo BDA-MF para el problema que se está
+ tratando son:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $N_{epi}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{D}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha_{_{TD}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\epsilon$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $5$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $3$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.2$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.45$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Parámetros óptimos del algoritmo BDA-MF, para el problema 
+\emph on
+paseo por el acantilado
+\emph default
+ con matriz de transición determinista.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Aunque el número de episodios 
+\begin_inset Formula $N_{epi}$
+\end_inset
+
+ sea pequeño, recordar que el número total de episodios simulados viene
+ dado por 
+\begin_inset Formula $N_{epi}^{TOT}=N_{iter}N_{epi}$
+\end_inset
+
+, habiéndose escogido 
+\begin_inset Formula $N_{iter}=500$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Los resultados óptimos de la curva de aprendizaje y la curva de explotación
+ durante el aprendizaje para SARSA, Q-learning y BDA-MF se muestran en la
+ figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:comparativaCliffDet-1"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+La tabla 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:ResumenCliffdet-1"
+
+\end_inset
+
+ recoge, a modo resumen, el episodio en que converge cada algoritmo y el
+ valor de 
+\begin_inset Formula $G$
+\end_inset
+
+ al que se converge cuando explotamos la política aprendida.
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap9/Resultados Cliff_aleatorio/aprendizaje_optimo.svg
+	lyxscale 50
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Evolución durante el aprendizaje.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap9/Resultados Cliff_aleatorio/explotacion_optima.svg
+	lyxscale 50
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Evaluación del aprendizaje tras cada episodio.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:comparativaCliffDet-1"
+
+\end_inset
+
+Comparativa de los algoritmos BDA-MF, SARSA y Q-learning para el problema
+ 
+\emph on
+paseo por el acantilado
+\emph default
+ con matriz de transición aleatoria.
+ En 
+\begin_inset Formula $(a)$
+\end_inset
+
+ se muestra la curva de aprendizaje y en 
+\begin_inset Formula $(b)$
+\end_inset
+
+ la curva de explotación del aprendizaje realizado en cada episodio, ambas
+ con los parámetros óptimos de cada algoritmo.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Episodios hasta convergencia
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $G$
+\end_inset
+
+ tras convergencia 
+\begin_inset Formula $(\epsilon=0)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+SARSA
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $350$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-31.5419$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Q-learning
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $380$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-26.2466$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BDA-MF
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $120$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-24.7039$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:ResumenCliffdet-1"
+
+\end_inset
+
+Número de episodios necesarios hasta converger a una solución estable (columna
+ central), y retorno obtenido de la explotación de la política aprendida
+ tras la convergencia (columna derecha), para el problema 
+\emph on
+paseo por el acantilado
+\emph default
+ con matriz de transición aleatoria.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Al igual que ocurrió con el problema 
+\emph on
+random walk
+\emph default
+, en el problema del paseo por el acantilado la situación mejora cuando
+ la matriz de transición es aleatoria: ahora el algoritmo BDA-MF converge
+ más rápido y con un retorno mayor que SARSA y Q-learning.
+\end_layout
+
+\begin_layout Section
+Análisis y discusión de los resultados
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:AnalisResulExac"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+De cara a facilitar la comparativa, se recogen en la tabla 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Resultados-de-explotación"
+
+\end_inset
+
+ los resultados de explotación de las pruebas anteriores:
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top" width="2cm">
+<column alignment="center" valignment="top" width="2cm">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Episodios hasta convergencia
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $G$
+\end_inset
+
+ tras convergencia 
+\begin_inset Formula $(\epsilon=0)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+SARSA
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $35$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3417$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Q-learning
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $20$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BDA-MF
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $75$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.3487$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Random walk (transiciones deterministas)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="2cm">
+<column alignment="center" valignment="top" width="2cm">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Episodios hasta convergencia
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $G$
+\end_inset
+
+ tras convergencia 
+\begin_inset Formula $(\epsilon=0)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $770$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $40.4532$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $820$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $41.1833$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $200$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $41.1163$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Random walk (transiciones aleatorias)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top" width="2cm">
+<column alignment="center" valignment="top" width="2cm">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Episodios hasta convergencia
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $G$
+\end_inset
+
+ tras convergencia 
+\begin_inset Formula $(\epsilon=0)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+SARSA
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $130$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-12.2352$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Q-learning
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $50$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-11.3615$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BDA-MF
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $275$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-15.119$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Acantilado (transiciones deterministas)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="2cm">
+<column alignment="center" valignment="top" width="2cm">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Episodios hasta convergencia
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $G$
+\end_inset
+
+ tras convergencia 
+\begin_inset Formula $(\epsilon=0)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $350$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-31.5419$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $380$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-26.2466$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $120$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-24.7039$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Acantilado (transiciones aleatorias)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Resultados-de-explotación"
+
+\end_inset
+
+Resultados de explotación para los cuatro problemas bajo estudio evaluados.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Como se ha podido comprobar con los problemas anteriores, BDA-MF ha estado
+ a la altura de algoritmos de tan extendido uso como son SARSA y Q-learning.
+ Aunque con el mismo objetivo, la idea que subyace a estos algoritmos es
+ muy diferente: mientras que SARSA y Q-learning constituyen métodos que
+ se conocen como basados en la función valor y trabajan explorando el espacio
+ de funciones valor para posteriormente extraer la política, BDA-MF cambia
+ el enfoque y pasa a buscar directamente en el espacio de políticas mediante
+ un ascenso por gradiente.
+ 
+\end_layout
+
+\begin_layout Standard
+En vista de los resultados que se han ido mostrando, se puede afirmar que
+ la búsqueda en el espacio de políticas que realiza BDA-MF requiere de un
+ alto nivel exploración.
+ De este modo, cuando la matriz de transición es determinista, se hace necesario
+ un valor de 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+ alto (si lo comparamos con el que toman SARSA o Q-learning) para asegurar
+ la convergencia.
+ Y es precisamente el hecho de que exista una gran necesidad de exploración
+ lo que hace que su convergencia sea más lenta que SARSA o Q-learning, ya
+ que cuanto mayor sea 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+, menor será la probabilidad de que la siguiente acción que tomemos siga
+ la política que se está construyendo y que apunta a ser la óptima.
+ En resumen, lo que a priori es una ventaja porque permite explorar el espacio
+ de políticas y converger, más tarde supone una desventaja ya que no da
+ pie a reforzar las acciones que conducen al máximo retorno.
+ Además, no habrá que perder de vista que SARSA y Q-learning emplean políticas
+ de tipo greedy o 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+-greedy, lo cual favorece la convergencia ya que siempre se toma la acción
+ que maximiza el retorno esperado.
+\end_layout
+
+\begin_layout Standard
+Las conclusiones que se acaban de extraer quedan contrastadas cuando se
+ analizan los mismos problemas, pero cuando la matriz de transición tiene
+ cierto carácter aleatorio.
+ En estos casos, aunque el agente no lo elija, existe un nivel de exploración
+ que viene impuesto por las transiciones del medio: el hecho de que la acción
+ llevada a cabo finalmente por el entorno no sea siempre la que escogió
+ el agente, se traduce en exploración.
+ De este modo, la velocidad de convergencia de BDA-MF resulta ser considerableme
+nte mejor que la de SARSA y Q-learning.
+ Lo que ahora es una ventaja para el algoritmo que en este trabajo se ha
+ desarrollado, pasa a ser una desventaja para SARSA y Q-learning, que aunque
+ también basen su funcionamiento en la exploración del espacio de estados
+ y acciones, un nivel tan alto de exploración parece jugar en su contra.
+\end_layout
+
+\begin_layout Standard
+En resumen, el algoritmo BDA-MF de búsqueda en el espacio de políticas ha
+ resultado ser competitivo.
+ No obstante, su funcionamiento mejora sustancialmente cuanto mayor es la
+ exploración del espacio de estados y acciones, lo cual supone una desventaja
+ en problemas cuyo entorno se modela de manera determinista por los motivos
+ explicados anteriormente.
+ Si por el contrario el medio presenta algún carácter estocástico en las
+ transiciones, BDA-MF sería una opción a considerar a nivel de implementación.
+\end_layout
+
+\end_body
+\end_document

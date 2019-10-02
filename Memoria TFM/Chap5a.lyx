@@ -1,0 +1,3647 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass book
+\begin_preamble
+\input{spanishPseudoAlgorithmic} % mi archivo de traducción
+
+\AtBeginDocument{
+  \def\labelitemii{\ding{71}}
+  \def\labelitemiii{\ding{111}}
+  \def\labelitemiv{\(\vartriangleright\)}
+}
+
+
+
+\usepackage{babel}
+\addto\shorthandsspanish{\spanishdeactivate{~<>}}
+\end_preamble
+\use_default_options false
+\begin_modules
+theorems-ams-bytype
+theorems-chap-bytype
+theorems-ams-extended-bytype
+\end_modules
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding iso8859-15
+\fontencoding T1
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing double
+\use_hyperref true
+\pdf_bookmarks false
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref section
+\pdf_pdfusetitle false
+\papersize a4paper
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 2
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.5in
+\topmargin 1.6in
+\rightmargin 1.2in
+\bottommargin 1.6in
+\headheight 1.5in
+\headsep 0.3in
+\footskip 0.8in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle plain
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset FormulaMacro
+\newcommand{\X}{\mathcal{X}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\Xf}{\mathbb{X}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\T}{\mathcal{\top}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\S}{\mathcal{S}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\A}{\mathcal{A}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\R}{\mathcal{R}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\P}{\mathcal{P}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Pr}{\mathbb{P}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Sa}{\mathbb{S}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Ba}{\mathbb{B}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Na}{\mathbb{N}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\Pr}{\mathbb{P}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\renewcommand{\E}{\mathbb{E}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\1}{\mathbb{1}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Resolución de las ecuaciones de Bellman en problemas de pequeña escala
+\begin_inset CommandInset label
+LatexCommand label
+name "chap:solucionEcuBellmanTabu"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+chaptermark{RESOLUCIÓN DE PROBLEMAS DE PEQUEÑA ESCALA}
+\end_layout
+
+\end_inset
+
+Tal y como se detalló en el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:cap3Contexto-del-problema"
+
+\end_inset
+
+, los problemas de aprendizaje por refuerzo se van a clasificar en dos grandes
+ grupos en función del tamaño de sus conjuntos de estados y acciones.
+ Atendiendo a este criterio, se pueden encontrar soluciones basadas en tablas,
+ apropiadas para problemas de pequeña escala, y soluciones basadas en aproximaci
+ones de la función valor, que permitirán abordar los problemas de gran dimension
+alidad.
+\end_layout
+
+\begin_layout Standard
+En este capítulo se van a tratar dos de las técnicas más usadas cuando los
+ conjuntos de estados y acciones de nuestro problema son pequeños y discretos:
+ programación dinámica (
+\emph on
+Dynamic Programming
+\emph default
+, DP) y diferencias temporales (
+\emph on
+Temporal Difference
+\emph default
+, TD).
+\end_layout
+
+\begin_layout Standard
+Antes de comenzar la explicación, recalcar que ambos métodos permitirán
+ resolver el problema de control que se plantee.
+ No obstante, DP se emplea cuando el modelo es conocido y por tanto el agente
+ puede planificar las decisiones de antemano.
+ Por el contrario, TD es un método de aprendizaje por refuerzo puro en el
+ sentido de que se da por desconocido el modelo del entorno, y por tanto
+ el agente debe aprender la política de comportamiento óptima a partir de
+ la interacción con el mismo.
+ Dado que será este último caso el de mayor interés de cara al objetivo
+ de este trabajo –desarrollo de nuevos algoritmos de aprendizaje por refuerzo–,
+ se presentarán dos de los algoritmos más empleados en la actualidad que
+ hacen uso de TD: SARSA y 
+\begin_inset Formula $Q$
+\end_inset
+
+-learning.
+ Precisamente por ser los más extendidos hasta la fecha, serán estos dos
+ algoritmos con los que se compare el algoritmo novel que se desarrolle
+ en el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:cap10BDAMF"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Programación dinámica
+\end_layout
+
+\begin_layout Standard
+El término 
+\emph on
+programación dinámica
+\emph default
+ hace referencia a un conjunto de métodos iterativos que permiten resolver
+ las ecuaciones de Bellman.
+ La palabra 
+\begin_inset Quotes fld
+\end_inset
+
+programación
+\begin_inset Quotes frd
+\end_inset
+
+ es un sinónimo matemático estándar de optimización, y 
+\begin_inset Quotes fld
+\end_inset
+
+dinámica
+\begin_inset Quotes frd
+\end_inset
+
+ hace referencia al hecho de que estamos optimizando una función a lo largo
+ de un horizonte temporal.
+ DP ha sido aplicado a multitud de problemas prácticos que comparten una
+ propiedad fundamental definida como el 
+\emph on
+principio de optimalidad
+\emph default
+, que en palabras de Richard Bellman es explicado de la siguiente manera:
+\end_layout
+
+\begin_layout Quote
+Una política óptima tiene la propiedad de que, cualesquiera que sean el
+ estado inicial y la decisión inicial, las decisiones restantes deberán
+ constituir una política óptima con respecto al estado resultante de la
+ primera decisión (ver Bellman, 1957, Cap.
+ III.3).
+\end_layout
+
+\begin_layout Standard
+En otras palabras, el principio de optimalidad establece que el problema
+ puede ser descompuesto en subproblemas y que la solución óptima del problema
+ puede ser también descompuesta, de manera que se puede extraer la solución
+ óptima a partir de los subproblemas.
+ Esto es exactamente lo que ocurre en, por ejemplo, la ecuación de Bellman
+ 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:optimal-v-from-optimal-v"
+
+\end_inset
+
+, donde la función valor óptima para el estado 
+\begin_inset Formula $s$
+\end_inset
+
+ se descompone en la acción que proporciona la recompensa máxima esperada
+ y la función valor óptima para el siguiente estado esperado.
+ Ejemplos de problemas prácticos que satisfacen el principio de optimalidad
+ son: planificación, problemas de camino más corto, problemas de control
+ óptimo, etc.
+\end_layout
+
+\begin_layout Subsection
+Operador de Bellman
+\end_layout
+
+\begin_layout Standard
+Se van a presentar ahora dos aplicaciones que jugarán un papel teórico important
+e en control óptimo.
+ Para cualquier función 
+\begin_inset Formula $v:\S\rightarrow\mathbb{R}$
+\end_inset
+
+ consideraremos el lado derecho de las ecuaciones de Bellman 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:state-value-bellman-equation"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:v-from-v-averaging"
+
+\end_inset
+
+ como una aplicación, conocida como 
+\emph on
+operador de Bellman
+\emph default
+ para la política 
+\begin_inset Formula $\pi$
+\end_inset
+
+, y para cualquier 
+\begin_inset Formula $s\in\S$
+\end_inset
+
+ se definirá de la siguiente manera:
+\begin_inset Formula 
+\begin{align}
+\left(T_{\pi}v\right)\left(s\right) & \triangleq\E_{\pi,\P}\left[R_{t+1}+\gamma v^{\pi}(S{}_{t+1})|S_{t}=s\right]\nonumber \\
+ & =\sum_{a\in\text{\ensuremath{\A}}}\pi(a|s)\left(\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}v^{\pi}(s')\right)\label{eq:bellman-operator-averaging}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Se puede observar que 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:bellman-operator-averaging"
+
+\end_inset
+
+ dependerá de la política 
+\begin_inset Formula $\pi$
+\end_inset
+
+ que usemos para promediar las acciones y las transiciones de estado.
+ Para el caso concreto de la política óptima, se define el 
+\emph on
+operador de Bellman óptimo
+\emph default
+, 
+\begin_inset Formula $T$
+\end_inset
+
+, de nuevo para una función 
+\begin_inset Formula $v:\S\rightarrow\mathbb{R}$
+\end_inset
+
+, como el lado derecho de la ecuación de Bellman óptima 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:optimal-v-from-optimal-v"
+
+\end_inset
+
+, para cualquier 
+\begin_inset Formula $s\in\S$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align}
+\left(Tv\right)\left(s\right) & \triangleq\max_{a\in\A}\E_{\P}\left[R_{t+1}+\gamma v\left(S_{t+1}\right)|S_{t}=s\right]\nonumber \\
+ & =\max_{a\in\A}\left[\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}v\left(s'\right)\right]\label{eq:bellman-operator-averaging-1}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Abusando ligeramente de la notación, se puede definir también el mismo operador
+ para cualquier función valor de estados-acciones 
+\begin_inset Formula $q:\S\times\A\rightarrow\mathbb{R}$
+\end_inset
+
+ a partir de 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:state-action-bellman-equation"
+
+\end_inset
+
+–
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:q-from-q-averaging"
+
+\end_inset
+
+ , 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:optimal-q-definition"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:optimal-q-from-optimal-q"
+
+\end_inset
+
+, para cualquier par 
+\begin_inset Formula $\left(s,a\right)\in\S\times\A$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align}
+\left(T_{\pi}q\right)\left(s,a\right) & \triangleq\E_{\pi,\P}\left[R_{t+1}+\gamma q^{\pi}\left(S_{t+1},A_{t+1}\right)|S_{t}=s,A_{t}=a\right]\nonumber \\
+ & =\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}\sum_{a'\in\text{\A}}\pi\left(a'|s'\right)q^{\pi}\left(s',a'\right)\\
+\left(Tq\right)\left(s,a\right) & \triangleq\max_{a\in\A}\E_{\P}\left[R_{t+1}+\gamma q\left(S_{t+1},A_{t+1}\right)|S_{t}=s,A_{t}=a\right]\nonumber \\
+ & =\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}\max_{a'\in\A}q\left(s',a'\right)
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Saber si nos referimos al operador de Bellman de las funciones valor de
+ estados o de estados-acciones debería quedar claro a partir del contexto.
+\end_layout
+
+\begin_layout Standard
+El operador de Bellman en forma vectorial para una política 
+\begin_inset Formula $\pi$
+\end_inset
+
+ dada será definido como:
+\begin_inset Formula 
+\begin{align}
+T_{\pi}v & \triangleq\left(\left(T_{\pi}v\right)\left(s\right)\right)_{s\in\S}=\R^{\pi}+\gamma\P^{\pi}v\label{eq:bellman-operator-vector-state}\\
+T_{\pi}q & \triangleq\left(\left(T_{\pi}q\right)\left(s,a\right)\right)_{\left(s,a\right)\in\S\times\A}=\R+\gamma\P\mathit{\Pi q}\label{eq:bellman-operator-vector-state-action}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+De manera similar, el operador de Bellman óptimo expresado en forma vectorial
+ será:
+\begin_inset Formula 
+\begin{align}
+Tv & \triangleq\left(\left(Tv\right)\left(s\right)\right)_{s\in\S}\\
+Tq & \triangleq\left(\left(Tq\right)\left(s,a\right)\right)_{\left(s,a\right)\in\S\times\A}
+\end{align}
+
+\end_inset
+
+De este modo se podrán reescribir las ecuaciones de Bellman, en una forma
+ muy compacta, de la siguiente manera:
+\begin_inset Formula 
+\begin{align}
+v^{\pi} & =T_{\pi}v^{\pi}\label{eq:Bellman-equation-in-vector-operator-form}\\
+q^{\pi} & =T_{\pi}q^{\pi}\\
+v^{*} & =Tv^{*}\\
+q^{*} & =Tq^{*}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Todos estos operadores de Bellman satisfacen una propiedad muy importante
+ conocida como 
+\emph on
+aplicación contractiva
+\emph default
+.
+ Antes de demostrar que cumplen dicha propiedad, se definirá el concepto
+ de aplicación contractiva.
+\end_layout
+
+\begin_layout Definition
+Una aplicación 
+\begin_inset Formula $F:\X\rightarrow\X$
+\end_inset
+
+ se dice que es una aplicación contractiva o una contracción si existe una
+ constante 
+\begin_inset Formula $c$
+\end_inset
+
+, con 
+\begin_inset Formula $0\le c<1$
+\end_inset
+
+, tal que: 
+\begin_inset Formula 
+\begin{equation}
+\|F\left(v\right)-F\left(v'\right)\|\le c\|v-v'\|
+\end{equation}
+
+\end_inset
+
+para todo 
+\begin_inset Formula $v,v'\in\X$
+\end_inset
+
+ , donde 
+\begin_inset Formula $\X$
+\end_inset
+
+ es algún espacio con una métrica 
+\begin_inset Formula $\|\cdot\|$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Con el fin de probar que los operadores de Bellman son contracciones, deberemos
+ definir antes la norma infinito.
+\end_layout
+
+\begin_layout Definition
+La norma infinito (o norma máxima), denotada como 
+\begin_inset Formula $\infty$
+\end_inset
+
+-norm, entre dos vectores valor, 
+\begin_inset Formula $v\in\mathbb{R}^{|\S|}$
+\end_inset
+
+ y 
+\begin_inset Formula $v'\in\mathbb{R}^{|\S|}$
+\end_inset
+
+, vendrá dada por la mayor diferencia entre cada una de sus componentes:
+\begin_inset Formula 
+\begin{equation}
+\left\Vert v-v'\right\Vert _{\infty}=\underset{s\in\mathcal{S}}{\max}\left|v\left(s\right)-v'\left(s\right)\right|
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+También será necesaria la siguiente suposición en relación con la recompensa.
+\end_layout
+
+\begin_layout Assumption
+\begin_inset CommandInset label
+LatexCommand label
+name "assu:bounded-rewards"
+
+\end_inset
+
+La recompensa instantánea esperada obtenida después de transitar de 
+\begin_inset Formula $s$
+\end_inset
+
+ a 
+\begin_inset Formula $s'$
+\end_inset
+
+ cuando se toma la acción 
+\begin_inset Formula $a$
+\end_inset
+
+ está acotada, es decir, existe algún escalar 
+\begin_inset Formula $B$
+\end_inset
+
+ tal que:
+\begin_inset Formula 
+\begin{equation}
+|R_{t}|\le B<\infty,\quad\forall(s,a,s')\in\S\times\A\times\S
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Tras estas consideraciones, se pasa a continuación a demostrar que los operadore
+s de Bellman son contracciones.
+\end_layout
+
+\begin_layout Proposition
+Supongamos 
+\begin_inset Formula $0<\gamma<1$
+\end_inset
+
+ y que la suposición 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "assu:bounded-rewards"
+
+\end_inset
+
+ se cumple.
+ Entonces, los operadores de Bellman, 
+\begin_inset Formula $T_{\pi}$
+\end_inset
+
+ y 
+\begin_inset Formula $T$
+\end_inset
+
+, son contracciones: 
+\begin_inset Formula 
+\begin{align}
+\left\Vert T_{\pi}v-T_{\pi}v'\right\Vert _{\infty} & \le\gamma\left\Vert v-v'\right\Vert _{\infty},\qquad\forall v,v\text{'}\in\mathbb{R}^{|\S|}\\
+\left\Vert Tv-Tv'\right\Vert _{\infty} & \le\gamma\left\Vert v-v'\right\Vert _{\infty},\qquad\forall v,v'\in\mathbb{R}^{|\S|}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+La demostración es similar para 
+\begin_inset Formula $T_{\pi}$
+\end_inset
+
+ y para 
+\begin_inset Formula $T$
+\end_inset
+
+, con lo cual sólo se demostrará el cumplimiento para la primera de ellas.
+ Lo primero de todo, destacar que, puesto que 
+\begin_inset Formula $\P^{\pi}$
+\end_inset
+
+ es una matrix estocástica, todos sus elementos son menores o iguales que
+ 1.
+ En consecuencia se cumple: 
+\begin_inset Formula 
+\begin{equation}
+\|\P^{\pi}v\|_{\infty}\le\|v\|_{\infty}
+\end{equation}
+
+\end_inset
+
+Ahora se usará esta relación para la definición del operador: 
+\begin_inset Formula 
+\begin{align}
+\|T_{\pi}\left(v\right)-T_{\pi}\left(v'\right)\|_{\infty} & =\|\R^{\pi}+\gamma\P^{\pi}v-\left(\R^{\pi}+\gamma\P^{\pi}v'\right)\|_{\infty}\nonumber \\
+ & =\gamma\|\P^{\pi}\left(v-v'\right)\|_{\infty}\nonumber \\
+ & \le\gamma\|v-v'\|_{\infty}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Las contracciones tienen propiedades muy útiles e interesantes.
+ Por ello, el haber demostrado que los operadores de Bellman son contracciones
+ supone una gran ventaja.
+ En concreto, podemos aplicar el teorema de las aplicaciones contractivas
+ o teorema del punto fijo de Banach de la siguiente manera:
+\end_layout
+
+\begin_layout Theorem
+\begin_inset CommandInset label
+LatexCommand label
+name "thm:Bellman-operator-is-contraction"
+
+\end_inset
+
+Lo siguiente se cumple para el operador de Bellman, para alguna política
+ 
+\begin_inset Formula $\pi$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Enumerate
+Existe una única solución 
+\begin_inset Formula $v^{\pi}$
+\end_inset
+
+ a la ecuación de punto fijo 
+\begin_inset Formula $T_{\pi}v=v$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Para cualquier 
+\begin_inset Formula $v_{0}\in\mathbb{R}^{|\S|}$
+\end_inset
+
+, la iteración de punto fijo dada por 
+\begin_inset Formula $v_{t+1}=T_{\pi}\left(v_{t}\right)$
+\end_inset
+
+ converge a 
+\begin_inset Formula $v^{\pi}$
+\end_inset
+
+ a medida que 
+\begin_inset Formula $t\rightarrow\infty$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Las iteraciones 
+\begin_inset Formula $v_{t}$
+\end_inset
+
+ satisfacen las siguientes cotas de error:
+\begin_inset Formula 
+\begin{align}
+\|v_{t}-v^{\pi}\| & \le\frac{\gamma^{t}}{1-\gamma}\|v_{1}-v_{0}\|\label{eq:error-bound-value-iterates-1}\\
+\|v_{t}-v^{\pi}\| & \le\frac{\gamma}{1-\gamma}\|v_{t}-v_{t-1}\|
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Theorem
+\begin_inset CommandInset label
+LatexCommand label
+name "thm:Optimal-Bellman-operator-is-contraction"
+
+\end_inset
+
+Lo siguiente se cumple para el operador de Bellman óptimo:
+\end_layout
+
+\begin_layout Enumerate
+Existe una única solución 
+\begin_inset Formula $v^{*}$
+\end_inset
+
+ a la ecuación de punto fijo 
+\begin_inset Formula $Tv=v$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Para cualquier 
+\begin_inset Formula $v_{0}\in\mathbb{R}^{|\S|}$
+\end_inset
+
+, la iteración de punto fijo dada por 
+\begin_inset Formula $v_{t+1}=T\left(v_{t}\right)$
+\end_inset
+
+ converge a 
+\begin_inset Formula $v^{*}$
+\end_inset
+
+ a medida que 
+\begin_inset Formula $t\rightarrow\infty$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Las iteraciones 
+\begin_inset Formula $v_{t}$
+\end_inset
+
+ satisfacen las siguientes cotas de error:
+\begin_inset Formula 
+\begin{align}
+\|v_{t}-v^{*}\| & \le\frac{\gamma^{t}}{1-\gamma}\|v_{1}-v_{0}\|\\
+\|v_{t}-v^{*}\| & \le\frac{\gamma}{1-\gamma}\|v_{t}-v_{t-1}\|\label{eq:error-bounds-value-iterates-4}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En resumen, los teoremas 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:Bellman-operator-is-contraction"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:Optimal-Bellman-operator-is-contraction"
+
+\end_inset
+
+ enuncian que si aplicamos de manera recursiva el operador de Bellman (óptimo)
+ a cualquier función 
+\begin_inset Formula $v:\S\rightarrow\mathbb{R}$
+\end_inset
+
+, de manera asintótica obtendremos la función valor de estados (óptima).
+ Esto da pie a pensar en el uso de métodos iterativos de cara a encontrar
+ las funciones valor de estados 
+\begin_inset Formula $v^{\pi}$
+\end_inset
+
+ (para una política 
+\begin_inset Formula $\pi$
+\end_inset
+
+ dada) o para encontrar la función valor de estados óptima 
+\begin_inset Formula $v^{*}$
+\end_inset
+
+.
+ Las mismas conclusiones pueden extraerse para la función valor de estados-accio
+nes, 
+\begin_inset Formula $q^{\pi}$
+\end_inset
+
+ y 
+\begin_inset Formula $q^{*}$
+\end_inset
+
+.
+ En la siguiente sección emplearemos estas ideas para presentar dos algoritmos:
+ 
+\emph on
+value iteration
+\emph default
+ (VI) y 
+\emph on
+policy iteration
+\emph default
+ (PI), los cuales son conocidos como métodos de programación dinámica.
+\end_layout
+
+\begin_layout Subsection
+Métodos de programación dinámica
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Metodos-de-DP"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Cuando se trata con MDPs, se consideran dos problemas diferentes:
+\end_layout
+
+\begin_layout Enumerate
+Predicción: consiste en encontrar la función valor de estados o de estados-accio
+nes para una política dada.
+ Este problema se conoce típicamente como evaluación de la política (
+\emph on
+policy evaluation
+\emph default
+) ya que la función valor nos dirá cómo de buena es una política (en términos
+ de recompensa acumulada esperada)
+\end_layout
+
+\begin_layout Enumerate
+Control: consiste en encontrar la política óptima; es decir, la política
+ que lleva a la función valor óptima.
+\end_layout
+
+\begin_layout Standard
+Los métodos de programación dinámica son directamente derivados de las propiedad
+es de convergencia de los operadores de Bellman, presentadas en el teorema
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:Bellman-operator-is-contraction"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Predicción
+\end_layout
+
+\begin_layout Standard
+Para el problema de predicción, se van a considerar las siguientes iteraciones
+ derivadas del teorema 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:Bellman-operator-is-contraction"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align}
+v_{t+1} & =T_{\pi}\left(v_{t}\right)=\mathit{\mathcal{\R^{\pi}}+\gamma\mathit{\P^{\pi}}\mathit{v_{t}}}\label{eq:policy-evaluation-iterate-v}\\
+q_{t+1} & =T_{\pi}\left(q_{t}\right)=\mathcal{\R}+\gamma\mathit{\P\mathit{\Pi}}\mathit{q_{t}}\label{eq:policy-evaluation-iterate-q}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Estas recursiones dan pie al algoritmo llamado 
+\emph on
+policy evaluation
+\emph default
+ (PE), el cual converge asintóticamente a las funciones valor 
+\begin_inset Formula $v^{\pi}$
+\end_inset
+
+ o 
+\begin_inset Formula $q^{\pi}$
+\end_inset
+
+ para una política 
+\begin_inset Formula $\pi$
+\end_inset
+
+ dada.
+ En la práctica, para el problema de predicción, la función valor de estados
+ 
+\begin_inset Formula $v^{\pi}$
+\end_inset
+
+ es todo lo que necesitamos conocer para poder evaluar cómo de buena es
+ una política, de manera que 
+\begin_inset Formula $q^{\pi}$
+\end_inset
+
+ no suele ser calculado.
+ En el problema de control la situación es diferente y existen algunas variacion
+es algorítmicas prácticas tanto para la función valor de estados como de
+ estados-acciones.
+ Además, tal y como se verá en la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Diferencias-temporales_TD"
+
+\end_inset
+
+, la función valor de estados-acciones será generalmente preferida para
+ aprender la política óptima.
+\end_layout
+
+\begin_layout Standard
+La figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Scheme-of-Policy_evaluation"
+
+\end_inset
+
+ ilustra el proceso por el cual se actualiza a 
+\begin_inset Formula $v_{t+1}\left(s\right)$
+\end_inset
+
+ a partir de 
+\begin_inset Formula $v_{t}\left(s\right)$
+\end_inset
+
+.
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap5/IPE.jpeg
+	lyxscale 50
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Scheme-of-Policy_evaluation"
+
+\end_inset
+
+Esquema empleado para la actualización de la función valor en PE.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Control
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Control_GPI"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El objetivo del problema de control es obtener la política óptima (es decir,
+ la política con mayor función valor asociada).
+ De cara a mejorar una política 
+\begin_inset Formula $\pi$
+\end_inset
+
+ dada para obtener otra política 
+\begin_inset Formula $\pi'$
+\end_inset
+
+ tal que 
+\begin_inset Formula $v^{\pi'}\ge v^{\pi},$
+\end_inset
+
+ el agente puede considerar si debería cambiar la política en un determinado
+ estado por otra acción 
+\begin_inset Formula $a\neq\pi(s)$
+\end_inset
+
+.
+ Una manera de comprobar si la política resultante tras este cambio ha mejorado
+ la función valor, es evaluar el resultado de seleccionar 
+\begin_inset Formula $a$
+\end_inset
+
+ en el estado 
+\begin_inset Formula $s$
+\end_inset
+
+, y después seguir 
+\begin_inset Formula $\pi(s)$
+\end_inset
+
+, lo cual es equivalente a calcular la función valor de estados-acciones,
+ o simplemente la 
+\begin_inset Quotes fld
+\end_inset
+
+función 
+\begin_inset Formula $q$
+\end_inset
+
+
+\begin_inset Quotes frd
+\end_inset
+
+.
+\begin_inset Formula 
+\begin{equation}
+q^{\pi}\left(s,a\right)=\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}v^{\pi}\left(s'\right)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Una forma intuitiva de encontrar una política que mejore 
+\begin_inset Formula $q^{\pi}\left(s,a\right)$
+\end_inset
+
+ es la política 
+\emph on
+greedy
+\emph default
+, 
+\begin_inset Formula $\pi'\left(s\right)$
+\end_inset
+
+, dada por 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:greedy-policy"
+
+\end_inset
+
+, tal que:
+\begin_inset Formula 
+\begin{equation}
+\pi'\left(s\right)=\arg\max_{a\in\A}q^{\pi}\left(s,a\right)\label{eq:greedy-policy-for-improvement}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El teorema 
+\shape italic
+\emph on
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:Policy-improvement"
+
+\end_inset
+
+, conocido como el teorema de mejora de la política 
+\emph default
+(policy improvement theorem)
+\emph on
+ formaliza estas ideas.
+
+\shape default
+\emph default
+ 
+\end_layout
+
+\begin_layout Theorem
+\begin_inset CommandInset label
+LatexCommand label
+name "thm:Policy-improvement"
+
+\end_inset
+
+Sean 
+\begin_inset Formula $\pi'\left(s\right)$
+\end_inset
+
+ y 
+\begin_inset Formula $\pi\left(s\right)$
+\end_inset
+
+ cualquier par de políticas deterministas que satisfacen la siguiente desigualda
+d para todo 
+\begin_inset Formula $s\in\mathcal{S}$
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+q^{\pi}\left(s,\pi'\left(s\right)\right)\geq v^{\pi}\left(s\right),\quad\forall s\in\mathcal{S}
+\end{equation}
+
+\end_inset
+
+Entonces, se tiene que:
+\begin_inset Formula 
+\begin{equation}
+v^{\pi'}\left(s\right)\geq v^{\pi}\left(s\right)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Es decir, el teorema 
+\shape italic
+\emph on
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:Policy-improvement"
+
+\end_inset
+
+
+\shape default
+\emph default
+ establece que reemplazando 
+\begin_inset Formula $\pi\left(s\right)$
+\end_inset
+
+ por la política 
+\emph on
+greedy
+\emph default
+ 
+\begin_inset Formula $\pi'\left(s\right)$
+\end_inset
+
+ dada por 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:greedy-policy-for-improvement"
+
+\end_inset
+
+, la función valor resultante 
+\begin_inset Formula $v^{\pi'}$
+\end_inset
+
+es mejor o igual que la función valor original 
+\begin_inset Formula $v^{\pi}$
+\end_inset
+
+.
+ El algoritmo consistente en la iteración de estas dos fases de evaluación
+ de la política y mejora de la política se conoce como 
+\shape italic
+policy iteration
+\series bold
+ 
+\series default
+\emph on
+(PI), y típicamente es representado como una secuencia de políticas que
+ mejoran (
+\emph default
+improvement
+\emph on
+, I) de manera monótona a partir de funciones valor evaluadas (
+\emph default
+evaluation
+\emph on
+, E)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\pi_{0}\left(s\right)\overset{E}{\rightarrow}v^{\pi_{0}}\left(s\right)\overset{I}{\rightarrow}\pi_{1}\left(s\right)\overset{E}{\rightarrow}v^{\pi_{1}}\left(s\right)\overset{E}{\rightarrow}\cdots\overset{I}{\rightarrow}\pi^{*}\left(s\right)\overset{E}{\rightarrow}v^{*}\left(s\right)\label{eq:policy-iteration-scheme-v}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\pi_{0}\left(s\right)\overset{E}{\rightarrow}q^{\pi_{0}}\left(s,a\right)\overset{I}{\rightarrow}\pi_{1}\left(s\right)\overset{E}{\rightarrow}q^{\pi_{1}}\left(s,a\right)\overset{E}{\rightarrow}\cdots\overset{I}{\rightarrow}\pi^{*}\left(s\right)\overset{E}{\rightarrow}q^{*}\left(s,a\right)\label{eq:policy-iteration-scheme-q}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Un enfoque alternativo consiste en aplicar directamente el operador de Bellman
+ óptimo a la función valor de manera recursiva, tal y como se derivó en
+ el teorema 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "thm:Optimal-Bellman-operator-is-contraction"
+
+\end_inset
+
+.
+ Puesto que el operador óptimo de Bellman es una contracción, este procedimiento
+, conocido como 
+\emph on
+value iteration
+\emph default
+ (VI) también converge a la función valor óptima.
+ A continuación, ya se puede extraer la política óptima como aquella que
+ es 
+\emph on
+greedy
+\emph default
+ respecto a la función valor óptima para cada estado.
+\end_layout
+
+\begin_layout Standard
+Curiosamente, se puede encontrar una cierta relación entre VI y PI de la
+ siguiente manera: como ya se ha mencionado, en cada instante PI lleva a
+ cabo la evaluación de la política, de manera que se tiene que esperar hasta
+ que haya convergido la función valor de la política actual.
+ Sin embargo, en lugar de esperar a la convergencia, podríamos tolerar cierto
+ error y truncar la etapa de evaluación de la política en un punto determinado,
+ de manera que a continuación se llevase a cabo el paso de mejora de la
+ política sobre la aproximación truncada de la función valor.
+ Ahora consideremos el caso extremo en el cual sólo se realiza una iteración
+ del bucle de evaluación de la política y justo después se toma la política
+ 
+\emph on
+greedy
+\emph default
+.
+ Este caso extremo es equivalente a aplicar el operador de Bellman óptimo.
+ En otras palabras, podemos ver VI como un caso extremo de PI en el cual
+ el paso de evaluación de la política es aproximado con una única iteración.
+ Como un caso intermedio, se puede considerar más de una iteración de la
+ etapa de evaluación de la política antes de pasar a mejorarla.
+ Este enfoque es lo que se conoce como policy iteration generalizado (
+\emph on
+generalized policy iteration
+\emph default
+, GPI), y presenta PI y VI como casos extremo particulares.
+ La figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Generalized-policy-iteration"
+
+\end_inset
+
+ muestra de manera esquemática este proceso.
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap5/gpi_1
+	lyxscale 50
+	scale 50
+
+\end_inset
+
+
+\begin_inset space \qquad{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Images/Chap5/gpi_2
+	lyxscale 50
+	scale 50
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Generalized-policy-iteration"
+
+\end_inset
+
+Algoritmo policy iteration generalizado (GPI).
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+A continuación se mostrarán las etapas de PI y VI en mayor detalle.
+ Estos algoritmos de programación dinámica constituyen la base de los algoritmos
+ de aprendizaje que se estudiarán en la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Diferencias-temporales_TD"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Policy iteration
+\end_layout
+
+\begin_layout Standard
+Policy iteration evalúa las políticas por medio de sus funciones valor asociadas
+, y a su vez usa esas funciones valor para encontrar nuevas políticas.
+ El algoritmo empieza con una política arbitraria 
+\begin_inset Formula $\pi_{0}$
+\end_inset
+
+.
+ En cada iteración 
+\begin_inset Formula $t$
+\end_inset
+
+ se determina la función valor de la política actual, 
+\begin_inset Formula $v^{\pi_{t}}$
+\end_inset
+
+ o 
+\begin_inset Formula $q^{\pi_{t}}$
+\end_inset
+
+, por medio del algoritmo PE, que lo que hace es aplicar de manera recursiva
+ 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:policy-evaluation-iterate-v"
+
+\end_inset
+
+ o 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:policy-evaluation-iterate-q"
+
+\end_inset
+
+.
+ Una vez la fase de PE se ha completado, se mejora la política tomando la
+ política 
+\emph on
+greedy
+\emph default
+ dada por 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:greedy-policy-for-improvement"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+\pi_{t+1}\left(s\right)\in\arg\max_{a\in\A}q^{\pi_{t}}\left(s,a\right),\quad\forall s\in\S
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Value iteration
+\end_layout
+
+\begin_layout Standard
+Value iteration comienza con una función valor inicial, 
+\begin_inset Formula $v_{0}$
+\end_inset
+
+ o 
+\begin_inset Formula $q_{0}$
+\end_inset
+
+, y a continuación emplea las siguientes recursiones del operador de Bellman,
+ derivadas del teorema 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:Optimal-Bellman-operator-is-contraction"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align}
+v_{t+1} & =Tv_{t}\\
+q_{t+1} & =Tq_{t}
+\end{align}
+
+\end_inset
+
+que en su versión desarrollada para todo estado y todo par estado-acción
+ son:
+\begin_inset Formula 
+\begin{align*}
+v_{t+1}\left(s\right) & =\max_{a\in\text{\A}}\left[\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}v_{t}\left(s'\right)\right]\\
+q_{t+1}\left(s,a\right) & =\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}\max_{a'\in\A}q_{t}\left(s',a'\right)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Debido a la propiedad de contracción del operador de Bellman óptimo enunciada
+ en el teorema 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "thm:Optimal-Bellman-operator-is-contraction"
+
+\end_inset
+
+, podemos garantizar la convergencia de este algoritmo a las funciones valor
+ óptimas, 
+\begin_inset Formula $v^{*}\left(s\right)$
+\end_inset
+
+ o 
+\begin_inset Formula $q^{*}\left(s,a\right)$
+\end_inset
+
+.
+ Se recuerda que cualquier política que es 
+\emph on
+greedy
+\emph default
+ respecto a la función valor óptima será óptima.
+ Esta conclusión se expresa de manera formal, empleando la notación del
+ operador de Bellman, en la proposición 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "prop:characterize-optimal-policy"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Proposition
+\begin_inset CommandInset label
+LatexCommand label
+name "prop:characterize-optimal-policy"
+
+\end_inset
+
+Una política estacionaria 
+\begin_inset Formula $\pi^{*}:\S\rightarrow\A$
+\end_inset
+
+ es óptima sí y solo sí 
+\begin_inset Formula $\pi^{*}\left(s\right)$
+\end_inset
+
+ lleva a obtener la función valor óptima 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:optimal-v-from-optimal-v"
+
+\end_inset
+
+ para cada 
+\begin_inset Formula $s\in\S.$
+\end_inset
+
+ Esto se puede expresar de manera compacta de la siguiente manera:
+\begin_inset Formula 
+\begin{equation}
+T_{\pi^{*}}v^{*}=Tv^{*}
+\end{equation}
+
+\end_inset
+
+De manera equivalente, se puede decir que 
+\begin_inset Formula $\pi^{*}$
+\end_inset
+
+ es greedy con respecto a la función valor óptima:
+\begin_inset Formula 
+\begin{align}
+\pi^{*}(s) & =\arg\max_{a\in\A}\;\left(\R_{s}^{a}+\gamma\sum_{s'\in\S}\P_{ss'}^{a}v^{*}(s')\right)=\arg\max_{a\in\A}\;q^{*}\left(s,a\right),\quad\forall s\in\S
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Por tanto, una vez que se ha encontrado 
+\begin_inset Formula $q^{*}$
+\end_inset
+
+, se puede obtener fácilmente la política óptima calculando la política
+ 
+\emph on
+greedy
+\emph default
+ con respecto a 
+\begin_inset Formula $q^{*}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Diferencias temporales
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Diferencias-temporales_TD"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Ahora se van a pasar a considerar problemas en los que la distribución de
+ probabilidad de transiciones de estados y/o la distribución de recompensas
+ son desconocidas.
+ Esta configuración es la que típicamente se conoce como 
+\emph on
+libre de modelo
+\emph default
+, en el sentido de que el agente aprende sin tener cualquier modelo previo
+ del entorno.
+\end_layout
+
+\begin_layout Standard
+Al igual que en el caso basado en modelo, donde se presentó la programación
+ dinámica como método principal para resolver el problema de control óptimo,
+ distinguiremos dos subproblemas: predicción y control.
+\end_layout
+
+\begin_layout Standard
+La idea ahora será resolver las ecuaciones de Bellman empleando estimaciones
+ de la función valor.
+ Esta idea será muy efectiva y como veremos, será la base del método de
+ las diferencias temporales (
+\emph on
+temporal difference
+\emph default
+, TD).
+\end_layout
+
+\begin_layout Subsection
+Predicción
+\end_layout
+
+\begin_layout Standard
+El problema de predicción pretende ahora estimar la función valor de una
+ política dada, para un MDP.
+ Para el problema de planificación de DP, se vio que policy evaluation era
+ capaz de predecir la función valor tomando el valor esperado de las recompensas
+ futuras.
+ Este proceso se representa en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Dynamic-Programming-backup"
+
+\end_inset
+
+, donde la zona roja indica que de cara a predecir la función valor en 
+\begin_inset Formula $S_{t}$
+\end_inset
+
+, se hace el promedio de las recompensas sobre todas las posibles transiciones
+ de estados 
+\begin_inset Formula $S_{t+1}$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap5/DP_backup.jpeg
+	lyxscale 30
+	scale 35
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Dynamic-Programming-backup"
+
+\end_inset
+
+Representación del funcionamiento de la programación dinámica.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Cuando no se tiene acceso a las distribuciones de transición de estados
+ o de las recompensas, no se puede calcular la recompensa esperada exacta.
+ Afortunadamente sí se podrán usar métodos para estimar la recompensa esperada.
+ De entre todos los existentes, vamos a centrarnos únicamente en TD por
+ ser la base de diversos algoritmos de RL empleados a día de hoy.
+\end_layout
+
+\begin_layout Standard
+La manera inicial que se propone para estimar la función valor se conoce
+ como método de Monte-Carlo (MC):
+\begin_inset Formula 
+\begin{align}
+v\left(S_{t}\right) & \gets v\left(S_{t}\right)+\alpha_{t}\left(G^{\pi}\left(S_{t}\right)-v\left(S_{t}\right)\right)
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Recordando a partir de 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:return-definition"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:v-definition"
+
+\end_inset
+
+, la función valor para alguna política 
+\begin_inset Formula $\pi$
+\end_inset
+
+ es el retorno esperado (es decir, la recompensa acumulada) sobre todas
+ las posibles trayectorias inducidas por 
+\begin_inset Formula $\pi$
+\end_inset
+
+.
+ Por comodidad en el seguimiento de los desarrollos, se presenta a continuación
+ de nuevo la definición de retorno:
+\begin_inset Formula 
+\begin{equation}
+G^{\pi}\left(S_{t}\right)\triangleq R_{t+1}+\gamma R_{t+2}+\ldots=\sum_{k=0}^{\infty}\gamma^{k}R_{t+k+1}\label{eq:return-definition-1}
+\end{equation}
+
+\end_inset
+
+donde se ha introducido una notación más específica: 
+\begin_inset Formula $G^{\pi}\left(S_{t}\right)\triangleq G_{t}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+No obstante, el método MC es bien sabido que presenta mucha varianza, de
+ manera que se requiere de una cantidad elevada de muestras para poder reducirla
+, y no siempre se puede disponer de ellas.
+ Para solucionar este problema, aparece el método de las diferencias temporales,
+ TD, y lo que propone es estimar también el retorno como la suma de la recompens
+a instantánea y la estimación de la función valor en el estado futuro:
+\begin_inset Formula 
+\begin{align}
+{\rm MC:}\qquad v\left(S_{t}\right) & \gets v\left(S_{t}\right)+\alpha_{t}\left(G^{\pi}\left(S_{t}\right)-v\left(S_{t}\right)\right)\\
+{\rm TD:}\qquad v\left(S_{t}\right) & \leftarrow v\left(S_{t}\right)+\alpha_{t}\left(R_{t+1}+\gamma v\left(S_{t+1}\right)-v\left(S_{t}\right)\right)\label{eq:TD-update-v}
+\end{align}
+
+\end_inset
+
+donde 
+\begin_inset Formula $\alpha_{t}$
+\end_inset
+
+ hace referencia al tamaño del paso o tasa de aprendizaje, perteneciente
+ a una secuencia tal que se cumple la siguiente propiedad:
+\begin_inset Formula 
+\begin{align}
+\sum_{t=0}^{\infty}\alpha_{t}=\infty & \quad\text{{y}\quad}\sum_{t=0}^{\infty}\alpha_{t}^{2}<\infty\label{eq:step-size-sequence-conditions}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Por tanto, el retorno 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:return-definition-1"
+
+\end_inset
+
+ se puede reescribir como:
+\begin_inset Formula 
+\begin{equation}
+G^{\pi}\left(S_{t}\right)=R_{t+1}+\gamma v^{\pi}\left(S_{t+1}\right)\label{eq:return-as-reward-plus-value}
+\end{equation}
+
+\end_inset
+
+TD estima 
+\begin_inset Formula $v^{\pi}$
+\end_inset
+
+ en 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:return-as-reward-plus-value"
+
+\end_inset
+
+ aproximando 
+\begin_inset Formula $G^{\text{\pi}}\left(S_{t}\right)$
+\end_inset
+
+ con otra aproximación, 
+\begin_inset Formula $\widehat{G}^{\pi}\left(S_{t}\right)$
+\end_inset
+
+, dada por:
+\begin_inset Formula 
+\begin{equation}
+\widehat{G}^{\pi}\left(S_{t}\right)\triangleq R_{t+1}+\gamma v\left(S_{t+1}\right)\approx G^{\pi}\left(S_{t}\right)\label{eq:TD-return-approximation}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En otras palabras, TD remplaza la función valor verdadera 
+\begin_inset Formula $v^{\pi}$
+\end_inset
+
+ por su estimación actual 
+\begin_inset Formula $v$
+\end_inset
+
+.
+ Esta idea de actualizar una estimación a partir de otra es lo que se conoce
+ como 
+\emph on
+bootstrapping
+\emph default
+ en la literatura de RL y aparece ilustrada en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:TD-backup"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Comúnmente, se emplea la siguiente terminología:
+\end_layout
+
+\begin_layout Itemize
+El retorno de 
+\emph on
+bootstrapping
+\emph default
+, 
+\begin_inset Formula $\widehat{G}^{\pi}\left(S_{t}\right)$
+\end_inset
+
+, es conocido como 
+\shape italic
+TD target.
+\end_layout
+
+\begin_layout Itemize
+El llamado 
+\emph on
+TD error
+\emph default
+ se define como:
+\begin_inset Formula 
+\begin{equation}
+\delta_{t}\triangleq R_{t+1}+\gamma v\left(S_{t+1}\right)-v\left(S_{t}\right)\label{eq:TD-error-v}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap5/TD_backup.jpeg
+	lyxscale 30
+	scale 35
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:TD-backup"
+
+\end_inset
+
+Diagrama de 
+\emph on
+temporal difference
+\emph default
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+De acuerdo a todos estos conceptos, se podrá obtener una recursión de TD
+ para las funciones valor de estados-acciones siguiendo el mismo razonamiento
+ que para las funciones valor de estados.
+ Primero, consideremos el retorno de estados-acciones definido por:
+\begin_inset Formula 
+\begin{equation}
+G^{\pi}\left(S_{t},A_{t}\right)=R_{t+1}+\gamma q^{\pi}\left(S_{t+1},A_{t+1}\right)\label{eq:return-q}
+\end{equation}
+
+\end_inset
+
+donde 
+\begin_inset Formula $A_{t+1}\sim\pi$
+\end_inset
+
+.
+ TD aproxima 
+\begin_inset Formula $G^{\pi}\left(S_{t},A_{t}\right)$
+\end_inset
+
+ con otro término dado por:
+\begin_inset Formula 
+\begin{equation}
+\widehat{G}^{\pi}\left(S_{t},A_{t}\right)\triangleq R_{t+1}+\gamma q\left(S_{t+1},A_{t+1}\right),\quad A_{t+1}\sim\pi\label{eq:TD-return-q}
+\end{equation}
+
+\end_inset
+
+tal que:
+\begin_inset Formula 
+\[
+\widehat{G}^{\pi}\left(S_{t},A_{t}\right)\approx G^{\pi}\left(S_{t},A_{t}\right)
+\]
+
+\end_inset
+
+De este modo, se obtiene:
+\begin_inset Formula 
+\begin{equation}
+q\left(S_{t},A_{t}\right)\leftarrow q\left(S_{t},,A_{t}\right)+\alpha_{t}\left(R_{t+1}+\gamma q\left(S_{t+1},A_{t+1}\right)-q\left(S_{t},,A_{t}\right)\right)\label{eq:TD-update-q}
+\end{equation}
+
+\end_inset
+
+donde de nuevo, 
+\begin_inset Formula $\alpha_{t}$
+\end_inset
+
+ hace referencia al tamaño del paso o tasa de aprendizaje, perteneciente
+ a una secuencia que satisface 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:step-size-sequence-conditions"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+El pseudocódigo del algoritmo TD para funciones valor de estados y de estados-ac
+ciones viene dado por los algoritmos 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:TD-v"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:TD-q"
+
+\end_inset
+
+, respectivamente.
+ Como puede apreciarse, se ha considerado un valor de 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ constante para todos los instantes 
+\begin_inset Formula $t$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{algorithmic}[1] 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Require {$
+\backslash
+pi$, la política a ser evaluada.}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Ensure {$v$, la estimación de la función valor $v^{
+\backslash
+pi}$.}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State Inicializar $v(s)$ arbitrariamente (e.g., $v(s)=0$), para todo $s
+\backslash
+in
+\backslash
+S$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Repeat (para cada episodio)
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State Inicializar $s$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+Repeat (para cada paso en el episodio)
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State Elegir la acción $a	
+\backslash
+sim	
+\backslash
+pi (
+\backslash
+cdot|s)$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State Tomar la acción $a$ y observar $r, s'$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $v(s)	    
+\backslash
+gets		v(s) + 
+\backslash
+alpha ( r + 
+\backslash
+gamma v(s') - v(s) ) $
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $s 
+\backslash
+gets s'$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+Until{$s$ sea terminal}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Until{no podamos correr más episodios} 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State 
+\backslash
+Return{$v$}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:TD-v"
+
+\end_inset
+
+TD para las funciones valor de estados.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float algorithm
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{algorithmic}[1] 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Require {$
+\backslash
+pi$, la política a ser evaluada.}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Ensure {$q$, la estimación de la función valor $q^
+\backslash
+pi$.}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State Inicializar $q(s,a)$ arbitrariamente (e.g., $q(s,a)=0$), para todo $(s,a)
+\backslash
+in
+\backslash
+S
+\backslash
+times
+\backslash
+A$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Repeat (para cada episodio)
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State Inicializar $s,a$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+Repeat (para cada paso en el episodio)
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State Tomar la acción $a$ y observar $r,s'$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State Elegir la acción $a'	
+\backslash
+sim	
+\backslash
+pi (
+\backslash
+cdot|s)$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $q(s,a)		
+\backslash
+leftarrow		q(s,a) + 
+\backslash
+alpha ( r + 
+\backslash
+gamma q(s',a') - q(s,a) ) $
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $s 
+\backslash
+gets s'$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $a 
+\backslash
+gets a'$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+Until{$s$ sea terminal}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Until{no podamos correr más episodios} 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State 
+\backslash
+Return{$q$}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:TD-q"
+
+\end_inset
+
+TD para las funciones valor de estados-acciones.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Resulta importante destacar que las predicciones por TD suelen presentar
+ mucha menos varianza que las predicciones por MC.
+ Esta reducción de varianza tiene el coste adherido de introducir un término
+ de sesgo.
+ Además de esta diferencia, TD generalmente converge más rápido que MC.
+\end_layout
+
+\begin_layout Standard
+A continuación se extenderá el método TD con el objetivo de hacer predicciones
+ para resolver el problema de control, y se presentarán dos algoritmos de
+ control basados en TD: 
+\begin_inset Formula $Q$
+\end_inset
+
+-learning y SARSA.
+\end_layout
+
+\begin_layout Subsection
+Control
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:controlSARSAQlearning"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Como es lógico pensar, para llevar a cabo un control efectivo, será necesario
+ explorar todos los pares estado-acción para obtener así estimaciones más
+ precisas de las funciones valor, y por tanto ser capaces de escoger de
+ manera apropiada las acciones que conducirán a las mayores estimaciones
+ de las funciones valor.
+ La necesidad de establecer un compromiso entre exploración y explotación
+ es de vital importancia en RL.
+ La idea fundamental a tener en mente es que se está estimando, a partir
+ de muestras, la distribución del retorno condicionado a los pares estado-acción.
+ Por tanto, lo que se pretende conseguir es explotar las acciones que han
+ resultado en mayores estimaciones de la función valor hasta el momento,
+ pero al mismo tiempo, explorar otras acciones por si estas pudieran provocar
+ incluso mayores recompensas.
+\end_layout
+
+\begin_layout Standard
+Diseñar políticas de comportamiento que aseguren un compromiso óptimo de
+ exploración vs.
+ explotación es un área de investigación activa; no obstante, se aparta
+ de la temática de este trabajo.
+ En lugar de ello, se va a presentar una política de comportamiento heurística
+ que ha resultado obtener buenos resultados en la práctica: la política
+ 
+\begin_inset Formula $\epsilon-$
+\end_inset
+
+greedy.
+ La política 
+\begin_inset Formula $\epsilon-$
+\end_inset
+
+greedy es la siguiente:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\pi_{\epsilon}\left(a\mid s\right)\triangleq\begin{cases}
+1-\epsilon+\epsilon/|\A|, & {\rm si}\;a=\arg\max_{a'\in\A}\;q\left(s,a'\right)\\
+\epsilon/|\A|, & a\in\A
+\end{cases}\label{eq:epsilon-greedy-policy-1}
+\end{equation}
+
+\end_inset
+
+donde 
+\begin_inset Formula $\epsilon\in\left(0,1\right)$
+\end_inset
+
+ es el parámetro de exploración, tal que cuanto más grande sea 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+, mayor exploración y menor explotación se producirán.
+\end_layout
+
+\begin_layout Standard
+A continuación se procede a presentar dos algoritmos muy conocidos en RL:
+ SARSA y 
+\begin_inset Formula $Q$
+\end_inset
+
+-learning, los cuales son aproximaciones de los algoritmos PI y VI, respectivame
+nte, basadas en TD.
+\end_layout
+
+\begin_layout Subsubsection
+SARSA
+\end_layout
+
+\begin_layout Standard
+SARSA es una aproximación del algoritmo PI.
+ Dado que TD aprende a partir de tuplas de muestras de la forma 
+\begin_inset Formula $\left(s_{t},a_{t},r_{t+1},s_{t+1},a_{t+1}\right)$
+\end_inset
+
+, el nombre SARSA viene de unir las iniciales de cada nombre en la tupla
+ de datos empleada por el algoritmo: estado (
+\emph on
+state
+\emph default
+), acción, recompensa, (siguiente) estado, (siguiente) acción.
+ SARSA está basado en tres ideas clave:
+\end_layout
+
+\begin_layout Standard
+La primera de ellas consiste en reemplazar 
+\begin_inset Formula $q^{\pi}$
+\end_inset
+
+ por su estimación por 
+\emph on
+bootstrapping
+\emph default
+, para la política actual 
+\begin_inset Formula $\pi_{\epsilon}$
+\end_inset
+
+, de manera que la actualización de la estimación de la función valor de
+ estados-acciones se convierte en:
+\begin_inset Formula 
+\begin{equation}
+q\left(s_{t},a_{t}\right)\gets q\left(s_{t},a_{t}\right)+\alpha_{t}\left(R_{t+1}+\gamma q\left(s_{t+1},a_{t+1}\right)-q\left(s_{t},a_{t}\right)\right)\label{eq:sarsa-learning-iteration}
+\end{equation}
+
+\end_inset
+
+donde 
+\begin_inset Formula $a_{t+1}\sim\pi_{\epsilon}\left(\cdot|s_{t+1}\right)$
+\end_inset
+
+ es la acción tomada de la política actual, y 
+\begin_inset Formula $\alpha_{t}$
+\end_inset
+
+ es el tamaño del paso o tasa de aprendizaje perteneciente a alguna secuencia
+ que satisfaga 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:step-size-sequence-conditions"
+
+\end_inset
+
+.
+ La figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Backup-diagram-for-SARSA"
+
+\end_inset
+
+ ilustra la actualización para las iteraciones de TD 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:sarsa-learning-iteration"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+La segunda idea es llevar a cabo el paso de mejora de la política tomando
+ la política 
+\begin_inset Formula $\epsilon-$
+\end_inset
+
+greedy respecto a la estimación actual de la función 
+\begin_inset Formula $q$
+\end_inset
+
+.
+ Resaltar que el 
+\shape italic
+TD target
+\emph on
+ es el retorno por 
+\emph default
+bootstrapping
+\emph on
+ con respecto a la política
+\shape default
+\emph default
+ 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+-greedy, es decir, 
+\begin_inset Formula $\widehat{G}^{\pi_{\epsilon}}\left(S_{t}\right)$
+\end_inset
+
+.
+ Por tanto, dado que la política de comportamiento empleada para obtener
+ las tuplas de datos y la política objetivo son la misma (e igual a la política
+ 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+-greedy denotada por 
+\begin_inset Formula $\pi_{\epsilon}$
+\end_inset
+
+), se dice que SARSA es un algoritmo de aprendizaje 
+\emph on
+on-policy
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+La tercera idea es realizar el paso de mejora de la política sin haber esperado
+ a la convergencia de la estimación 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:sarsa-learning-iteration"
+
+\end_inset
+
+ de la función valor obtenida por 
+\emph on
+bootstrapping
+\emph default
+.
+ En lugar de ello, la implementación más común de SARSA consiste en realizar
+ una única iteración de TD 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:sarsa-learning-iteration"
+
+\end_inset
+
+ y a continuación llevar a cabo la mejora de la política.
+\end_layout
+
+\begin_layout Standard
+El esquema iterativo de SARSA aparece ilustrado en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:SARSA-algorithm-scheme"
+
+\end_inset
+
+.
+ El pseudocódigo de SARSA se puede encontrar también en el algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:SARSA"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap5/sarsa_esq.jpeg
+	lyxscale 20
+	scale 25
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Backup-diagram-for-SARSA"
+
+\end_inset
+
+Diagrama de actualización del algoritmo SARSA
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap5/sarsa_itera.jpeg
+	lyxscale 20
+	scale 25
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:SARSA-algorithm-scheme"
+
+\end_inset
+
+Algoritmo SARSA para control on-policy.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{algorithmic}[1] 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Require {Parámetro de exploración $
+\backslash
+epsilon$ y tasa de aprendizaje $
+\backslash
+alpha$.}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Ensure {$
+\backslash
+pi$, la política óptima $
+\backslash
+pi^{
+\backslash
+star}$ aproximada.}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State Inicializar $q(s,a)$ arbitrariamente para todo $(s,a)
+\backslash
+in
+\backslash
+S
+\backslash
+times
+\backslash
+A$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State Inicializar $q(s,
+\backslash
+cdot)=0$ para todos los estados terminales
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Repeat (para cada episodio)
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State Inicializar $s$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State Escoger la acción $a 
+\backslash
+sim	
+\backslash
+pi_{
+\backslash
+epsilon} (
+\backslash
+cdot|s)$  
+\end_layout
+
+\begin_layout Plain Layout
+
+			usando la política $
+\backslash
+epsilon$-greedy 
+\backslash
+eqref{eq:epsilon-greedy-policy-1}
+\end_layout
+
+\begin_layout Plain Layout
+
+			a partir de la $q$ actual
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+Repeat (para cada paso en el episodio)
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State Tomar la acción $a$ y observar $r,s'$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State Escoger la acción $a' 
+\backslash
+sim	
+\backslash
+pi_{
+\backslash
+epsilon} (
+\backslash
+cdot|s')$  
+\end_layout
+
+\begin_layout Plain Layout
+
+				usando 
+\backslash
+eqref{eq:epsilon-greedy-policy-1} a partir de la $q$ actual
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $q(s,a)		
+\backslash
+gets		q(s,a) + 
+\backslash
+alpha ( r + 
+\backslash
+gamma q(s',a') - q(s,a) ) $
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $s 
+\backslash
+gets s'$, $a 
+\backslash
+gets a'$ 
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+Until{$s$ sea terminal}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Until{no podamos correr más episodios} 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+For{todo $s 
+\backslash
+in 
+\backslash
+S$}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State $
+\backslash
+pi(s) 
+\backslash
+gets 
+\backslash
+arg
+\backslash
+max_{a 
+\backslash
+in
+\backslash
+A} 
+\backslash
+: q(s,a)$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+EndFor
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State 
+\backslash
+Return{$
+\backslash
+pi$}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:SARSA"
+
+\end_inset
+
+Algoritmo SARSA con política objetivo 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+-greedy, para MDPs episódicos.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset Formula $Q$
+\end_inset
+
+-learning
+\end_layout
+
+\begin_layout Standard
+El algoritmo 
+\begin_inset Formula $Q$
+\end_inset
+
+-learning es una aproximación del algoritmo VI, y está basado en dos simples
+ ideas:
+\end_layout
+
+\begin_layout Standard
+La primera de ellas consiste en remplazar 
+\begin_inset Formula $q^{\pi}$
+\end_inset
+
+ con su estimación por 
+\emph on
+bootstrapping
+\emph default
+ en el operador de Bellman óptimo, de manera que la actualización de la
+ estimación de la función valor de estados-acciones se convierte en:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+q\left(s_{t},a_{t}\right)\gets q\left(s_{t},a_{t}\right)+\alpha_{t}\left(R_{t+1}+\gamma\max_{a\in\A}\;q\left(s_{t+1},a\right)-q\left(s_{t},a_{t}\right)\right)\label{eq:q-learning-iteration}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+donde, como de costumbre, 
+\begin_inset Formula $\alpha_{t}$
+\end_inset
+
+ es el tamaño del paso o tasa de aprendizaje perteneciente a alguna secuencia
+ que satisfaga 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:step-size-sequence-conditions"
+
+\end_inset
+
+.
+ Esta actualización es diferente de la de SARSA en el sentido de que aquí
+ estamos aproximando el operador de Bellman 
+\emph on
+óptimo
+\emph default
+ en lugar del operador de Bellman para la política actual.
+ Desde una perspectiva de TD, recalcar que el término 
+\begin_inset Formula $R_{t+1}+\gamma\max_{a\in\A}\;q\left(s_{t+1},a\right)$
+\end_inset
+
+ es la aproximación por 
+\emph on
+bootstrapping
+\emph default
+ del retorno obtenido al seguir la política 
+\emph on
+greedy
+\emph default
+.
+ Este es un punto fundamental de 
+\begin_inset Formula $Q$
+\end_inset
+
+-learning: la función valor se estima para la política 
+\emph on
+greedy
+\emph default
+.
+ Con el objetivo de ver este matiz de una forma más clara, digamos que 
+\begin_inset Formula $\pi_{{\rm greedy}}$
+\end_inset
+
+ denota la política 
+\emph on
+greedy
+\emph default
+ tal que: 
+\begin_inset Formula 
+\begin{equation}
+\pi_{{\rm greedy}}\left(a|s\right)=\begin{cases}
+1, & a=\arg\max_{a'\in\A}\;q\left(s,a'\right)\\
+0, & {\rm resto}
+\end{cases}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Entonces, de acuerdo a 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:return-q"
+
+\end_inset
+
+, el retorno obtenido con la política 
+\emph on
+greedy
+\emph default
+ estará dado por:
+\begin_inset Formula 
+\begin{equation}
+G^{\pi_{{\rm greedy}}}\left(s_{t}\right)=R_{t+1}+\gamma\max_{a\in\A}\;q^{\pi_{{\rm greedy}}}\left(s_{t+1},a\right)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Por tanto, 
+\begin_inset Formula $Q$
+\end_inset
+
+-learning emplea la siguiente aproximación:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\widehat{G}^{\pi_{{\rm greedy}}}\left(s_{t}\right) & =R_{t+1}+\gamma\max_{a\in\A}\;q\left(s_{t+1},a\right)\approx G^{\pi_{{\rm greedy}}}\left(s_{t}\right)
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Backup-diagram-for-q-learning"
+
+\end_inset
+
+ ilustra el diagrama de actualización para la iteración 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:q-learning-iteration"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+La segunda idea consiste en emplear una política de comportamiento exploratoria
+ tal como 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+-greedy, dada por 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:epsilon-greedy-policy-1"
+
+\end_inset
+
+, con el objetivo de asegurar que todos los pares estado-acción sean evaluados.
+ Puesto que la política objetivo es 
+\emph on
+greedy
+\emph default
+, es diferente de la política de comportamiento 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+-greedy.
+ Por tanto, se dirá que 
+\begin_inset Formula $Q$
+\end_inset
+
+-learning es un algoritmo 
+\emph on
+off-policy
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Images/Chap5/q_lear_esquema
+	lyxscale 50
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Backup-diagram-for-q-learning"
+
+\end_inset
+
+Diagrama de actualización para el algoritmo 
+\begin_inset Formula $Q$
+\end_inset
+
+-learning.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El pseudocódigo de Q-learning se puede encontrar en el algoritmo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:Q-learning"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+
+\color black
+\begin_inset Float algorithm
+placement th
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\color black
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{algorithmic}[1] 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Require {Parámetro de exploración $
+\backslash
+epsilon$ y tasa de aprendizaje $
+\backslash
+alpha$.}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Ensure {$
+\backslash
+pi$, la política óptima $
+\backslash
+pi^{
+\backslash
+star}$ aproximada.}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State Inicializar $q(s,a)$ arbitrariamente para todo $(s,a)
+\backslash
+in
+\backslash
+S
+\backslash
+times
+\backslash
+A$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State Inicializar $q(s,
+\backslash
+cdot)=0$ para todos los estados terminales
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Repeat (para cada episodio)
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State Inicializar $s$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+Repeat (para cada paso en el episodio)
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State Escoger la acción
+\end_layout
+
+\begin_layout Plain Layout
+
+				$a 
+\backslash
+sim	
+\backslash
+pi_{
+\backslash
+epsilon} (
+\backslash
+cdot|s)$  usando 
+\backslash
+eqref{eq:epsilon-greedy-policy-1} a partir de la $q$ actual
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State Tomar la acción $a$ y observar $r,s'$
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $q(s,a)		
+\backslash
+gets		q(s,a) + 
+\backslash
+alpha ( r + 
+\backslash
+gamma 
+\backslash
+max_{a'
+\backslash
+in
+\backslash
+A} 
+\backslash
+: q(s',a') - q(s,a) ) $
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+State $s 
+\backslash
+gets s'$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+Until{$s$ sea terminal}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+Until{no podamos correr más episodios} 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+For{all $s 
+\backslash
+in 
+\backslash
+S$}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+State $
+\backslash
+pi(s) 
+\backslash
+gets 
+\backslash
+arg
+\backslash
+max_{a 
+\backslash
+in
+\backslash
+A} 
+\backslash
+: q(s,a)$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+EndFor
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+State 
+\backslash
+Return{$
+\backslash
+pi$}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\color black
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:Q-learning"
+
+\end_inset
+
+Algoritmo 
+\begin_inset Formula $Q$
+\end_inset
+
+-learning con política de comportamiento 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+-greedy, para MDPs episódicos.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\color white
+dsssssssssssssss dsssssssssssssss dsssssssssssssssdsssssssssssssss dssssssssssss
+sss dsssssssssssssssdsssssssssssssss dsssssssssssssss dsssssssssssssssdsssssssss
+ssssss dsssssssssssssss dsssssssssssssssdsssssssssssssss dsssssssssssssss
+ dsssssssssssssssdsssssssssssssss dsssssssssssssss dsssssssssssssssdssssssssssss
+sss dsssssssssssssss dsssssssssssssssdsssssssssssssss dsssssssssssssss dssssssss
+sssssssdsssssssssssssss dsssssssssssssss dsssssssssssssssdsssssssssssssss
+ dsssssssssssssss dsssssssssssssssdsssssssssssssss dsssssssssssssss dsssssssssss
+ssssdsssssssssssssss dsssssssssssssss dsssssssssssssssdsssssssssssssss dssssssss
+sssssss dsssssssssssssssdsssssssssssssss dsssssssssssssss dsssssssssssssssdsssss
+ssssssssss dsssssssssssssss dsssssssssssssssdsssssssssssssss dsssssssssssssss
+ dsssssssssssssssdsssssssssssssss dsssssssssssssss dsssssssssssssssdssssssssssss
+sss dsssssssssssssss dsssssssssssssssdsssssssssssssss dsssssssssssssss dssssssss
+sssssssdsssssssss
+\end_layout
+
+\end_body
+\end_document

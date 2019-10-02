@@ -1,0 +1,1 @@
+Pruebas 1 check es una corrección de pruebas 1 en la que se trabaja con el vector R(s) en lugar de con R(s,a). Son las mismas pruebas.
