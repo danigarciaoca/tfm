@@ -1,2 +1,2 @@
-# Don't files in all subdirectories with .mat extension
+# Don't track files in all subdirectories with .mat extension
 **/.mat
